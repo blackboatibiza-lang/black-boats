@@ -179,7 +179,7 @@ export default function InformesPage() {
           <BarChart data={chartData} barGap={4}>
             <XAxis dataKey="mes" tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
-            <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v.toLocaleString('es-ES')}€`} />
+            <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => `${Number(v).toLocaleString('es-ES')}€`} />
             <Legend wrapperStyle={{ fontSize: 11, color: '#9CA3AF' }} />
             <Bar dataKey="ingresos" name="Ingresos" fill="#C9A84C" radius={[3,3,0,0]} />
             <Bar dataKey="gastos"   name="Gastos"   fill="#EF4444" radius={[3,3,0,0]} />
@@ -195,7 +195,7 @@ export default function InformesPage() {
             <BarChart data={chartData}>
               <XAxis dataKey="mes" tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
-              <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v} reservas`} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => `${v} reservas`} />
               <Bar dataKey="reservas" name="Reservas" fill="#60A5FA" radius={[3,3,0,0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -207,7 +207,7 @@ export default function InformesPage() {
               <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
               <XAxis dataKey="mes" tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
-              <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v.toLocaleString('es-ES')}€`} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => `${Number(v).toLocaleString('es-ES')}€`} />
               <Line type="monotone" dataKey="neto" name="Neto" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#C9A84C', r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
