@@ -26,9 +26,9 @@ const navBottom = [
 ]
 
 const ROLE_DEFAULTS: Record<string, string[]> = {
-  admin:    ['dashboard','flota','reservas','clientes','extras','gastos','facturacion','informes','ajustes'],
+  admin:    ['dashboard','flota','reservas','clientes','extras','gastos','facturacion','informes','fichajes','ajustes'],
   socio:    ['dashboard','reservas','facturacion','informes'],
-  empleado: ['dashboard','flota','reservas','clientes','extras','gastos'],
+  empleado: ['dashboard','flota','reservas','clientes','extras','gastos','fichajes'],
 }
 
 export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose: () => void }) {
