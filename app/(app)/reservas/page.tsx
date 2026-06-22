@@ -140,7 +140,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
                 onClick={() => setSelected(isSelected ? null : day)}
                 className={`h-14 sm:h-20 p-1 sm:p-1.5 border-b border-r border-gray-100 last:border-r-0 text-left transition-colors relative
                   ${isSelected ? 'bg-[#C9A84C]/10' : 'hover:bg-gray-50'}
-                  ${isWeekend ? 'bg-[#0F0F0F]' : ''}`}
+                  ${isWeekend ? 'bg-gray-50' : ''}`}
               >
                 <span className={`text-xs font-medium block mb-1 w-6 h-6 flex items-center justify-center rounded-full
                   ${isToday ? 'bg-[#C9A84C] text-black font-bold' : isWeekend ? 'text-[#C9A84C]/50' : 'text-gray-700'}`}>
