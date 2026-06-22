@@ -116,7 +116,7 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
             </button>
           </div>
         )}
-        <p className="text-gray-600 text-xs text-center mt-2">Black Boats © 2025</p>
+        <p className="text-gray-600 text-xs text-center mt-2">Black Boats © 2026</p>
       </div>
     </aside>
   )
