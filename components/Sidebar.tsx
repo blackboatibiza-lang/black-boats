@@ -41,10 +41,15 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
     const s = getSession()
     if (!s) return
     setUser({ name: s.name, role: s.role })
-    const perms = s.permissions?.length > 0
-      ? s.permissions
-      : (ROLE_DEFAULTS[s.role] ?? ROLE_DEFAULTS.admin)
-    setAllowedKeys(perms)
+    // Admins always see everything, regardless of stored permissions
+    if (s.role === 'admin') {
+      setAllowedKeys(ROLE_DEFAULTS.admin)
+    } else {
+      const perms = s.permissions?.length > 0
+        ? s.permissions
+        : (ROLE_DEFAULTS[s.role] ?? ROLE_DEFAULTS.empleado)
+      setAllowedKeys(perms)
+    }
   }, [])
 
   // Close on navigation
