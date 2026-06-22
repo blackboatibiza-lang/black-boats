@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Search, CalendarDays, Clock, Anchor, Users, List, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Plus, Search, CalendarDays, Clock, Anchor, Users, List, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { getSession, hasEditPerm } from '@/lib/session'
@@ -229,7 +229,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
 }
 
 // ── LIST VIEW ────────────────────────────────────────────────────
-function ListView({ bookings, canEdit }: { bookings: any[]; canEdit: boolean }) {
+function ListView({ bookings, canEdit, onDelete }: { bookings: any[]; canEdit: boolean; onDelete: (id: string) => void }) {
   if (bookings.length === 0) {
     return (
       <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl">
@@ -259,6 +259,7 @@ function ListView({ bookings, canEdit }: { bookings: any[]; canEdit: boolean }) 
               <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Total</th>
               <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Pago</th>
               <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Estado</th>
+              {canEdit && <th className="px-5 py-3.5" />}
             </tr>
           </thead>
           <tbody className="divide-y divide-[#1E1E1E]">
@@ -315,6 +316,20 @@ function ListView({ bookings, canEdit }: { bookings: any[]; canEdit: boolean }) 
                   <td className="px-5 py-3.5">
                     <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${st?.color ?? ''}`}>{st?.label ?? b.status}</span>
                   </td>
+                  {canEdit && (
+                    <td className="px-5 py-3.5">
+                      <button
+                        onClick={() => {
+                          if (confirm(`¿Eliminar reserva ${b.booking_number}? Esta acción no se puede deshacer.`)) {
+                            onDelete(b.id)
+                          }
+                        }}
+                        className="text-gray-600 hover:text-red-400 transition-colors"
+                        title="Eliminar reserva">
+                        <Trash2 size={15} />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               )
             })}
@@ -361,6 +376,12 @@ export default function ReservasPage() {
       setLoading(false)
     })
   }, [])
+
+  async function handleDelete(id: string) {
+    const supabase = createClient()
+    await supabase.from('bookings').delete().eq('id', id)
+    setBookings(prev => prev.filter(b => b.id !== id))
+  }
 
   const filtered = bookings.filter(b => {
     const clientName = b.client ? `${b.client.first_name} ${b.client.last_name}` : ''
@@ -435,7 +456,7 @@ export default function ReservasPage() {
       </div>
 
       {view === 'list'
-        ? <ListView bookings={filtered} canEdit={canEdit} />
+        ? <ListView bookings={filtered} canEdit={canEdit} onDelete={handleDelete} />
         : <CalendarView bookings={bookings} filter={filter} boatColors={boatColors} boats={boats} canEdit={canEdit} />
       }
     </div>
