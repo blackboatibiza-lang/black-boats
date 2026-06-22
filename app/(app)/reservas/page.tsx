@@ -129,7 +129,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
         {/* Cells */}
         <div className="grid grid-cols-7">
           {cells.map((day, i) => {
-            if (!day) return <div key={i} className="h-20 border-b border-r border-[#1A1A1A] last:border-r-0" />
+            if (!day) return <div key={i} className="h-14 sm:h-20 border-b border-r border-[#1A1A1A] last:border-r-0" />
             const dayBookings = bookingsForDay(day)
             const isToday = isSameDay(day, today)
             const isSelected = selected && isSameDay(day, selected)
@@ -138,7 +138,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
               <button
                 key={i}
                 onClick={() => setSelected(isSelected ? null : day)}
-                className={`h-20 p-1.5 border-b border-r border-[#1A1A1A] last:border-r-0 text-left transition-colors relative
+                className={`h-14 sm:h-20 p-1 sm:p-1.5 border-b border-r border-[#1A1A1A] last:border-r-0 text-left transition-colors relative
                   ${isSelected ? 'bg-[#C9A84C]/10' : 'hover:bg-[#1A1A1A]'}
                   ${isWeekend ? 'bg-[#0F0F0F]' : ''}`}
               >

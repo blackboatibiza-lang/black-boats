@@ -98,7 +98,7 @@ function EmpresaTab() {
     <div className="space-y-5 max-w-2xl">
       <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
         <h3 className="text-white font-semibold text-sm">Datos de la empresa</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="col-span-2"><label className={labelCls}>Nombre / Razón social</label><input value={data.nombre} onChange={e => set('nombre', e.target.value)} className={inputCls} /></div>
           <div><label className={labelCls}>CIF / NIF</label><input value={data.cif} onChange={e => set('cif', e.target.value)} className={inputCls} /></div>
           <div><label className={labelCls}>Teléfono</label><input value={data.telefono} onChange={e => set('telefono', e.target.value)} className={inputCls} /></div>
@@ -118,7 +118,7 @@ function EmpresaTab() {
 
       <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
         <h3 className="text-white font-semibold text-sm">Configuración de facturación</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>IVA por defecto (%)</label>
             <input type="number" value={data.iva} onChange={e => set('iva', e.target.value)} className={inputCls} />
@@ -141,7 +141,7 @@ function EmpresaTab() {
 
       <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
         <h3 className="text-white font-semibold text-sm">Temporada</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Inicio temporada (MM-DD)</label>
             <input value={data.temporada_inicio} onChange={e => set('temporada_inicio', e.target.value)} placeholder="05-01" className={inputCls} />
@@ -255,7 +255,7 @@ function UsuariosTab() {
             <button onClick={resetForm} className="text-gray-500 hover:text-white"><X size={16} /></button>
           </div>
           {error && <p className="text-red-400 text-xs bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">{error}</p>}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Nombre completo *</label>
               <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className={inputCls} placeholder="Ana García" />
@@ -630,7 +630,7 @@ function PermisosTab() {
       {/* Tabla referencia de roles */}
       <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
         <h3 className="text-white font-semibold text-sm mb-3">Referencia de roles</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {ROLES.map(r => (
             <div key={r.value} className="flex items-start gap-2.5">
               <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0

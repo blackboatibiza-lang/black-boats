@@ -1,28 +1,36 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { Bell, Search } from 'lucide-react'
+import { Bell, Search, Menu } from 'lucide-react'
 
 const titles: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/flota': 'Flota',
-  '/reservas': 'Reservas',
-  '/clientes': 'Clientes',
-  '/tripulacion': 'Tripulación',
-  '/extras': 'Extras & Servicios',
-  '/pagos': 'Pagos',
-  '/mantenimiento': 'Mantenimiento',
+  '/dashboard':   'Dashboard',
+  '/flota':       'Flota',
+  '/reservas':    'Reservas',
+  '/clientes':    'Clientes',
+  '/extras':      'Extras & Servicios',
+  '/gastos':      'Gastos',
+  '/facturacion': 'Facturación',
+  '/informes':    'Informes',
+  '/ajustes':     'Ajustes',
 }
 
-export default function Header() {
+export default function Header({ onMenuOpen }: { onMenuOpen?: () => void }) {
   const pathname = usePathname()
-  const base = '/' + pathname.split('/')[1]
+  const base  = '/' + pathname.split('/')[1]
   const title = titles[base] || 'Black Boats'
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 border-b border-[#2A2A2A] bg-[#0A0A0A]">
-      <h1 className="text-white font-semibold text-lg">{title}</h1>
+    <header className="h-14 lg:h-16 flex items-center justify-between px-4 lg:px-6 border-b border-[#2A2A2A] bg-[#0A0A0A] flex-shrink-0">
       <div className="flex items-center gap-3">
+        <button
+          onClick={onMenuOpen}
+          className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#1E1E1E] text-gray-400 hover:text-white transition-colors">
+          <Menu size={20} />
+        </button>
+        <h1 className="text-white font-semibold text-base lg:text-lg">{title}</h1>
+      </div>
+      <div className="flex items-center gap-2">
         <button className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#1E1E1E] text-gray-400 hover:text-white transition-colors">
           <Search size={18} />
         </button>

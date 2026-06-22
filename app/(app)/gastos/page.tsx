@@ -137,7 +137,7 @@ export default function GastosPage() {
       {showForm && (
         <div className="bg-[#141414] border border-[#C9A84C]/30 rounded-xl p-5 space-y-4">
           <h3 className="text-white font-semibold text-sm">Registrar gasto</h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Importe (€) *</label>
               <input type="number" step="0.01" value={form.amount} onChange={e => set('amount', e.target.value)} className={inputCls} placeholder="0.00" />
@@ -239,7 +239,8 @@ export default function GastosPage() {
         </div>
       ) : (
         <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-[#2A2A2A] bg-[#1A1A1A]">
                 <th className="text-left px-4 py-3 text-gray-500 text-xs font-medium">Fecha</th>
@@ -296,6 +297,7 @@ export default function GastosPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

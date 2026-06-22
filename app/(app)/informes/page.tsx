@@ -367,7 +367,7 @@ export default function InformesPage() {
                 {g.bookings.length === 0 ? (
                   <p className="text-center py-8 text-gray-600 text-sm">No hay reservas con este método</p>
                 ) : (
-                  <table className="w-full text-sm">
+                  <div className="overflow-x-auto"><table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-[#2A2A2A]">
                         <th className="text-left px-4 py-2 text-gray-500 text-xs">Fecha</th>
@@ -392,7 +392,7 @@ export default function InformesPage() {
                         <td className="px-4 py-2.5 text-right text-white font-bold">{g.total.toLocaleString('es-ES')}€</td>
                       </tr>
                     </tfoot>
-                  </table>
+                  </table></div>
                 )}
               </div>
             )
