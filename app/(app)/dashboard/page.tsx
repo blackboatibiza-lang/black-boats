@@ -14,7 +14,7 @@ const statusConfig = {
   confirmed: { label: 'Confirmada',  color: 'text-blue-400 bg-blue-400/10' },
   pending:   { label: 'Pendiente',   color: 'text-yellow-400 bg-yellow-400/10' },
   cancelled: { label: 'Cancelada',   color: 'text-red-400 bg-red-400/10' },
-  completed: { label: 'Completada',  color: 'text-gray-400 bg-gray-400/10' },
+  completed: { label: 'Completada',  color: 'text-gray-700 bg-gray-400/10' },
 }
 
 const boatStatusConfig = {
@@ -138,7 +138,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">Buenos días</h2>
-        <p className="text-gray-400 text-sm mt-0.5 capitalize">{today}</p>
+        <p className="text-gray-700 text-sm mt-0.5 capitalize">{today}</p>
       </div>
 
       {/* KPIs */}
@@ -147,9 +147,9 @@ export default function DashboardPage() {
           <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-4">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-gray-400 text-xs font-medium">{s.label}</p>
+                <p className="text-gray-700 text-xs font-medium">{s.label}</p>
                 <p className="text-gray-900 text-2xl font-bold mt-1">{s.value}</p>
-                <p className="text-gray-400 text-xs mt-0.5">{s.sub}</p>
+                <p className="text-gray-700 text-xs mt-0.5">{s.sub}</p>
               </div>
               <div className={`w-9 h-9 rounded-lg ${s.bg} flex items-center justify-center`}>
                 <s.icon size={18} className={s.color} />
@@ -169,7 +169,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           {bookingsToday.length === 0 ? (
-            <div className="text-center py-10 text-gray-400 text-sm">No hay reservas hoy</div>
+            <div className="text-center py-10 text-gray-700 text-sm">No hay reservas hoy</div>
           ) : (
             <div className="divide-y divide-gray-100">
               {bookingsToday.map((b) => {
@@ -183,11 +183,11 @@ export default function DashboardPage() {
                       </div>
                       <div>
                         <p className="text-gray-900 text-sm font-medium">{clientName}</p>
-                        <p className="text-gray-400 text-xs">{b.boat?.name ?? '—'} · {b.adults ?? 1} pax</p>
+                        <p className="text-gray-700 text-xs">{b.boat?.name ?? '—'} · {b.adults ?? 1} pax</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="flex items-center gap-1.5 text-gray-400 text-xs mb-1">
+                      <div className="flex items-center gap-1.5 text-gray-700 text-xs mb-1">
                         <Clock size={11} /> {b.start_time?.slice(0, 5) ?? '—'}
                       </div>
                       {st && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${st.color}`}>{st.label}</span>}
@@ -208,7 +208,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           {boats.length === 0 ? (
-            <div className="text-center py-10 text-gray-400 text-sm">No hay barcos</div>
+            <div className="text-center py-10 text-gray-700 text-sm">No hay barcos</div>
           ) : (
             <div className="divide-y divide-gray-100">
               {boats.slice(0, 6).map((boat) => {
@@ -217,11 +217,11 @@ export default function DashboardPage() {
                   <div key={boat.id} className="flex items-center justify-between px-5 py-3">
                     <div>
                       <p className="text-gray-900 text-sm font-medium">{boat.name}</p>
-                      <p className="text-gray-400 text-xs">{boat.type ?? '—'}</p>
+                      <p className="text-gray-700 text-xs">{boat.type ?? '—'}</p>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className={`w-2 h-2 rounded-full ${st?.dot ?? 'bg-gray-500'}`} />
-                      <span className="text-gray-400 text-xs">{st?.label ?? boat.status}</span>
+                      <span className="text-gray-700 text-xs">{st?.label ?? boat.status}</span>
                     </div>
                   </div>
                 )
@@ -238,7 +238,7 @@ export default function DashboardPage() {
           {insuranceAlerts.map(b => (
             <div key={b.id} className="flex items-center gap-3 text-sm">
               <AlertCircle size={16} className="text-yellow-400 flex-shrink-0" />
-              <span className="text-gray-300">
+              <span className="text-gray-700">
                 <strong className="text-gray-900">{b.name}</strong> — Seguro vence el{' '}
                 <strong className="text-gray-900">
                   {new Date(b.insurance_expiry!).toLocaleDateString('es-ES')}
@@ -249,7 +249,7 @@ export default function DashboardPage() {
           {maintenance.slice(0, 3).map(m => (
             <div key={m.id} className="flex items-center gap-3 text-sm">
               <AlertCircle size={16} className="text-yellow-400 flex-shrink-0" />
-              <span className="text-gray-300">
+              <span className="text-gray-700">
                 Mantenimiento pendiente: <strong className="text-gray-900">{m.title}</strong>
               </span>
             </div>
@@ -257,7 +257,7 @@ export default function DashboardPage() {
           {insuranceAlerts.length === 0 && maintenance.length === 0 && (
             <div className="flex items-center gap-3 text-sm">
               <CheckCircle size={16} className="text-green-400 flex-shrink-0" />
-              <span className="text-gray-300">Todo en orden, sin alertas activas</span>
+              <span className="text-gray-700">Todo en orden, sin alertas activas</span>
             </div>
           )}
         </div>

@@ -141,12 +141,12 @@ export default function InformesPage() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-gray-900 font-bold text-xl">Informes</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Análisis financiero y de rendimiento</p>
+          <p className="text-gray-700 text-sm mt-0.5">Análisis financiero y de rendimiento</p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setYear(y => y - 1)} className="px-3 py-2 bg-white border border-gray-200 text-gray-400 hover:text-gray-900 rounded-lg text-sm transition-colors">←</button>
+          <button onClick={() => setYear(y => y - 1)} className="px-3 py-2 bg-white border border-gray-200 text-gray-700 hover:text-gray-900 rounded-lg text-sm transition-colors">←</button>
           <span className="text-gray-900 font-bold text-lg w-16 text-center">{year}</span>
-          <button onClick={() => setYear(y => y + 1)} className="px-3 py-2 bg-white border border-gray-200 text-gray-400 hover:text-gray-900 rounded-lg text-sm transition-colors">→</button>
+          <button onClick={() => setYear(y => y + 1)} className="px-3 py-2 bg-white border border-gray-200 text-gray-700 hover:text-gray-900 rounded-lg text-sm transition-colors">→</button>
         </div>
       </div>
 
@@ -161,7 +161,7 @@ export default function InformesPage() {
           <div key={k.label} className="bg-white border border-gray-200 rounded-xl p-4">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-gray-400 text-xs">{k.label}</p>
+                <p className="text-gray-700 text-xs">{k.label}</p>
                 <p className={`text-xl font-bold mt-1 ${k.color}`}>{k.value}</p>
               </div>
               <div className={`w-9 h-9 rounded-lg ${k.bg} flex items-center justify-center`}>
@@ -248,9 +248,9 @@ export default function InformesPage() {
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <p className="text-gray-900 font-semibold text-sm">{b.boat_name}</p>
                     <div className="flex items-center gap-4 text-xs">
-                      <span className="text-gray-400">Ingresos: <span className="text-green-400 font-medium">{b.income.toLocaleString('es-ES')}€</span></span>
-                      <span className="text-gray-400">Gastos: <span className="text-red-400 font-medium">{b.expTotal.toLocaleString('es-ES')}€</span></span>
-                      <span className="text-gray-400">Neto: <span className={`font-bold ${(b.income - b.expTotal) >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{(b.income - b.expTotal).toLocaleString('es-ES')}€</span></span>
+                      <span className="text-gray-700">Ingresos: <span className="text-green-400 font-medium">{b.income.toLocaleString('es-ES')}€</span></span>
+                      <span className="text-gray-700">Gastos: <span className="text-red-400 font-medium">{b.expTotal.toLocaleString('es-ES')}€</span></span>
+                      <span className="text-gray-700">Neto: <span className={`font-bold ${(b.income - b.expTotal) >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{(b.income - b.expTotal).toLocaleString('es-ES')}€</span></span>
                     </div>
                   </div>
                   <div className="grid gap-2">
@@ -271,17 +271,17 @@ export default function InformesPage() {
                       return (
                         <div key={s.name} className="grid grid-cols-2 gap-2">
                           <div className="bg-gray-50 border border-sky-400/20 rounded-lg p-3">
-                            <p className="text-gray-400 text-xs mb-1">Socio · {s.name} ({s.profit_pct}%)</p>
+                            <p className="text-gray-700 text-xs mb-1">Socio · {s.name} ({s.profit_pct}%)</p>
                             <p className={`text-lg font-bold ${socioNet >= 0 ? 'text-sky-400' : 'text-red-400'}`}>{socioNet.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€</p>
-                            <p className="text-gray-400 text-xs mt-1">
+                            <p className="text-gray-700 text-xs mt-1">
                               {socioGross.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ bruto
                               {expSocioFixed > 0 && <span className="text-red-400/70"> − {expSocioFixed.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ gastos</span>}
                             </p>
                           </div>
                           <div className="bg-gray-50 border border-[#C9A84C]/20 rounded-lg p-3">
-                            <p className="text-gray-400 text-xs mb-1">Black Boats ({100 - s.profit_pct}%)</p>
+                            <p className="text-gray-700 text-xs mb-1">Black Boats ({100 - s.profit_pct}%)</p>
                             <p className={`text-lg font-bold ${bbNet >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{bbNet.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€</p>
-                            <p className="text-gray-400 text-xs mt-1">
+                            <p className="text-gray-700 text-xs mt-1">
                               {bbGross.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ bruto
                               {b.expBBFixed > 0 && <span className="text-red-400/70"> − {b.expBBFixed.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ gastos</span>}
                             </p>
@@ -305,7 +305,7 @@ export default function InformesPage() {
             {MONTHS_ES.map((m, i) => (
               <button key={i} onClick={() => setMonth(i)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all
-                  ${month === i ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-400 hover:text-gray-900 border border-transparent'}`}>
+                  ${month === i ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-700 hover:text-gray-900 border border-transparent'}`}>
                 {m}
               </button>
             ))}
@@ -316,25 +316,25 @@ export default function InformesPage() {
           {/* Resumen del mes */}
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-gray-100 rounded-xl p-4">
-              <p className="text-gray-400 text-xs mb-1">Facturado</p>
+              <p className="text-gray-700 text-xs mb-1">Facturado</p>
               <p className="text-gray-900 text-xl font-bold">{totalMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-400 text-xs mt-0.5">{monthBookings.length} reservas</p>
+              <p className="text-gray-700 text-xs mt-0.5">{monthBookings.length} reservas</p>
             </div>
             <div className="bg-gray-100 rounded-xl p-4">
-              <p className="text-gray-400 text-xs mb-1">Gastos</p>
+              <p className="text-gray-700 text-xs mb-1">Gastos</p>
               <p className="text-red-400 text-xl font-bold">-{totalExpMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-400 text-xs mt-0.5">{monthExpenses.length} registros</p>
+              <p className="text-gray-700 text-xs mt-0.5">{monthExpenses.length} registros</p>
             </div>
             <div className="bg-gray-100 rounded-xl p-4">
-              <p className="text-gray-400 text-xs mb-1">Beneficio neto</p>
+              <p className="text-gray-700 text-xs mb-1">Beneficio neto</p>
               <p className={`text-xl font-bold ${netMonth >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{netMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-400 text-xs mt-0.5">{totalMonth > 0 ? Math.round((netMonth / totalMonth) * 100) : 0}% margen</p>
+              <p className="text-gray-700 text-xs mt-0.5">{totalMonth > 0 ? Math.round((netMonth / totalMonth) * 100) : 0}% margen</p>
             </div>
           </div>
 
           {/* Desglose por método de pago */}
           <div>
-            <p className="text-gray-400 text-xs mb-3 font-medium uppercase tracking-wider">Por método de cobro</p>
+            <p className="text-gray-700 text-xs mb-3 font-medium uppercase tracking-wider">Por método de cobro</p>
             <div className="grid grid-cols-2 gap-3">
               {byGroup.map(g => (
                 <button key={g.key} onClick={() => setSelectedGroup(selectedGroup === g.key ? null : g.key)}
@@ -344,7 +344,7 @@ export default function InformesPage() {
                     <p className="text-gray-900 text-sm font-medium">{g.label}</p>
                   </div>
                   <p className={`text-xl font-bold ${g.color}`}>{g.total.toLocaleString('es-ES')}€</p>
-                  <p className="text-gray-400 text-xs mt-0.5">{g.count} reserva{g.count !== 1 ? 's' : ''}</p>
+                  <p className="text-gray-700 text-xs mt-0.5">{g.count} reserva{g.count !== 1 ? 's' : ''}</p>
                   {totalMonth > 0 && (
                     <div className="mt-2 h-1 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full bg-[#C9A84C] rounded-full" style={{ width: `${Math.round((g.total / totalMonth) * 100)}%` }} />
@@ -362,23 +362,23 @@ export default function InformesPage() {
               <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
                   <p className="text-gray-900 text-sm font-medium">Reservas — {g.label} · {MONTHS_ES[month]} {year}</p>
-                  <button onClick={() => setSelectedGroup(null)} className="text-gray-400 hover:text-gray-900 transition-colors"><X size={14} /></button>
+                  <button onClick={() => setSelectedGroup(null)} className="text-gray-700 hover:text-gray-900 transition-colors"><X size={14} /></button>
                 </div>
                 {g.bookings.length === 0 ? (
-                  <p className="text-center py-8 text-gray-400 text-sm">No hay reservas con este método</p>
+                  <p className="text-center py-8 text-gray-700 text-sm">No hay reservas con este método</p>
                 ) : (
                   <div className="overflow-x-auto"><table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="text-left px-4 py-2 text-gray-400 text-xs">Fecha</th>
-                        <th className="text-left px-4 py-2 text-gray-400 text-xs">Barco</th>
-                        <th className="text-right px-4 py-2 text-gray-400 text-xs">Importe</th>
+                        <th className="text-left px-4 py-2 text-gray-700 text-xs">Fecha</th>
+                        <th className="text-left px-4 py-2 text-gray-700 text-xs">Barco</th>
+                        <th className="text-right px-4 py-2 text-gray-700 text-xs">Importe</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                       {g.bookings.map(b => (
                         <tr key={b.id} className="hover:bg-[#222] transition-colors">
-                          <td className="px-4 py-2.5 text-gray-400 text-xs">
+                          <td className="px-4 py-2.5 text-gray-700 text-xs">
                             {new Date(b.start_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
                           </td>
                           <td className="px-4 py-2.5 text-gray-900 text-xs">{b.boat?.name ?? '—'}</td>
@@ -388,7 +388,7 @@ export default function InformesPage() {
                     </tbody>
                     <tfoot>
                       <tr className="border-t border-gray-200 bg-white">
-                        <td colSpan={2} className="px-4 py-2.5 text-gray-400 text-xs">Total</td>
+                        <td colSpan={2} className="px-4 py-2.5 text-gray-700 text-xs">Total</td>
                         <td className="px-4 py-2.5 text-right text-gray-900 font-bold">{g.total.toLocaleString('es-ES')}€</td>
                       </tr>
                     </tfoot>

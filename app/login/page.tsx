@@ -65,11 +65,11 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="bg-[#141414] border border-[#2A2A2A] rounded-2xl p-7 space-y-5">
           <div>
             <h2 className="text-white font-semibold text-lg mb-1">Iniciar sesión</h2>
-            <p className="text-gray-500 text-sm">Accede al panel de gestión</p>
+            <p className="text-gray-600 text-sm">Accede al panel de gestión</p>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-gray-500 text-xs">Email</label>
+            <label className="text-gray-600 text-xs">Email</label>
             <input
               type="email"
               value={email}
@@ -81,7 +81,7 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-gray-500 text-xs">Contraseña</label>
+            <label className="text-gray-600 text-xs">Contraseña</label>
             <div className="relative">
               <input
                 type={showPw ? 'text' : 'password'}
@@ -92,7 +92,7 @@ export default function LoginPage() {
                 className="w-full px-3 py-2.5 pr-10 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50"
               />
               <button type="button" onClick={() => setShowPw(!showPw)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-700">
                 {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
             </div>

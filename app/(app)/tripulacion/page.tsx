@@ -47,15 +47,15 @@ export default function TripulacionPage() {
 
       {crew.length === 0 ? (
         <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
-          <UserCheck size={36} className="mx-auto mb-3 text-gray-300" />
-          <p className="text-gray-400">No hay personal registrado todavía</p>
+          <UserCheck size={36} className="mx-auto mb-3 text-gray-700" />
+          <p className="text-gray-700">No hay personal registrado todavía</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {crew.map(member => {
             const licExpirySoon = member.license_expiry &&
               new Date(member.license_expiry) < new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
-            const roleColor = roleColors[member.role] ?? 'text-gray-400 bg-gray-400/10'
+            const roleColor = roleColors[member.role] ?? 'text-gray-700 bg-gray-400/10'
             return (
               <div key={member.id} className="bg-white border border-gray-200 rounded-xl p-5">
                 <div className="flex items-start justify-between mb-4">
@@ -74,24 +74,24 @@ export default function TripulacionPage() {
                 </div>
                 <div className="space-y-1.5 mb-4">
                   {member.phone && (
-                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                    <div className="flex items-center gap-2 text-gray-700 text-xs">
                       <Phone size={12} /> {member.phone}
                     </div>
                   )}
                   {member.email && (
-                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                    <div className="flex items-center gap-2 text-gray-700 text-xs">
                       <Mail size={12} /> {member.email}
                     </div>
                   )}
                   {member.license_number && (
-                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                    <div className="flex items-center gap-2 text-gray-700 text-xs">
                       <Award size={12} /> {member.license_number}
                       {licExpirySoon && <AlertCircle size={11} className="text-yellow-400" />}
                     </div>
                   )}
                 </div>
                 {member.license_expiry && (
-                  <div className={`text-xs pt-3 border-t border-gray-200 ${licExpirySoon ? 'text-yellow-400' : 'text-gray-400'}`}>
+                  <div className={`text-xs pt-3 border-t border-gray-200 ${licExpirySoon ? 'text-yellow-400' : 'text-gray-700'}`}>
                     Licencia vence: {new Date(member.license_expiry).toLocaleDateString('es-ES')}
                     {licExpirySoon && ' ⚠'}
                   </div>

@@ -40,11 +40,11 @@ export default function ExtrasPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Servicio</th>
-              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Descripción</th>
-              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Precio</th>
-              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Unidad</th>
-              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Estado</th>
+              <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Servicio</th>
+              <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Descripción</th>
+              <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Precio</th>
+              <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Unidad</th>
+              <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Estado</th>
               <th className="px-5 py-3.5" />
             </tr>
           </thead>
@@ -57,21 +57,21 @@ export default function ExtrasPage() {
                     <span className="text-gray-900 font-medium">{extra.name}</span>
                   </div>
                 </td>
-                <td className="px-5 py-3.5 text-gray-400">{extra.description ?? '—'}</td>
+                <td className="px-5 py-3.5 text-gray-700">{extra.description ?? '—'}</td>
                 <td className="px-5 py-3.5">
                   <span className="text-[#C9A84C] font-semibold">
                     {Number(extra.price) === 0 ? 'Variable' : `${Number(extra.price)}€`}
                   </span>
                 </td>
-                <td className="px-5 py-3.5 text-gray-400">{extra.unit}</td>
+                <td className="px-5 py-3.5 text-gray-700">{extra.unit}</td>
                 <td className="px-5 py-3.5">
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${extra.is_active ? 'text-green-400 bg-green-400/10' : 'text-gray-400 bg-gray-500/10'}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${extra.is_active ? 'text-green-400 bg-green-400/10' : 'text-gray-700 bg-gray-500/10'}`}>
                     {extra.is_active ? 'Activo' : 'Inactivo'}
                   </span>
                 </td>
                 {canEdit && (
                   <td className="px-5 py-3.5">
-                    <button className="text-gray-400 hover:text-[#C9A84C] transition-colors">
+                    <button className="text-gray-700 hover:text-[#C9A84C] transition-colors">
                       <Pencil size={14} />
                     </button>
                   </td>

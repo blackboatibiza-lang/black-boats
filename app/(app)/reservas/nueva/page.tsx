@@ -33,7 +33,7 @@ const SOURCES = [
 ]
 
 const TARIFF_INFO: Record<string, { label: string; desc: string; color: string }> = {
-  sin_incluido: { label: 'Sin patrón ni combustible', desc: 'El cliente navega por su cuenta (requiere licencia)', color: 'text-gray-300' },
+  sin_incluido: { label: 'Sin patrón ni combustible', desc: 'El cliente navega por su cuenta (requiere licencia)', color: 'text-gray-700' },
   patron_fuel:  { label: 'Patrón + Combustible incluido', desc: 'Nuestro capitán y el fuel están incluidos en el precio', color: 'text-[#C9A84C]' },
   es_vedra:     { label: 'Es Vedrà Full Day', desc: 'Ruta guiada a Es Vedrà, Atlantis y Mambos (solo con capitán)', color: 'text-blue-400' },
   formentera:   { label: 'Formentera Full Day', desc: 'Ruta a Formentera o Cala Jondal (solo con capitán)', color: 'text-purple-400' },
@@ -355,9 +355,9 @@ export default function NuevaReservaPage() {
           <div key={s.n} className="flex items-center flex-1 last:flex-none">
             <button
               onClick={() => step > s.n && setStep(s.n as Step)}
-              className={`flex items-center gap-2 text-xs font-medium transition-colors ${step === s.n ? 'text-[#C9A84C]' : step > s.n ? 'text-gray-400 hover:text-gray-900 cursor-pointer' : 'text-gray-400 cursor-default'}`}
+              className={`flex items-center gap-2 text-xs font-medium transition-colors ${step === s.n ? 'text-[#C9A84C]' : step > s.n ? 'text-gray-700 hover:text-gray-900 cursor-pointer' : 'text-gray-700 cursor-default'}`}
             >
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${step === s.n ? 'bg-[#C9A84C] border-[#C9A84C] text-black' : step > s.n ? 'bg-gray-200 border-gray-200 text-gray-300' : 'bg-transparent border-gray-200 text-gray-400'}`}>
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${step === s.n ? 'bg-[#C9A84C] border-[#C9A84C] text-black' : step > s.n ? 'bg-gray-200 border-gray-200 text-gray-700' : 'bg-transparent border-gray-200 text-gray-700'}`}>
                 {step > s.n ? <CheckCircle size={14} /> : s.n}
               </div>
               <span className="hidden sm:block">{s.label}</span>
@@ -375,11 +375,11 @@ export default function NuevaReservaPage() {
             <h2 className="text-gray-900 font-semibold text-base">¿Quién hace la reserva?</h2>
             <div className="flex gap-2">
               <button onClick={() => { setNewClient(false); setSelectedClient(null) }}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${!newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${!newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                 Cliente existente
               </button>
               <button onClick={() => { setNewClient(true); setSelectedClient(null) }}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                 <Plus size={14} className="inline mr-1" /> Nuevo cliente
               </button>
             </div>
@@ -387,7 +387,7 @@ export default function NuevaReservaPage() {
             {!newClient ? (
               <div className="space-y-3">
                 <div className="relative">
-                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-700" />
                   <input value={clientSearch} onChange={e => setClientSearch(e.target.value)}
                     placeholder="Buscar por nombre, email o teléfono..."
                     className="w-full pl-9 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
@@ -404,12 +404,12 @@ export default function NuevaReservaPage() {
                           <p className="text-gray-900 text-sm font-medium">{c.first_name} {c.last_name}</p>
                           {c.is_vip && <Star size={11} className="text-[#C9A84C] fill-[#C9A84C]" />}
                         </div>
-                        <p className="text-gray-400 text-xs truncate">{c.email ?? ''}{c.phone ? ` · ${c.phone}` : ''}</p>
+                        <p className="text-gray-700 text-xs truncate">{c.email ?? ''}{c.phone ? ` · ${c.phone}` : ''}</p>
                       </div>
                       {selectedClient?.id === c.id && <CheckCircle size={16} className="text-[#C9A84C] ml-auto flex-shrink-0" />}
                     </button>
                   ))}
-                  {filteredClients.length === 0 && <p className="text-gray-400 text-sm text-center py-6">No se encontraron clientes</p>}
+                  {filteredClients.length === 0 && <p className="text-gray-700 text-sm text-center py-6">No se encontraron clientes</p>}
                 </div>
               </div>
             ) : (
@@ -423,7 +423,7 @@ export default function NuevaReservaPage() {
                   { k: 'boat_license',label: 'Licencia navegación', ph: 'PER-2A, PNB...' },
                 ].map(f => (
                   <div key={f.k}>
-                    <label className="text-gray-400 text-xs mb-1.5 block">{f.label}</label>
+                    <label className="text-gray-700 text-xs mb-1.5 block">{f.label}</label>
                     <input value={(clientForm as any)[f.k]} onChange={e => setClientForm(p => ({ ...p, [f.k]: e.target.value }))}
                       placeholder={f.ph}
                       className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
@@ -432,7 +432,7 @@ export default function NuevaReservaPage() {
                 <div className="col-span-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" checked={clientForm.is_vip} onChange={e => setClientForm(p => ({ ...p, is_vip: e.target.checked }))} className="w-4 h-4 accent-[#C9A84C]" />
-                    <span className="text-gray-400 text-sm flex items-center gap-1.5"><Star size={13} className="text-[#C9A84C]" /> Marcar como VIP</span>
+                    <span className="text-gray-700 text-sm flex items-center gap-1.5"><Star size={13} className="text-[#C9A84C]" /> Marcar como VIP</span>
                   </label>
                 </div>
               </div>
@@ -454,11 +454,11 @@ export default function NuevaReservaPage() {
                   <div className="flex items-start justify-between mb-1">
                     <div>
                       <p className="text-gray-900 font-semibold text-sm">{boat.name}</p>
-                      <p className="text-gray-400 text-xs">{boat.model ?? boat.type}</p>
+                      <p className="text-gray-700 text-xs">{boat.model ?? boat.type}</p>
                     </div>
                     {selectedBoat?.id === boat.id && <CheckCircle size={16} className="text-[#C9A84C] flex-shrink-0" />}
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-gray-400 mt-1">
+                  <div className="flex items-center gap-3 text-xs text-gray-700 mt-1">
                     <span>{boat.capacity} pax</span>
                     {boat.length_meters && <span>{boat.length_meters}m</span>}
                     {boat.captain_required && <span className="text-[#C9A84C]">Solo con capitán</span>}
@@ -468,11 +468,11 @@ export default function NuevaReservaPage() {
             </div>
             {selectedBoat && !selectedBoat.captain_required && (
               <div>
-                <p className="text-gray-400 text-xs mb-2">Tipo de alquiler</p>
+                <p className="text-gray-700 text-xs mb-2">Tipo de alquiler</p>
                 <div className="flex gap-2">
                   {(['with_captain', 'bareboat'] as const).map(t => (
                     <button key={t} onClick={() => setRentalType(t)}
-                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${rentalType === t ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${rentalType === t ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                       {t === 'with_captain' ? '🧑‍✈️ Con capitán' : '🎯 Sin capitán'}
                     </button>
                   ))}
@@ -482,7 +482,7 @@ export default function NuevaReservaPage() {
             {/* Selector de capitán — visible cuando se va con capitán */}
             {rentalType === 'with_captain' && staffUsers.length > 0 && (
               <div>
-                <p className="text-gray-400 text-xs mb-2">Capitán asignado</p>
+                <p className="text-gray-700 text-xs mb-2">Capitán asignado</p>
                 <select
                   value={captainId}
                   onChange={e => setCaptainId(e.target.value)}
@@ -505,25 +505,25 @@ export default function NuevaReservaPage() {
             {/* Fechas primero para calcular temporada */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Fecha salida *</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Fecha salida *</label>
                 <input type="date" value={startDate}
                   onChange={e => { setStartDate(e.target.value); if (!endDate) setEndDate(e.target.value) }}
                   min={new Date().toISOString().split('T')[0]}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Fecha regreso</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Fecha regreso</label>
                 <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
                   min={startDate}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block flex items-center gap-1"><Clock size={11} /> Hora salida</label>
+                <label className="text-gray-700 text-xs mb-1.5 block flex items-center gap-1"><Clock size={11} /> Hora salida</label>
                 <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block flex items-center gap-1"><Clock size={11} /> Hora regreso</label>
+                <label className="text-gray-700 text-xs mb-1.5 block flex items-center gap-1"><Clock size={11} /> Hora regreso</label>
                 <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
@@ -532,7 +532,7 @@ export default function NuevaReservaPage() {
             {/* Pax + puerto */}
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Adultos</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Adultos</label>
                 <div className="flex items-center gap-2">
                   <button onClick={() => setAdults(Math.max(1, adults - 1))} className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-gray-900 hover:border-[#C9A84C]/40">−</button>
                   <span className="text-gray-900 font-semibold w-5 text-center">{adults}</span>
@@ -540,7 +540,7 @@ export default function NuevaReservaPage() {
                 </div>
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Niños</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Niños</label>
                 <div className="flex items-center gap-2">
                   <button onClick={() => setChildren(Math.max(0, children - 1))} className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-gray-900 hover:border-[#C9A84C]/40">−</button>
                   <span className="text-gray-900 font-semibold w-5 text-center">{children}</span>
@@ -548,7 +548,7 @@ export default function NuevaReservaPage() {
                 </div>
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Origen</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Origen</label>
                 <select value={source} onChange={e => setSource(e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
                   {SOURCES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
@@ -558,12 +558,12 @@ export default function NuevaReservaPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Puerto de salida</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Puerto de salida</label>
                 <input value={departurePort} onChange={e => setDeparturePort(e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Ruta / destino</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Ruta / destino</label>
                 <input value={routeNotes} onChange={e => setRouteNotes(e.target.value)}
                   placeholder="Formentera, Es Vedrà, Norte..."
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
@@ -574,7 +574,7 @@ export default function NuevaReservaPage() {
             {startDate && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-400 text-xs font-medium">Tarifa contratada</p>
+                  <p className="text-gray-700 text-xs font-medium">Tarifa contratada</p>
                   {season && <span className="text-[#C9A84C] text-xs bg-[#C9A84C]/10 px-2 py-0.5 rounded-full">Temporada: {SEASON_LABELS[season] ?? season}</span>}
                 </div>
 
@@ -594,7 +594,7 @@ export default function NuevaReservaPage() {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className={`text-sm font-medium ${info.color}`}>{info.label}</p>
-                            <p className="text-gray-400 text-xs mt-0.5">{info.desc}</p>
+                            <p className="text-gray-700 text-xs mt-0.5">{info.desc}</p>
                           </div>
                           {selectedTariff === t && <CheckCircle size={15} className="text-[#C9A84C] flex-shrink-0" />}
                         </div>
@@ -606,7 +606,7 @@ export default function NuevaReservaPage() {
                 {/* Duración */}
                 {availableDurations.length > 0 && (
                   <div>
-                    <p className="text-gray-400 text-xs mb-2">Duración</p>
+                    <p className="text-gray-700 text-xs mb-2">Duración</p>
                     <div className="flex gap-2">
                       {availableDurations.map(d => {
                         const row = allPricing.find(r =>
@@ -617,7 +617,7 @@ export default function NuevaReservaPage() {
                         )
                         return (
                           <button key={d} onClick={() => setSelectedDuration(d)}
-                            className={`flex-1 py-2.5 px-3 rounded-lg text-sm border transition-all ${selectedDuration === d ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                            className={`flex-1 py-2.5 px-3 rounded-lg text-sm border transition-all ${selectedDuration === d ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                             <span className="font-medium">{DURATION_INFO[d]?.label ?? d}</span>
                             {row && <span className="text-xs ml-2 opacity-70">({row.hours})</span>}
                             {row && <span className="block text-sm font-bold mt-0.5">{Number(row.price).toLocaleString('es-ES')}€</span>}
@@ -632,8 +632,8 @@ export default function NuevaReservaPage() {
                 <label className="flex items-center gap-2 cursor-pointer p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-[#C9A84C]/20 transition-colors">
                   <input type="checkbox" checked={earlyBird} onChange={e => setEarlyBird(e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
                   <div>
-                    <p className="text-gray-300 text-sm font-medium">Especial madrugadores <span className="text-green-400">−10%</span></p>
-                    <p className="text-gray-400 text-xs">Consultar disponibilidad y horario</p>
+                    <p className="text-gray-700 text-sm font-medium">Especial madrugadores <span className="text-green-400">−10%</span></p>
+                    <p className="text-gray-700 text-xs">Consultar disponibilidad y horario</p>
                   </div>
                 </label>
 
@@ -641,23 +641,23 @@ export default function NuevaReservaPage() {
                 {selectedPricingRow && (
                   <div className="bg-gray-100 rounded-lg px-4 py-3 space-y-1.5">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Precio tarifa</span>
-                      <span className={earlyBird ? 'line-through text-gray-400' : 'text-gray-900 font-semibold'}>{Number(selectedPricingRow.price).toLocaleString('es-ES')}€</span>
+                      <span className="text-gray-700">Precio tarifa</span>
+                      <span className={earlyBird ? 'line-through text-gray-700' : 'text-gray-900 font-semibold'}>{Number(selectedPricingRow.price).toLocaleString('es-ES')}€</span>
                     </div>
                     {earlyBird && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Con descuento 10%</span>
+                        <span className="text-gray-700">Con descuento 10%</span>
                         <span className="text-green-400 font-semibold">{basePrice.toLocaleString('es-ES')}€</span>
                       </div>
                     )}
                     {fuelExtra > 0 && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Combustible extra</span>
+                        <span className="text-gray-700">Combustible extra</span>
                         <span className="text-gray-900">+{fuelExtra}€</span>
                       </div>
                     )}
                     <div className="border-t border-gray-200 pt-1.5 flex justify-between font-bold">
-                      <span className="text-gray-300">Subtotal</span>
+                      <span className="text-gray-700">Subtotal</span>
                       <span className="text-[#C9A84C]">{(basePrice + fuelExtra).toLocaleString('es-ES')}€</span>
                     </div>
                   </div>
@@ -666,7 +666,7 @@ export default function NuevaReservaPage() {
             )}
 
             <div>
-              <label className="text-gray-400 text-xs mb-1.5 block">Notas internas</label>
+              <label className="text-gray-700 text-xs mb-1.5 block">Notas internas</label>
               <textarea value={internalNotes} onChange={e => setInternalNotes(e.target.value)} rows={2}
                 placeholder="Solo visible para el equipo..."
                 className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
@@ -707,12 +707,12 @@ export default function NuevaReservaPage() {
               <div className="bg-gray-100 rounded-lg p-3 space-y-1.5">
                 {selectedExtras.map(e => (
                   <div key={e.id} className="flex justify-between text-sm">
-                    <span className="text-gray-400">{e.name} × {e.quantity}</span>
+                    <span className="text-gray-700">{e.name} × {e.quantity}</span>
                     <span className="text-gray-900">{formatPrice(e.price * e.quantity)}</span>
                   </div>
                 ))}
                 <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-semibold">
-                  <span className="text-gray-300">Total extras</span>
+                  <span className="text-gray-700">Total extras</span>
                   <span className="text-[#C9A84C]">{formatPrice(extrasTotal)}</span>
                 </div>
               </div>
@@ -728,18 +728,18 @@ export default function NuevaReservaPage() {
 
               {/* Cliente */}
               <div className="bg-gray-100 rounded-lg p-4">
-                <p className="text-gray-400 text-xs mb-2">CLIENTE</p>
+                <p className="text-gray-700 text-xs mb-2">CLIENTE</p>
                 {selectedClient
-                  ? <><p className="text-gray-900 font-medium">{selectedClient.first_name} {selectedClient.last_name}</p><p className="text-gray-400 text-xs">{selectedClient.email}{selectedClient.phone ? ` · ${selectedClient.phone}` : ''}</p></>
-                  : <><p className="text-gray-900 font-medium">{clientForm.first_name} {clientForm.last_name} <span className="text-[#C9A84C] text-xs">(nuevo)</span></p><p className="text-gray-400 text-xs">{clientForm.email}</p></>
+                  ? <><p className="text-gray-900 font-medium">{selectedClient.first_name} {selectedClient.last_name}</p><p className="text-gray-700 text-xs">{selectedClient.email}{selectedClient.phone ? ` · ${selectedClient.phone}` : ''}</p></>
+                  : <><p className="text-gray-900 font-medium">{clientForm.first_name} {clientForm.last_name} <span className="text-[#C9A84C] text-xs">(nuevo)</span></p><p className="text-gray-700 text-xs">{clientForm.email}</p></>
                 }
               </div>
 
               {/* Barco + tarifa */}
               <div className="bg-gray-100 rounded-lg p-4">
-                <p className="text-gray-400 text-xs mb-2">BARCO Y TARIFA</p>
+                <p className="text-gray-700 text-xs mb-2">BARCO Y TARIFA</p>
                 <p className="text-gray-900 font-medium">{selectedBoat?.name}</p>
-                <p className="text-gray-400 text-xs">
+                <p className="text-gray-700 text-xs">
                   {TARIFF_INFO[selectedTariff]?.label} · {DURATION_INFO[selectedDuration]?.label}
                   {selectedPricingRow?.hours ? ` (${selectedPricingRow.hours})` : ''}
                   {earlyBird ? ' · Madrugadores −10%' : ''}
@@ -749,40 +749,40 @@ export default function NuevaReservaPage() {
 
               {/* Fecha */}
               <div className="bg-gray-100 rounded-lg p-4">
-                <p className="text-gray-400 text-xs mb-2">FECHA</p>
+                <p className="text-gray-700 text-xs mb-2">FECHA</p>
                 <p className="text-gray-900 font-medium">
                   {startDate ? new Date(startDate).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }) : '—'}
                   {endDate && endDate !== startDate && ` → ${new Date(endDate).toLocaleDateString('es-ES', { day: '2-digit', month: 'long' })}`}
                 </p>
-                <p className="text-gray-400 text-xs">{startTime} → {endTime} · {adults} adultos{children > 0 ? ` · ${children} niños` : ''} · {departurePort}</p>
-                {routeNotes && <p className="text-gray-400 text-xs">Ruta: {routeNotes}</p>}
+                <p className="text-gray-700 text-xs">{startTime} → {endTime} · {adults} adultos{children > 0 ? ` · ${children} niños` : ''} · {departurePort}</p>
+                {routeNotes && <p className="text-gray-700 text-xs">Ruta: {routeNotes}</p>}
               </div>
 
               {/* Desglose precio */}
               <div className="bg-gray-100 rounded-lg p-4 space-y-2">
-                <p className="text-gray-400 text-xs mb-1">DESGLOSE DE PRECIO</p>
+                <p className="text-gray-700 text-xs mb-1">DESGLOSE DE PRECIO</p>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Tarifa base{earlyBird ? ' (−10%)' : ''}</span>
+                  <span className="text-gray-700">Tarifa base{earlyBird ? ' (−10%)' : ''}</span>
                   <span className="text-gray-900">{formatPrice(basePrice)}</span>
                 </div>
                 {fuelExtra > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Combustible extra</span>
+                    <span className="text-gray-700">Combustible extra</span>
                     <span className="text-gray-900">+{formatPrice(fuelExtra)}</span>
                   </div>
                 )}
                 {selectedExtras.map(e => (
                   <div key={e.id} className="flex justify-between text-sm">
-                    <span className="text-gray-400">{e.name} × {e.quantity}</span>
+                    <span className="text-gray-700">{e.name} × {e.quantity}</span>
                     <span className="text-gray-900">{formatPrice(e.price * e.quantity)}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Descuento adicional</span>
+                  <span className="text-gray-700">Descuento adicional</span>
                   <div className="flex items-center gap-1">
                     <input type="number" value={discount} onChange={e => setDiscount(Number(e.target.value))} min={0}
                       className="w-20 px-2 py-1 bg-gray-200 border border-[#3A3A3A] rounded text-gray-900 text-right text-sm focus:outline-none" />
-                    <span className="text-gray-400 text-xs">€</span>
+                    <span className="text-gray-700 text-xs">€</span>
                   </div>
                 </div>
                 <div className="border-t border-gray-200 pt-2 flex justify-between font-bold text-base">
@@ -793,11 +793,11 @@ export default function NuevaReservaPage() {
 
               {/* Método de pago + fianza */}
               <div className="bg-gray-100 rounded-lg p-4 space-y-4">
-                <p className="text-gray-400 text-xs">PAGO Y FIANZA</p>
+                <p className="text-gray-700 text-xs">PAGO Y FIANZA</p>
 
                 {/* Pago total */}
                 <div className="space-y-2">
-                  <label className="text-gray-400 text-xs block">Método de pago del total</label>
+                  <label className="text-gray-700 text-xs block">Método de pago del total</label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       { value: 'cash',     label: '💵 Efectivo' },
@@ -807,7 +807,7 @@ export default function NuevaReservaPage() {
                       { value: 'link',     label: '🔗 Link de pago' },
                     ].map(m => (
                       <button key={m.value} onClick={() => setPaymentMethod(m.value)}
-                        className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                        className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                         {m.label}
                       </button>
                     ))}
@@ -823,18 +823,18 @@ export default function NuevaReservaPage() {
                 <div className="border-t border-gray-200 pt-3 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-300 text-sm font-medium">Fianza</p>
-                      <p className="text-gray-400 text-xs">{rentalType === 'bareboat' ? 'Requerida (sin patrón)' : 'Opcional'}</p>
+                      <p className="text-gray-700 text-sm font-medium">Fianza</p>
+                      <p className="text-gray-700 text-xs">{rentalType === 'bareboat' ? 'Requerida (sin patrón)' : 'Opcional'}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <input type="number" value={depositAmount} onChange={e => setDepositAmount(Number(e.target.value))} min={0}
                         className="w-24 px-3 py-2 bg-gray-200 border border-[#3A3A3A] rounded-lg text-gray-900 text-right text-sm font-semibold focus:outline-none focus:border-[#C9A84C]/50" />
-                      <span className="text-gray-400 text-sm">€</span>
+                      <span className="text-gray-700 text-sm">€</span>
                     </div>
                   </div>
                   {depositAmount > 0 && (
                     <div className="space-y-2">
-                      <label className="text-gray-400 text-xs block">Método de cobro de la fianza</label>
+                      <label className="text-gray-700 text-xs block">Método de cobro de la fianza</label>
                       <div className="grid grid-cols-2 gap-2">
                         {[
                           { value: 'cash',     label: '💵 Efectivo' },
@@ -844,7 +844,7 @@ export default function NuevaReservaPage() {
                           { value: 'link',     label: '🔗 Link de pago' },
                         ].map(m => (
                           <button key={m.value} onClick={() => setDepositMethod(m.value)}
-                            className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${depositMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                            className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${depositMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                             {m.label}
                           </button>
                         ))}
@@ -869,7 +869,7 @@ export default function NuevaReservaPage() {
         {/* Navegación */}
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <button onClick={() => step > 1 ? setStep((step - 1) as Step) : router.back()}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/30 rounded-lg text-sm transition-all">
+            className="flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-700 hover:text-gray-900 hover:border-[#C9A84C]/30 rounded-lg text-sm transition-all">
             <ChevronLeft size={16} /> {step === 1 ? 'Cancelar' : 'Atrás'}
           </button>
           {step < 5 ? (

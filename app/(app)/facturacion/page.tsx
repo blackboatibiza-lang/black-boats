@@ -79,10 +79,10 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
           <div className="flex items-center gap-3">
             <FileText size={15} className="text-[#C9A84C]" />
             <span className="text-gray-900 font-semibold text-sm">Editor de factura</span>
-            <span className="text-gray-400 text-xs">· todos los campos son editables</span>
+            <span className="text-gray-700 text-xs">· todos los campos son editables</span>
           </div>
           <div className="flex items-center gap-3">
-            <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer select-none">
+            <label className="flex items-center gap-2 text-xs text-gray-700 cursor-pointer select-none">
               <input type="checkbox" checked={applyTax} onChange={e => setApplyTax(e.target.checked)} className="w-3.5 h-3.5 accent-[#C9A84C]" />
               IVA 21%
             </label>
@@ -90,7 +90,7 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
               className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-200 hover:bg-[#3A3A3A] text-gray-900 text-xs rounded-lg transition-colors">
               <Printer size={13} /> Imprimir / PDF
             </button>
-            <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-900">
+            <button onClick={onClose} className="p-1.5 text-gray-700 hover:text-gray-900">
               <X size={18} />
             </button>
           </div>
@@ -114,36 +114,36 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
                   <input value={emisorNombre} onChange={e => setEmisorNombre(e.target.value)}
                     className="bg-transparent text-gray-900 font-semibold text-sm focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" />
                   <input value={emisorNif} onChange={e => setEmisorNif(e.target.value)}
-                    className="bg-transparent text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" placeholder="NIF/CIF" />
+                    className="bg-transparent text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" placeholder="NIF/CIF" />
                   <input value={emisorDir} onChange={e => setEmisorDir(e.target.value)}
-                    className="bg-transparent text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" />
+                    className="bg-transparent text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" />
                   <input value={emisorTel} onChange={e => setEmisorTel(e.target.value)}
-                    className="bg-transparent text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-44" />
+                    className="bg-transparent text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-44" />
                   <input value={emisorEmail} onChange={e => setEmisorEmail(e.target.value)}
-                    className="bg-transparent text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" />
+                    className="bg-transparent text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-full" />
                 </div>
               </div>
               <div className="text-right">
                 <p className="text-[#C9A84C] text-3xl font-bold tracking-tight mb-3">FACTURA</p>
                 <div className="space-y-1">
                   <div className="flex items-center justify-end gap-3 text-xs">
-                    <span className="text-gray-400">Nº</span>
+                    <span className="text-gray-700">Nº</span>
                     <input value={invoiceNum} onChange={e => setInvoiceNum(e.target.value)}
                       className="bg-transparent text-gray-900 font-mono font-bold text-right focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-52" />
                   </div>
                   <div className="flex items-center justify-end gap-3 text-xs">
-                    <span className="text-gray-400">Fecha</span>
+                    <span className="text-gray-700">Fecha</span>
                     <input type="date" value={invoiceDate} onChange={e => setInvoiceDate(e.target.value)}
                       className="bg-transparent text-gray-900 text-right focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-36" />
                   </div>
                   <div className="flex items-center justify-end gap-3 text-xs">
-                    <span className="text-gray-400">Vence</span>
+                    <span className="text-gray-700">Vence</span>
                     <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)}
                       className="bg-transparent text-gray-900 text-right focus:outline-none border-b border-transparent hover:border-[#C9A84C]/20 focus:border-[#C9A84C]/50 w-36" />
                   </div>
                   {booking?.booking_number && (
                     <div className="flex items-center justify-end gap-3 text-xs">
-                      <span className="text-gray-400">Reserva</span>
+                      <span className="text-gray-700">Reserva</span>
                       <span className="text-[#C9A84C] font-mono">{booking.booking_number}</span>
                     </div>
                   )}
@@ -156,34 +156,34 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
           <div className="px-8 py-5 bg-gray-50 border-b border-gray-200">
             <div className="grid grid-cols-2 gap-8">
               <div>
-                <p className="text-gray-400 text-[10px] uppercase tracking-wider font-semibold mb-2">Facturado a</p>
+                <p className="text-gray-700 text-[10px] uppercase tracking-wider font-semibold mb-2">Facturado a</p>
                 <div className="space-y-1">
                   <input value={clientNombre} onChange={e => setClientNombre(e.target.value)}
                     placeholder="Nombre / Empresa"
                     className="text-gray-900 font-semibold text-sm focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
                   <input value={clientNif} onChange={e => setClientNif(e.target.value)}
                     placeholder="NIF / CIF / Pasaporte"
-                    className="text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
+                    className="text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
                   <input value={clientDir} onChange={e => setClientDir(e.target.value)}
                     placeholder="Dirección"
-                    className="text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
+                    className="text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
                   <input value={clientEmail} onChange={e => setClientEmail(e.target.value)}
                     placeholder="Email"
-                    className="text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
+                    className="text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
                 </div>
               </div>
               {booking?.boat && (
                 <div className="text-right">
-                  <p className="text-gray-400 text-[10px] uppercase tracking-wider font-semibold mb-2">Servicio prestado</p>
-                  <p className="text-gray-300 text-sm font-medium">{booking.boat.name}</p>
-                  <p className="text-gray-400 text-xs">{booking.rental_type === 'with_captain' ? 'Con capitán' : 'Sin capitán'}</p>
+                  <p className="text-gray-700 text-[10px] uppercase tracking-wider font-semibold mb-2">Servicio prestado</p>
+                  <p className="text-gray-700 text-sm font-medium">{booking.boat.name}</p>
+                  <p className="text-gray-700 text-xs">{booking.rental_type === 'with_captain' ? 'Con capitán' : 'Sin capitán'}</p>
                   {booking.start_date && (
-                    <p className="text-gray-400 text-xs mt-1">
+                    <p className="text-gray-700 text-xs mt-1">
                       {new Date(booking.start_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}
                       {booking.start_date !== booking.end_date && ` — ${new Date(booking.end_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long' })}`}
                     </p>
                   )}
-                  {booking.departure_port && <p className="text-gray-400 text-xs">{booking.departure_port}</p>}
+                  {booking.departure_port && <p className="text-gray-700 text-xs">{booking.departure_port}</p>}
                 </div>
               )}
             </div>
@@ -194,10 +194,10 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-gray-900">
-                  <th className="text-left pb-2 text-gray-300 text-xs uppercase tracking-wider font-semibold">Descripción</th>
-                  <th className="text-center pb-2 text-gray-300 text-xs uppercase tracking-wider font-semibold w-16">Uds.</th>
-                  <th className="text-right pb-2 text-gray-300 text-xs uppercase tracking-wider font-semibold w-28">Precio unit.</th>
-                  <th className="text-right pb-2 text-gray-300 text-xs uppercase tracking-wider font-semibold w-28">Total</th>
+                  <th className="text-left pb-2 text-gray-700 text-xs uppercase tracking-wider font-semibold">Descripción</th>
+                  <th className="text-center pb-2 text-gray-700 text-xs uppercase tracking-wider font-semibold w-16">Uds.</th>
+                  <th className="text-right pb-2 text-gray-700 text-xs uppercase tracking-wider font-semibold w-28">Precio unit.</th>
+                  <th className="text-right pb-2 text-gray-700 text-xs uppercase tracking-wider font-semibold w-28">Total</th>
                   <th className="w-7" />
                 </tr>
               </thead>
@@ -210,13 +210,13 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
                     </td>
                     <td className="py-2.5 text-center">
                       <input type="number" value={line.qty} onChange={e => updateLine(line.id, 'qty', Number(e.target.value))}
-                        className="text-gray-300 text-sm text-center focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-12 bg-transparent" />
+                        className="text-gray-700 text-sm text-center focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-12 bg-transparent" />
                     </td>
                     <td className="py-2.5 text-right">
                       <span className="inline-flex items-center gap-0.5">
                         <input type="number" value={line.unitPrice} onChange={e => updateLine(line.id, 'unitPrice', Number(e.target.value))}
-                          className="text-gray-300 text-sm text-right focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-20 bg-transparent" />
-                        <span className="text-gray-400 text-xs">€</span>
+                          className="text-gray-700 text-sm text-right focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-20 bg-transparent" />
+                        <span className="text-gray-700 text-xs">€</span>
                       </span>
                     </td>
                     <td className="py-2.5 text-right">
@@ -235,19 +235,19 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
               </tbody>
             </table>
             <button onClick={() => setLines(prev => [...prev, { id: uid(), description: '', qty: 1, unitPrice: 0 }])}
-              className="mt-2 flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors">
+              className="mt-2 flex items-center gap-1.5 text-xs text-gray-700 hover:text-gray-700 transition-colors">
               <Plus size={12} /> Añadir línea
             </button>
 
             {/* Totales */}
             <div className="mt-6 flex justify-end">
               <div className="w-64 space-y-2 text-sm">
-                <div className="flex justify-between text-gray-400">
+                <div className="flex justify-between text-gray-700">
                   <span>Subtotal</span>
                   <span className="font-medium text-gray-900">{f2(subtotal)}€</span>
                 </div>
                 {applyTax && (
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between text-gray-700">
                     <span>IVA (21%)</span>
                     <span>{f2(tax)}€</span>
                   </div>
@@ -264,22 +264,22 @@ function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void 
           <div className="px-8 py-5 bg-gray-50 border-t border-gray-200">
             <div className="grid grid-cols-2 gap-8">
               <div>
-                <p className="text-gray-400 text-[10px] uppercase tracking-wider font-semibold mb-2">Datos bancarios</p>
+                <p className="text-gray-700 text-[10px] uppercase tracking-wider font-semibold mb-2">Datos bancarios</p>
                 <input value={emisorIban} onChange={e => setEmisorIban(e.target.value)}
-                  className="text-gray-300 text-xs font-mono focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
-                <p className="text-gray-400 text-[10px] mt-1">Concepto: {invoiceNum}</p>
+                  className="text-gray-700 text-xs font-mono focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent" />
+                <p className="text-gray-700 text-[10px] mt-1">Concepto: {invoiceNum}</p>
               </div>
               <div>
-                <p className="text-gray-400 text-[10px] uppercase tracking-wider font-semibold mb-2">Notas</p>
+                <p className="text-gray-700 text-[10px] uppercase tracking-wider font-semibold mb-2">Notas</p>
                 <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={2}
-                  className="text-gray-400 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent resize-none" />
+                  className="text-gray-700 text-xs focus:outline-none border-b border-transparent hover:border-gray-300 focus:border-gray-500 w-full bg-transparent resize-none" />
               </div>
             </div>
           </div>
 
           {/* Footer */}
           <div className="px-8 py-3 bg-white text-center">
-            <p className="text-gray-400 text-[10px]">
+            <p className="text-gray-700 text-[10px]">
               {emisorNombre} · {emisorNif} · {emisorDir}
             </p>
           </div>
@@ -327,7 +327,7 @@ export default function FacturacionPage() {
   const totalCobrado   = payments.reduce((s, p) => s + Number(p.amount ?? 0), 0)
   const pendiente      = bookings.filter(b => b.payment_status === 'pending').length
 
-  const payColor: Record<string, string> = { pending: 'text-red-400', partial: 'text-yellow-400', paid: 'text-green-400', refunded: 'text-gray-400' }
+  const payColor: Record<string, string> = { pending: 'text-red-400', partial: 'text-yellow-400', paid: 'text-green-400', refunded: 'text-gray-700' }
   const payLabel: Record<string, string> = { pending: 'Sin pagar', partial: 'Parcial', paid: 'Pagado', refunded: 'Devuelto' }
   const methodLabels: Record<string, string> = { card: 'Tarjeta', transfer: 'Transferencia', cash: 'Efectivo', bizum: 'Bizum', link: 'Link de pago' }
 
@@ -353,7 +353,7 @@ export default function FacturacionPage() {
               <div className={`w-8 h-8 rounded-lg ${k.bg} flex items-center justify-center`}>
                 <k.icon size={16} className={k.color} />
               </div>
-              <span className="text-gray-400 text-xs">{k.label}</span>
+              <span className="text-gray-700 text-xs">{k.label}</span>
             </div>
             <p className="text-gray-900 text-2xl font-bold">{k.value}</p>
           </div>
@@ -363,11 +363,11 @@ export default function FacturacionPage() {
       {/* Tabs */}
       <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl p-1 w-fit">
         <button onClick={() => setTab('facturas')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === 'facturas' ? 'bg-[#C9A84C] text-black' : 'text-gray-400 hover:text-gray-900'}`}>
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === 'facturas' ? 'bg-[#C9A84C] text-black' : 'text-gray-700 hover:text-gray-900'}`}>
           <FileText size={14} /> Emitir factura
         </button>
         <button onClick={() => setTab('pagos')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === 'pagos' ? 'bg-[#C9A84C] text-black' : 'text-gray-400 hover:text-gray-900'}`}>
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === 'pagos' ? 'bg-[#C9A84C] text-black' : 'text-gray-700 hover:text-gray-900'}`}>
           <Receipt size={14} /> Historial de pagos
         </button>
       </div>
@@ -378,7 +378,7 @@ export default function FacturacionPage() {
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
             <p className="text-gray-900 font-semibold text-sm">Selecciona una reserva para generar su factura</p>
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-700" />
               <input value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Buscar..."
                 className="pl-8 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50 w-44" />
@@ -388,12 +388,12 @@ export default function FacturacionPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Reserva</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Cliente</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Barco</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Fecha</th>
-                  <th className="text-right px-5 py-3 text-gray-400 font-medium text-xs">Total</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Pago</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Reserva</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Cliente</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Barco</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Fecha</th>
+                  <th className="text-right px-5 py-3 text-gray-700 font-medium text-xs">Total</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Pago</th>
                   <th className="px-5 py-3" />
                 </tr>
               </thead>
@@ -413,15 +413,15 @@ export default function FacturacionPage() {
                           <span className="text-gray-900 text-sm">{clientName}</span>
                         </div>
                       </td>
-                      <td className="px-5 py-3.5 text-gray-300 text-sm">{b.boat?.name ?? '—'}</td>
-                      <td className="px-5 py-3.5 text-gray-400 text-sm">
+                      <td className="px-5 py-3.5 text-gray-700 text-sm">{b.boat?.name ?? '—'}</td>
+                      <td className="px-5 py-3.5 text-gray-700 text-sm">
                         {b.start_date ? new Date(b.start_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}
                       </td>
                       <td className="px-5 py-3.5 text-right">
                         <span className="text-gray-900 font-semibold">{Number(b.total_price).toLocaleString('es-ES')}€</span>
                       </td>
                       <td className="px-5 py-3.5">
-                        <span className={`text-xs font-medium ${payColor[b.payment_status] ?? 'text-gray-400'}`}>
+                        <span className={`text-xs font-medium ${payColor[b.payment_status] ?? 'text-gray-700'}`}>
                           {payLabel[b.payment_status] ?? b.payment_status}
                         </span>
                       </td>
@@ -447,17 +447,17 @@ export default function FacturacionPage() {
             <h3 className="text-gray-900 font-semibold text-sm">Historial de pagos</h3>
           </div>
           {payments.length === 0 ? (
-            <div className="text-center py-16 text-gray-400">No hay pagos registrados</div>
+            <div className="text-center py-16 text-gray-700">No hay pagos registrados</div>
           ) : (
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Reserva</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Cliente</th>
-                  <th className="text-right px-5 py-3 text-gray-400 font-medium text-xs">Importe</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Método</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Fecha</th>
-                  <th className="text-left px-5 py-3 text-gray-400 font-medium text-xs">Tipo</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Reserva</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Cliente</th>
+                  <th className="text-right px-5 py-3 text-gray-700 font-medium text-xs">Importe</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Método</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Fecha</th>
+                  <th className="text-left px-5 py-3 text-gray-700 font-medium text-xs">Tipo</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -468,8 +468,8 @@ export default function FacturacionPage() {
                       <td className="px-5 py-3.5"><span className="text-[#C9A84C] font-mono text-xs">{p.booking?.booking_number ?? '—'}</span></td>
                       <td className="px-5 py-3.5 text-gray-900">{cname}</td>
                       <td className="px-5 py-3.5 text-right"><span className="text-gray-900 font-semibold">{Number(p.amount).toLocaleString('es-ES')}€</span></td>
-                      <td className="px-5 py-3.5 text-gray-400">{methodLabels[p.method] ?? p.method ?? '—'}</td>
-                      <td className="px-5 py-3.5 text-gray-400">{new Date(p.payment_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                      <td className="px-5 py-3.5 text-gray-700">{methodLabels[p.method] ?? p.method ?? '—'}</td>
+                      <td className="px-5 py-3.5 text-gray-700">{new Date(p.payment_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
                       <td className="px-5 py-3.5">
                         <span className={`text-xs px-2 py-0.5 rounded-full ${p.is_deposit ? 'text-blue-400 bg-blue-400/10' : 'text-green-400 bg-green-400/10'}`}>
                           {p.is_deposit ? 'Depósito' : 'Total'}

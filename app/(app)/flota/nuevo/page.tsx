@@ -95,12 +95,12 @@ export default function NuevoBarcoPage() {
     <div className="max-w-3xl mx-auto space-y-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-900 transition-colors">
+          <button onClick={() => router.back()} className="text-gray-700 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <div>
             <h1 className="text-gray-900 font-bold text-lg">Nuevo barco</h1>
-            <p className="text-gray-400 text-xs">Añadir embarcación a la flota</p>
+            <p className="text-gray-700 text-xs">Añadir embarcación a la flota</p>
           </div>
         </div>
         <button onClick={handleSave} disabled={saving}
@@ -125,17 +125,17 @@ export default function NuevoBarcoPage() {
             <h2 className="text-gray-900 font-semibold text-sm">Información básica</h2>
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
-                <label className="text-gray-400 text-xs mb-1.5 block">Nombre *</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Ej: Quicksilver 605"
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Modelo</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Modelo</label>
                 <input value={form.model} onChange={e => set('model', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Tipo</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Tipo</label>
                 <select value={form.type} onChange={e => set('type', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
                   <option value="">Seleccionar...</option>
@@ -143,12 +143,12 @@ export default function NuevoBarcoPage() {
                 </select>
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Año</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Año</label>
                 <input type="number" value={form.year} onChange={e => set('year', e.target.value)} placeholder="2024"
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Matrícula</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Matrícula</label>
                 <input value={form.registration_number} onChange={e => set('registration_number', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
@@ -159,17 +159,17 @@ export default function NuevoBarcoPage() {
             <h2 className="text-gray-900 font-semibold text-sm">Dimensiones y capacidad</h2>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Eslora (m)</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Eslora (m)</label>
                 <input type="number" step="0.01" value={form.length_meters} onChange={e => set('length_meters', e.target.value)} placeholder="6.12"
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Pasajeros máx.</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Pasajeros máx.</label>
                 <input type="number" value={form.capacity} onChange={e => set('capacity', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Camarotes</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Camarotes</label>
                 <input type="number" value={form.cabins} onChange={e => set('cabins', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
@@ -177,11 +177,11 @@ export default function NuevoBarcoPage() {
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.captain_required} onChange={e => set('captain_required', e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
-                <span className="text-gray-400 text-sm">Requiere capitán</span>
+                <span className="text-gray-700 text-sm">Requiere capitán</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.fuel_included} onChange={e => set('fuel_included', e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
-                <span className="text-gray-400 text-sm">Combustible incluido</span>
+                <span className="text-gray-700 text-sm">Combustible incluido</span>
               </label>
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function NuevoBarcoPage() {
                 { key: 'deposit', label: 'Fianza / Depósito' },
               ].map(f => (
                 <div key={f.key}>
-                  <label className="text-gray-400 text-xs mb-1.5 block">{f.label}</label>
+                  <label className="text-gray-700 text-xs mb-1.5 block">{f.label}</label>
                   <input type="number" value={(form as any)[f.key]} onChange={e => set(f.key, e.target.value)} placeholder="0"
                     className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
                 </div>
@@ -209,12 +209,12 @@ export default function NuevoBarcoPage() {
             <h2 className="text-gray-900 font-semibold text-sm">Documentación</h2>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Vencimiento seguro</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Vencimiento seguro</label>
                 <input type="date" value={form.insurance_expiry} onChange={e => set('insurance_expiry', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Próximo mantenimiento</label>
+                <label className="text-gray-700 text-xs mb-1.5 block">Próximo mantenimiento</label>
                 <input type="date" value={form.next_maintenance} onChange={e => set('next_maintenance', e.target.value)}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
@@ -224,12 +224,12 @@ export default function NuevoBarcoPage() {
           <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
             <h2 className="text-gray-900 font-semibold text-sm">Descripción y notas</h2>
             <div>
-              <label className="text-gray-400 text-xs mb-1.5 block">Descripción pública</label>
+              <label className="text-gray-700 text-xs mb-1.5 block">Descripción pública</label>
               <textarea value={form.description} onChange={e => set('description', e.target.value)} rows={3}
                 className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
             </div>
             <div>
-              <label className="text-gray-400 text-xs mb-1.5 block">Notas internas</label>
+              <label className="text-gray-700 text-xs mb-1.5 block">Notas internas</label>
               <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={2}
                 className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
             </div>
@@ -258,10 +258,10 @@ export default function NuevoBarcoPage() {
               <button onClick={() => fileRef.current?.click()}
                 className="w-full h-44 border-2 border-dashed border-gray-200 hover:border-[#C9A84C]/40 rounded-lg flex flex-col items-center justify-center gap-2 transition-colors group">
                 <div className="w-10 h-10 rounded-full bg-gray-100 group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
-                  <Upload size={18} className="text-gray-400 group-hover:text-[#C9A84C] transition-colors" />
+                  <Upload size={18} className="text-gray-700 group-hover:text-[#C9A84C] transition-colors" />
                 </div>
-                <p className="text-gray-400 text-xs group-hover:text-gray-300 transition-colors">Subir foto</p>
-                <p className="text-gray-400 text-xs">JPG, PNG, WEBP · máx 5MB</p>
+                <p className="text-gray-700 text-xs group-hover:text-gray-700 transition-colors">Subir foto</p>
+                <p className="text-gray-700 text-xs">JPG, PNG, WEBP · máx 5MB</p>
               </button>
             )}
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden"
@@ -272,10 +272,10 @@ export default function NuevoBarcoPage() {
             <h2 className="text-gray-900 font-semibold text-sm mb-3">Estado inicial</h2>
             {[
               { value: 'available', label: 'Disponible', color: 'text-green-400 border-green-400/40 bg-green-400/10' },
-              { value: 'inactive',  label: 'Inactivo',   color: 'text-gray-400 border-gray-400/40 bg-gray-400/10' },
+              { value: 'inactive',  label: 'Inactivo',   color: 'text-gray-700 border-gray-400/40 bg-gray-400/10' },
             ].map(s => (
               <button key={s.value} onClick={() => set('status', s.value)}
-                className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-gray-200 text-gray-400 hover:text-gray-300'}`}>
+                className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-gray-200 text-gray-700 hover:text-gray-700'}`}>
                 {s.label}
               </button>
             ))}

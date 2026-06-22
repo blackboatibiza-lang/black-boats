@@ -55,7 +55,7 @@ export default function MantenimientoPage() {
             </div>
             <div>
               <p className="text-gray-900 text-xl font-bold">{s.value}</p>
-              <p className="text-gray-400 text-xs">{s.label}</p>
+              <p className="text-gray-700 text-xs">{s.label}</p>
             </div>
           </div>
         ))}
@@ -69,8 +69,8 @@ export default function MantenimientoPage() {
 
       {tasks.length === 0 ? (
         <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
-          <Wrench size={36} className="mx-auto mb-3 text-gray-300" />
-          <p className="text-gray-400">No hay tareas de mantenimiento</p>
+          <Wrench size={36} className="mx-auto mb-3 text-gray-700" />
+          <p className="text-gray-700">No hay tareas de mantenimiento</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -93,13 +93,13 @@ export default function MantenimientoPage() {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="text-gray-900 font-semibold">{task.title}</p>
-                      <p className="text-gray-400 text-xs mt-0.5">
+                      <p className="text-gray-700 text-xs mt-0.5">
                         {task.boat?.name ?? '—'}{task.description ? ` · ${task.description}` : ''}
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0">
                       {task.scheduled_date && (
-                        <p className="text-gray-400 text-xs">
+                        <p className="text-gray-700 text-xs">
                           {new Date(task.scheduled_date).toLocaleDateString('es-ES')}
                         </p>
                       )}
@@ -118,7 +118,7 @@ export default function MantenimientoPage() {
                 {!task.is_completed && (
                   <button
                     onClick={() => markComplete(task.id)}
-                    className="text-xs px-3 py-1.5 border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/40 rounded-lg transition-colors flex-shrink-0"
+                    className="text-xs px-3 py-1.5 border border-gray-200 text-gray-700 hover:text-gray-900 hover:border-[#C9A84C]/40 rounded-lg transition-colors flex-shrink-0"
                   >
                     Completar
                   </button>

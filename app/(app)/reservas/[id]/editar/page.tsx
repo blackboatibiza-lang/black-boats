@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 
 const TARIFF_INFO: Record<string, { label: string; desc: string; color: string }> = {
-  sin_incluido: { label: 'Sin patrón ni combustible', desc: 'El cliente navega por su cuenta (requiere licencia)', color: 'text-gray-300' },
+  sin_incluido: { label: 'Sin patrón ni combustible', desc: 'El cliente navega por su cuenta (requiere licencia)', color: 'text-gray-700' },
   patron_fuel:  { label: 'Patrón + Combustible incluido', desc: 'Nuestro capitán y el fuel están incluidos', color: 'text-[#C9A84C]' },
   es_vedra:     { label: 'Es Vedrà Full Day', desc: 'Ruta guiada a Es Vedrà, Atlantis y Mambos', color: 'text-blue-400' },
   formentera:   { label: 'Formentera Full Day', desc: 'Ruta a Formentera o Cala Jondal', color: 'text-purple-400' },
@@ -297,14 +297,14 @@ export default function EditarReservaPage() {
   }
 
   const inputCls = "w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50"
-  const labelCls = "text-gray-400 text-xs mb-1.5 block"
+  const labelCls = "text-gray-700 text-xs mb-1.5 block"
 
   return (
     <div className="max-w-3xl mx-auto space-y-5 pb-10">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-900 transition-colors">
+          <button onClick={() => router.back()} className="text-gray-700 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <h1 className="text-gray-900 font-bold text-lg">Editar reserva</h1>
@@ -342,7 +342,7 @@ export default function EditarReservaPage() {
             ].map(t => (
               <button key={t.v} onClick={() => setRentalType(t.v as any)}
                 disabled={selectedBoat?.captain_required && t.v === 'bareboat'}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all disabled:opacity-30 disabled:cursor-not-allowed ${rentalType === t.v ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all disabled:opacity-30 disabled:cursor-not-allowed ${rentalType === t.v ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                 {t.l}
               </button>
             ))}
@@ -440,8 +440,8 @@ export default function EditarReservaPage() {
                     className={`text-left p-3 rounded-lg border transition-all ${selectedTariff === t ? 'bg-gray-100 border-[#C9A84C]/40' : 'border-gray-200 hover:bg-gray-50'}`}>
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className={`text-sm font-medium ${info?.color ?? 'text-gray-300'}`}>{info?.label ?? t}</p>
-                        <p className="text-gray-400 text-xs mt-0.5">{info?.desc}</p>
+                        <p className={`text-sm font-medium ${info?.color ?? 'text-gray-700'}`}>{info?.label ?? t}</p>
+                        <p className="text-gray-700 text-xs mt-0.5">{info?.desc}</p>
                       </div>
                       {selectedTariff === t && <CheckCircle size={15} className="text-[#C9A84C]" />}
                     </div>
@@ -467,7 +467,7 @@ export default function EditarReservaPage() {
                   )
                   return (
                     <button key={d} onClick={() => setSelectedDuration(d)}
-                      className={`flex-1 py-2.5 px-3 rounded-lg text-sm border transition-all ${selectedDuration === d ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                      className={`flex-1 py-2.5 px-3 rounded-lg text-sm border transition-all ${selectedDuration === d ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                       <span className="font-medium">{DURATION_INFO[d] ?? d}</span>
                       {row && <span className="text-xs ml-1.5 opacity-70">({row.hours})</span>}
                       {row && <span className="block text-sm font-bold mt-0.5">{Number(row.price).toLocaleString('es-ES')}€</span>}
@@ -480,7 +480,7 @@ export default function EditarReservaPage() {
 
           <label className="flex items-center gap-2 cursor-pointer p-3 bg-gray-50 rounded-lg border border-gray-200">
             <input type="checkbox" checked={earlyBird} onChange={e => setEarlyBird(e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
-            <p className="text-gray-300 text-sm">Especial madrugadores <span className="text-green-400">−10%</span></p>
+            <p className="text-gray-700 text-sm">Especial madrugadores <span className="text-green-400">−10%</span></p>
           </label>
         </div>
       )}
@@ -489,7 +489,7 @@ export default function EditarReservaPage() {
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-gray-900 font-semibold text-sm flex items-center gap-2"><CreditCard size={14} /> Precio</h3>
-          <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer">
+          <label className="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
             <input type="checkbox" checked={manualPrice} onChange={e => setManualPrice(e.target.checked)} className="w-3.5 h-3.5 accent-[#C9A84C]" />
             Precio manual
           </label>
@@ -497,34 +497,34 @@ export default function EditarReservaPage() {
 
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">Tarifa base{earlyBird ? ' (−10%)' : ''}</span>
+            <span className="text-gray-700">Tarifa base{earlyBird ? ' (−10%)' : ''}</span>
             {manualPrice
               ? <div className="flex items-center gap-1">
                   <input type="number" value={customBase} onChange={e => setCustomBase(Number(e.target.value))} min={0}
                     className="w-24 px-2 py-1 bg-gray-200 border border-[#3A3A3A] rounded text-gray-900 text-right text-sm focus:outline-none focus:border-[#C9A84C]/50" />
-                  <span className="text-gray-400 text-xs">€</span>
+                  <span className="text-gray-700 text-xs">€</span>
                 </div>
               : <span className="text-gray-900 font-medium">{formatP(basePrice)}</span>
             }
           </div>
           {fuelExtra > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-gray-400">Combustible extra</span>
+              <span className="text-gray-700">Combustible extra</span>
               <span className="text-gray-900">+{formatP(fuelExtra)}</span>
             </div>
           )}
           {extrasTotal > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-gray-400">Extras</span>
+              <span className="text-gray-700">Extras</span>
               <span className="text-gray-900">{formatP(extrasTotal)}</span>
             </div>
           )}
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">Descuento</span>
+            <span className="text-gray-700">Descuento</span>
             <div className="flex items-center gap-1">
               <input type="number" value={discount} onChange={e => setDiscount(Number(e.target.value))} min={0}
                 className="w-20 px-2 py-1 bg-gray-200 border border-[#3A3A3A] rounded text-gray-900 text-right text-sm focus:outline-none" />
-              <span className="text-gray-400 text-xs">€</span>
+              <span className="text-gray-700 text-xs">€</span>
             </div>
           </div>
           <div className="border-t border-gray-200 pt-2 flex justify-between font-bold text-base">
@@ -555,7 +555,7 @@ export default function EditarReservaPage() {
           <div className="grid grid-cols-2 gap-2">
             {PAYMENT_METHODS.map(m => (
               <button key={m.value} onClick={() => setPaymentMethod(m.value)}
-                className={`py-2.5 px-3 rounded-lg text-sm border text-left transition-all ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                className={`py-2.5 px-3 rounded-lg text-sm border text-left transition-all ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                 {m.label}
               </button>
             ))}
@@ -578,8 +578,8 @@ export default function EditarReservaPage() {
         <div className="border-t border-gray-200 pt-4 space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-300 text-sm font-medium">Fianza</p>
-              <p className="text-gray-400 text-xs">{rentalType === 'bareboat' ? 'Requerida (sin patrón)' : 'Opcional'}</p>
+              <p className="text-gray-700 text-sm font-medium">Fianza</p>
+              <p className="text-gray-700 text-xs">{rentalType === 'bareboat' ? 'Requerida (sin patrón)' : 'Opcional'}</p>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -589,7 +589,7 @@ export default function EditarReservaPage() {
                 min={0}
                 className="w-24 px-3 py-2 bg-gray-200 border border-[#3A3A3A] rounded-lg text-gray-900 text-right text-sm font-semibold focus:outline-none focus:border-[#C9A84C]/50"
               />
-              <span className="text-gray-400 text-sm">€</span>
+              <span className="text-gray-700 text-sm">€</span>
             </div>
           </div>
 
@@ -599,7 +599,7 @@ export default function EditarReservaPage() {
               <div className="grid grid-cols-2 gap-2">
                 {PAYMENT_METHODS.map(m => (
                   <button key={m.value} onClick={() => setDepositMethod(m.value)}
-                    className={`py-2.5 px-3 rounded-lg text-sm border text-left transition-all ${depositMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
+                    className={`py-2.5 px-3 rounded-lg text-sm border text-left transition-all ${depositMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
                     {m.label}
                   </button>
                 ))}
@@ -632,7 +632,7 @@ export default function EditarReservaPage() {
       {/* Botón guardar abajo */}
       <div className="flex justify-end gap-3">
         <button onClick={() => router.back()}
-          className="px-5 py-2.5 border border-gray-200 text-gray-400 hover:text-gray-900 rounded-lg text-sm transition-all">
+          className="px-5 py-2.5 border border-gray-200 text-gray-700 hover:text-gray-900 rounded-lg text-sm transition-all">
           Cancelar
         </button>
         <button onClick={handleSave} disabled={saving}

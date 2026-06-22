@@ -15,7 +15,7 @@ const SEASON_LABELS: Record<string, string> = {
 }
 
 const TARIFF_LABELS: Record<string, { label: string; color: string }> = {
-  sin_incluido: { label: 'Sin patrón ni fuel',     color: 'text-gray-300' },
+  sin_incluido: { label: 'Sin patrón ni fuel',     color: 'text-gray-700' },
   patron_fuel:  { label: 'Patrón + Fuel incluido', color: 'text-[#C9A84C]' },
   es_vedra:     { label: 'Es Vedrà (Full Day)',     color: 'text-blue-400' },
   formentera:   { label: 'Formentera (Full Day)',   color: 'text-purple-400' },
@@ -50,10 +50,10 @@ function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: numb
             autoFocus
             onKeyDown={e => e.key === 'Enter' && save()}
           />
-          <span className="text-gray-400 text-xs">€</span>
+          <span className="text-gray-700 text-xs">€</span>
           {row.fuel_extra !== null && (
             <>
-              <span className="text-gray-400 text-xs">+</span>
+              <span className="text-gray-700 text-xs">+</span>
               <input
                 value={fuel}
                 onChange={e => setFuel(e.target.value)}
@@ -77,9 +77,9 @@ function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: numb
       >
         <span className="text-gray-900 font-semibold">{Number(row.price).toLocaleString('es-ES')}€</span>
         {row.fuel_extra && (
-          <span className="text-gray-400 text-xs">+{row.fuel_extra}€ fuel</span>
+          <span className="text-gray-700 text-xs">+{row.fuel_extra}€ fuel</span>
         )}
-        <Pencil size={11} className="text-gray-400 group-hover:text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-all" />
+        <Pencil size={11} className="text-gray-700 group-hover:text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-all" />
       </button>
     </td>
   )
@@ -147,7 +147,7 @@ export default function PreciosPage() {
       {/* Info */}
       <div className="flex items-start gap-2 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-lg px-4 py-3">
         <Info size={15} className="text-[#C9A84C] flex-shrink-0 mt-0.5" />
-        <p className="text-gray-400 text-xs">
+        <p className="text-gray-700 text-xs">
           Haz clic en cualquier precio para editarlo. Los cambios se guardan en tiempo real.
           <strong className="text-gray-900 ml-1">Fianza sin patrón: 500€ · Descuento madrugadores: 10% OFF</strong>
         </p>
@@ -162,7 +162,7 @@ export default function PreciosPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
               selectedBoat === b.id
                 ? 'bg-[#C9A84C] text-black border-[#C9A84C]'
-                : 'bg-white text-gray-400 border-gray-200 hover:text-gray-900 hover:border-[#C9A84C]/30'
+                : 'bg-white text-gray-700 border-gray-200 hover:text-gray-900 hover:border-[#C9A84C]/30'
             }`}
           >
             {b.name}
@@ -174,17 +174,17 @@ export default function PreciosPage() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-200">
           <h3 className="text-gray-900 font-semibold">{selectedBoatName}</h3>
-          <p className="text-gray-400 text-xs mt-0.5">Temporada 2026 · Salida: Club Náutico San Antonio</p>
+          <p className="text-gray-700 text-xs mt-0.5">Temporada 2026 · Salida: Club Náutico San Antonio</p>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left px-4 py-3 text-gray-400 font-medium text-xs w-40">Tarifa</th>
-                <th className="text-left px-3 py-3 text-gray-400 font-medium text-xs w-24">Duración</th>
+                <th className="text-left px-4 py-3 text-gray-700 font-medium text-xs w-40">Tarifa</th>
+                <th className="text-left px-3 py-3 text-gray-700 font-medium text-xs w-24">Duración</th>
                 {seasons.map(s => (
-                  <th key={s} className="text-right px-3 py-3 text-gray-400 font-medium text-xs whitespace-nowrap">
+                  <th key={s} className="text-right px-3 py-3 text-gray-700 font-medium text-xs whitespace-nowrap">
                     {SEASON_LABELS[s] ?? s}
                   </th>
                 ))}
@@ -201,19 +201,19 @@ export default function PreciosPage() {
                 return (
                   <tr key={key} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3">
-                      <span className={`text-xs font-medium ${tc?.color ?? 'text-gray-400'}`}>
+                      <span className={`text-xs font-medium ${tc?.color ?? 'text-gray-700'}`}>
                         {tc?.label ?? tariff}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-gray-400 text-xs">
+                    <td className="px-3 py-3 text-gray-700 text-xs">
                       {DURATION_LABELS[duration] ?? duration}
                       {rows[0]?.hours && (
-                        <span className="text-gray-400 ml-1">({rows[0].hours})</span>
+                        <span className="text-gray-700 ml-1">({rows[0].hours})</span>
                       )}
                     </td>
                     {seasons.map(s => {
                       const row = bySeasonMap[s]
-                      if (!row) return <td key={s} className="px-3 py-3 text-gray-300 text-right text-xs">—</td>
+                      if (!row) return <td key={s} className="px-3 py-3 text-gray-700 text-right text-xs">—</td>
                       return <PriceCell key={s} row={row} onSave={handleSave} />
                     })}
                   </tr>
@@ -225,7 +225,7 @@ export default function PreciosPage() {
       </div>
 
       {/* Nota pie */}
-      <p className="text-gray-400 text-xs px-1">
+      <p className="text-gray-700 text-xs px-1">
         * Las rutas están sujetas a condiciones de viento. Horarios se ajustan según puesta de sol.
         Formentera y Es Vedrà solo disponibles con capitán del equipo Black Boats.
       </p>

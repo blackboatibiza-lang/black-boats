@@ -70,7 +70,7 @@ export default function FlotaPage() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === f
                   ? 'bg-[#C9A84C] text-black border-[#C9A84C]'
-                  : 'bg-white text-gray-400 border-gray-200 hover:text-gray-900'
+                  : 'bg-white text-gray-700 border-gray-200 hover:text-gray-900'
               }`}
             >
               {f === 'all' ? 'Todos' : statusConfig[f].label} ({counts[f] ?? 0})
@@ -79,7 +79,7 @@ export default function FlotaPage() {
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-700" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -100,8 +100,8 @@ export default function FlotaPage() {
 
       {filtered.length === 0 && !loading && (
         <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
-          <Anchor size={36} className="mx-auto mb-3 text-gray-300" />
-          <p className="text-gray-400">No hay barcos todavía</p>
+          <Anchor size={36} className="mx-auto mb-3 text-gray-700" />
+          <p className="text-gray-700">No hay barcos todavía</p>
           {canEdit && (
             <Link href="/flota/nuevo" className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#C9A84C] text-black text-sm font-semibold rounded-lg">
               <Plus size={15} /> Añadir primer barco
@@ -130,27 +130,27 @@ export default function FlotaPage() {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="text-gray-900 font-semibold">{boat.name}</h3>
-                  <p className="text-gray-400 text-sm">{boat.model ?? boat.type ?? '—'}</p>
+                  <p className="text-gray-700 text-sm">{boat.model ?? boat.type ?? '—'}</p>
                 </div>
                 <span className={`text-xs px-2 py-1 rounded-full border font-medium ${st.color}`}>{st.label}</span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center mb-4">
                 <div className="bg-gray-100 rounded-lg py-2">
                   <p className="text-gray-900 text-sm font-semibold">{boat.length_meters ? `${boat.length_meters}m` : '—'}</p>
-                  <p className="text-gray-400 text-xs">Eslora</p>
+                  <p className="text-gray-700 text-xs">Eslora</p>
                 </div>
                 <div className="bg-gray-100 rounded-lg py-2">
                   <p className="text-gray-900 text-sm font-semibold">{boat.capacity ?? '—'}</p>
-                  <p className="text-gray-400 text-xs">Pax</p>
+                  <p className="text-gray-700 text-xs">Pax</p>
                 </div>
                 <div className="bg-gray-100 rounded-lg py-2">
                   <p className="text-[#C9A84C] text-sm font-semibold">
                     {boat.full_day_rate ? `${Number(boat.full_day_rate).toLocaleString()}€` : '—'}
                   </p>
-                  <p className="text-gray-400 text-xs">Día</p>
+                  <p className="text-gray-700 text-xs">Día</p>
                 </div>
               </div>
-              <div className="flex items-center justify-between text-xs text-gray-400">
+              <div className="flex items-center justify-between text-xs text-gray-700">
                 <span>{boat.type ?? ''}{boat.captain_required ? ' · Capitán requerido' : ''}</span>
                 {insuranceSoon && (
                   <span className="flex items-center gap-1 text-yellow-400">

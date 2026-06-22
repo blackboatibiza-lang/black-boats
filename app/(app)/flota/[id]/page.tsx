@@ -23,7 +23,7 @@ const SEASON_LABELS: Record<string, string> = {
   JUN: 'Junio', JUL: 'Julio', AGO: 'Agosto', SEP: 'Septiembre',
 }
 const TARIFF_LABELS: Record<string, { label: string; color: string }> = {
-  sin_incluido: { label: 'Sin patrón ni fuel',     color: 'text-gray-300' },
+  sin_incluido: { label: 'Sin patrón ni fuel',     color: 'text-gray-700' },
   patron_fuel:  { label: 'Patrón + Fuel incluido', color: 'text-[#C9A84C]' },
   es_vedra:     { label: 'Es Vedrà (Full Day)',     color: 'text-blue-400' },
   formentera:   { label: 'Formentera (Full Day)',   color: 'text-purple-400' },
@@ -32,7 +32,7 @@ const DURATION_LABELS: Record<string, string> = { half: 'Medio día', full: 'Dí
 const SEASON_ORDER = ['MAY_OCT', 'JUN_SEP', 'JUN', 'JUL', 'AGO', 'SEP', 'JUL_AGO']
 
 const inputCls = 'w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50'
-const labelCls = 'text-gray-400 text-xs mb-1.5 block'
+const labelCls = 'text-gray-700 text-xs mb-1.5 block'
 
 // ── PRICE CELL ──────────────────────────────────────────────────────
 function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: number, fuel_extra: number | null) => void }) {
@@ -47,9 +47,9 @@ function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: numb
       <div className="flex items-center gap-1">
         <input value={price} onChange={e => setPrice(e.target.value)} autoFocus onKeyDown={e => e.key === 'Enter' && save()}
           className="w-20 px-2 py-1 bg-white border border-[#C9A84C]/50 rounded text-gray-900 text-xs text-right focus:outline-none" />
-        <span className="text-gray-400 text-xs">€</span>
+        <span className="text-gray-700 text-xs">€</span>
         {row.fuel_extra !== null && <>
-          <span className="text-gray-400 text-xs">+</span>
+          <span className="text-gray-700 text-xs">+</span>
           <input value={fuel} onChange={e => setFuel(e.target.value)} placeholder="fuel"
             className="w-16 px-2 py-1 bg-white border border-[#C9A84C]/50 rounded text-gray-900 text-xs text-right focus:outline-none" />
         </>}
@@ -63,7 +63,7 @@ function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: numb
     <td className="px-3 py-2 text-right">
       <button onClick={() => setEditing(true)} className="group flex items-center gap-1.5 ml-auto hover:text-[#C9A84C] transition-colors">
         <span className="text-gray-900 font-semibold">{Number(row.price).toLocaleString('es-ES')}€</span>
-        {row.fuel_extra && <span className="text-gray-400 text-xs">+{row.fuel_extra}€ fuel</span>}
+        {row.fuel_extra && <span className="text-gray-700 text-xs">+{row.fuel_extra}€ fuel</span>}
       </button>
     </td>
   )
@@ -98,8 +98,8 @@ function PreciosTab({ boatId }: { boatId: string }) {
   }, {})
 
   if (pricing.length === 0) return (
-    <div className="text-center py-16 text-gray-400 text-sm">
-      <Tag size={32} className="mx-auto mb-3 text-gray-300" />
+    <div className="text-center py-16 text-gray-700 text-sm">
+      <Tag size={32} className="mx-auto mb-3 text-gray-700" />
       No hay tarifas configuradas para este barco
     </div>
   )
@@ -114,9 +114,9 @@ function PreciosTab({ boatId }: { boatId: string }) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
-                <th className="text-left px-3 py-2 text-gray-400 text-xs font-medium">Tarifa</th>
-                <th className="text-left px-3 py-2 text-gray-400 text-xs font-medium">Duración</th>
-                <th className="text-right px-3 py-2 text-gray-400 text-xs font-medium">Precio</th>
+                <th className="text-left px-3 py-2 text-gray-700 text-xs font-medium">Tarifa</th>
+                <th className="text-left px-3 py-2 text-gray-700 text-xs font-medium">Duración</th>
+                <th className="text-right px-3 py-2 text-gray-700 text-xs font-medium">Precio</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -125,9 +125,9 @@ function PreciosTab({ boatId }: { boatId: string }) {
                 return (
                   <tr key={row.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-3 py-2.5">
-                      <span className={`text-xs font-medium ${t?.color ?? 'text-gray-400'}`}>{t?.label ?? row.tariff}</span>
+                      <span className={`text-xs font-medium ${t?.color ?? 'text-gray-700'}`}>{t?.label ?? row.tariff}</span>
                     </td>
-                    <td className="px-3 py-2.5 text-gray-400 text-xs">{DURATION_LABELS[row.duration] ?? row.duration}</td>
+                    <td className="px-3 py-2.5 text-gray-700 text-xs">{DURATION_LABELS[row.duration] ?? row.duration}</td>
                     <PriceCell row={row} onSave={handleSavePrice} />
                   </tr>
                 )
@@ -185,7 +185,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
   const overdue   = pending.filter(t => t.scheduled_date && new Date(t.scheduled_date) < new Date())
 
   const priorityColor: Record<string, string> = {
-    low:      'text-gray-400 bg-gray-400/10 border-gray-400/20',
+    low:      'text-gray-700 bg-gray-400/10 border-gray-400/20',
     medium:   'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
     high:     'text-orange-400 bg-orange-400/10 border-orange-400/20',
     critical: 'text-red-400 bg-red-400/10 border-red-400/20',
@@ -209,7 +209,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
             </div>
             <div>
               <p className="text-gray-900 text-lg font-bold">{s.value}</p>
-              <p className="text-gray-400 text-xs">{s.label}</p>
+              <p className="text-gray-700 text-xs">{s.label}</p>
             </div>
           </div>
         ))}
@@ -249,7 +249,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
             <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} rows={2} className={inputCls + ' resize-none'} />
           </div>
           <div className="flex gap-2 justify-end">
-            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-400 hover:text-gray-900 text-sm transition-colors">Cancelar</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-700 hover:text-gray-900 text-sm transition-colors">Cancelar</button>
             <button onClick={addTask} disabled={saving || !form.title}
               className="px-4 py-2 bg-[#C9A84C] hover:bg-[#E8C97A] disabled:opacity-60 text-black text-sm font-semibold rounded-lg transition-colors">
               {saving ? 'Guardando...' : 'Guardar'}
@@ -259,8 +259,8 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
       )}
 
       {tasks.length === 0 ? (
-        <div className="text-center py-16 text-gray-400 text-sm bg-white border border-gray-200 rounded-xl">
-          <Wrench size={32} className="mx-auto mb-3 text-gray-300" />
+        <div className="text-center py-16 text-gray-700 text-sm bg-white border border-gray-200 rounded-xl">
+          <Wrench size={32} className="mx-auto mb-3 text-gray-700" />
           No hay tareas de mantenimiento
         </div>
       ) : (
@@ -276,7 +276,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
                 </button>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className={`text-sm font-medium ${task.is_completed ? 'line-through text-gray-400' : 'text-gray-900'}`}>{task.title}</p>
+                    <p className={`text-sm font-medium ${task.is_completed ? 'line-through text-gray-700' : 'text-gray-900'}`}>{task.title}</p>
                     {task.priority && (
                       <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${priorityColor[task.priority]}`}>
                         {priorityLabel[task.priority]}
@@ -284,15 +284,15 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
                     )}
                     {isOverdue && <span className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 px-2 py-0.5 rounded-full">Vencida</span>}
                   </div>
-                  {task.description && <p className="text-gray-400 text-xs mt-1">{task.description}</p>}
+                  {task.description && <p className="text-gray-700 text-xs mt-1">{task.description}</p>}
                   {task.scheduled_date && (
-                    <p className="text-gray-400 text-xs mt-1 flex items-center gap-1">
+                    <p className="text-gray-700 text-xs mt-1 flex items-center gap-1">
                       <Clock size={10} /> {new Date(task.scheduled_date).toLocaleDateString('es-ES')}
                       {task.is_completed && task.completed_date && ` · Completada ${new Date(task.completed_date).toLocaleDateString('es-ES')}`}
                     </p>
                   )}
                 </div>
-                <button onClick={() => deleteTask(task.id)} className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0">
+                <button onClick={() => deleteTask(task.id)} className="text-gray-700 hover:text-red-400 transition-colors flex-shrink-0">
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -418,12 +418,12 @@ export default function BoatDetailPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-900 transition-colors">
+          <button onClick={() => router.back()} className="text-gray-700 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <div>
             <h1 className="text-gray-900 font-bold text-lg">{boatName || 'Barco'}</h1>
-            <p className="text-gray-400 text-xs capitalize">{currentStatus?.label ?? form.status}</p>
+            <p className="text-gray-700 text-xs capitalize">{currentStatus?.label ?? form.status}</p>
           </div>
         </div>
         {activeTab === 'info' && (
@@ -447,7 +447,7 @@ export default function BoatDetailPage() {
         {tabs.map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
-              ${activeTab === t.id ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-400 hover:text-gray-900'}`}>
+              ${activeTab === t.id ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-700 hover:text-gray-900'}`}>
             <t.icon size={14} /> {t.label}
           </button>
         ))}
@@ -505,11 +505,11 @@ export default function BoatDetailPage() {
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" checked={form.captain_required} onChange={e => set('captain_required', e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
-                  <span className="text-gray-400 text-sm">Requiere capitán</span>
+                  <span className="text-gray-700 text-sm">Requiere capitán</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" checked={form.fuel_included} onChange={e => set('fuel_included', e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
-                  <span className="text-gray-400 text-sm">Combustible incluido</span>
+                  <span className="text-gray-700 text-sm">Combustible incluido</span>
                 </label>
               </div>
             </div>
@@ -584,10 +584,10 @@ export default function BoatDetailPage() {
                     ? <div className="w-6 h-6 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
                     : <>
                         <div className="w-10 h-10 rounded-full bg-gray-100 group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
-                          <Upload size={18} className="text-gray-400 group-hover:text-[#C9A84C] transition-colors" />
+                          <Upload size={18} className="text-gray-700 group-hover:text-[#C9A84C] transition-colors" />
                         </div>
-                        <p className="text-gray-400 text-xs group-hover:text-gray-300">Subir foto</p>
-                        <p className="text-gray-400 text-xs">JPG, PNG, WEBP · máx 5MB</p>
+                        <p className="text-gray-700 text-xs group-hover:text-gray-700">Subir foto</p>
+                        <p className="text-gray-700 text-xs">JPG, PNG, WEBP · máx 5MB</p>
                       </>}
                 </button>
               )}
@@ -604,7 +604,7 @@ export default function BoatDetailPage() {
               <div className="space-y-2">
                 {STATUSES.map(s => (
                   <button key={s.value} onClick={() => set('status', s.value)}
-                    className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-gray-200 text-gray-400 hover:text-gray-300'}`}>
+                    className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-gray-200 text-gray-700 hover:text-gray-700'}`}>
                     {form.status === s.value && <CheckCircle size={13} className="inline mr-1.5" />}
                     {s.label}
                   </button>

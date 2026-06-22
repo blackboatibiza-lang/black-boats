@@ -43,7 +43,7 @@ export default function PagosPage() {
             <div className="w-8 h-8 rounded-lg bg-[#C9A84C]/10 flex items-center justify-center">
               <TrendingUp size={16} className="text-[#C9A84C]" />
             </div>
-            <span className="text-gray-400 text-xs">Total recibido</span>
+            <span className="text-gray-700 text-xs">Total recibido</span>
           </div>
           <p className="text-gray-900 text-2xl font-bold">{totalRecibido.toLocaleString('es-ES')}€</p>
         </div>
@@ -52,7 +52,7 @@ export default function PagosPage() {
             <div className="w-8 h-8 rounded-lg bg-blue-400/10 flex items-center justify-center">
               <Clock size={16} className="text-blue-400" />
             </div>
-            <span className="text-gray-400 text-xs">Depósitos</span>
+            <span className="text-gray-700 text-xs">Depósitos</span>
           </div>
           <p className="text-gray-900 text-2xl font-bold">{payments.filter(p => p.is_deposit).length}</p>
         </div>
@@ -61,7 +61,7 @@ export default function PagosPage() {
             <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center">
               <CheckCircle size={16} className="text-green-400" />
             </div>
-            <span className="text-gray-400 text-xs">Pagos totales</span>
+            <span className="text-gray-700 text-xs">Pagos totales</span>
           </div>
           <p className="text-gray-900 text-2xl font-bold">{completados}</p>
         </div>
@@ -72,17 +72,17 @@ export default function PagosPage() {
           <h3 className="text-gray-900 font-semibold text-sm">Historial de pagos</h3>
         </div>
         {payments.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">No hay pagos registrados</div>
+          <div className="text-center py-16 text-gray-700">No hay pagos registrados</div>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Reserva</th>
-                <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Cliente</th>
-                <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Importe</th>
-                <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Método</th>
-                <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Fecha</th>
-                <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Tipo</th>
+                <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Reserva</th>
+                <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Cliente</th>
+                <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Importe</th>
+                <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Método</th>
+                <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Fecha</th>
+                <th className="text-left px-5 py-3.5 text-gray-700 font-medium text-xs">Tipo</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -102,12 +102,12 @@ export default function PagosPage() {
                       <span className="text-gray-900 font-semibold">{Number(p.amount).toLocaleString('es-ES')}€</span>
                     </td>
                     <td className="px-5 py-3.5">
-                      <div className="flex items-center gap-1.5 text-gray-400">
+                      <div className="flex items-center gap-1.5 text-gray-700">
                         <CreditCard size={13} />
                         {methodLabels[p.method] ?? p.method}
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-gray-400">
+                    <td className="px-5 py-3.5 text-gray-700">
                       {new Date(p.payment_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </td>
                     <td className="px-5 py-3.5">

@@ -48,20 +48,20 @@ export default function ClientesPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setVipOnly(false)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${!vipOnly ? 'bg-[#C9A84C] text-black border-[#C9A84C]' : 'bg-white text-gray-400 border-gray-200 hover:text-gray-900'}`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${!vipOnly ? 'bg-[#C9A84C] text-black border-[#C9A84C]' : 'bg-white text-gray-700 border-gray-200 hover:text-gray-900'}`}
           >
             Todos ({clients.length})
           </button>
           <button
             onClick={() => setVipOnly(true)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all flex items-center gap-1.5 ${vipOnly ? 'bg-[#C9A84C] text-black border-[#C9A84C]' : 'bg-white text-gray-400 border-gray-200 hover:text-gray-900'}`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all flex items-center gap-1.5 ${vipOnly ? 'bg-[#C9A84C] text-black border-[#C9A84C]' : 'bg-white text-gray-700 border-gray-200 hover:text-gray-900'}`}
           >
             <Star size={13} /> VIP ({clients.filter(c => c.is_vip).length})
           </button>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-700" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -82,8 +82,8 @@ export default function ClientesPage() {
 
       {filtered.length === 0 ? (
         <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
-          <Users size={36} className="mx-auto mb-3 text-gray-300" />
-          <p className="text-gray-400">No hay clientes todavía</p>
+          <Users size={36} className="mx-auto mb-3 text-gray-700" />
+          <p className="text-gray-700">No hay clientes todavía</p>
           {canEdit && (
             <Link href="/clientes/nuevo" className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#C9A84C] text-black text-sm font-semibold rounded-lg">
               <Plus size={15} /> Añadir primer cliente
@@ -110,23 +110,23 @@ export default function ClientesPage() {
                         <p className="text-gray-900 font-semibold">{client.first_name} {client.last_name}</p>
                         {client.is_vip && <Star size={13} className="text-[#C9A84C] fill-[#C9A84C]" />}
                       </div>
-                      <p className="text-gray-400 text-xs">{client.nationality ?? '—'}</p>
+                      <p className="text-gray-700 text-xs">{client.nationality ?? '—'}</p>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-1.5 mb-4">
                   {client.email && (
-                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                    <div className="flex items-center gap-2 text-gray-700 text-xs">
                       <Mail size={12} /> <span className="truncate">{client.email}</span>
                     </div>
                   )}
                   {client.phone && (
-                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                    <div className="flex items-center gap-2 text-gray-700 text-xs">
                       <Phone size={12} /> {client.phone}
                     </div>
                   )}
                   {client.boat_license && (
-                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                    <div className="flex items-center gap-2 text-gray-700 text-xs">
                       <FileText size={12} /> Licencia: {client.boat_license}
                     </div>
                   )}
@@ -134,11 +134,11 @@ export default function ClientesPage() {
                 <div className="grid grid-cols-2 gap-2 pt-3 border-t border-gray-200">
                   <div>
                     <p className="text-gray-900 text-base font-bold">{(client.bookings ?? []).length}</p>
-                    <p className="text-gray-400 text-xs">Reservas</p>
+                    <p className="text-gray-700 text-xs">Reservas</p>
                   </div>
                   <div>
                     <p className="text-[#C9A84C] text-base font-bold">{totalSpent.toLocaleString('es-ES')}€</p>
-                    <p className="text-gray-400 text-xs">Total gastado</p>
+                    <p className="text-gray-700 text-xs">Total gastado</p>
                   </div>
                 </div>
               </Link>
