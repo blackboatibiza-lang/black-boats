@@ -55,10 +55,10 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
   }
 
   const content = (
-    <aside className="w-64 flex-shrink-0 flex flex-col bg-[#0A0A0A] h-full border-r border-[#2A2A2A]">
-      <div className="px-4 py-4 border-b border-[#2A2A2A] flex items-center justify-between">
+    <aside className="w-64 flex-shrink-0 flex flex-col bg-white h-full border-r border-gray-200">
+      <div className="px-4 py-4 border-b border-gray-200 flex items-center justify-between">
         <img src="/logo.jpg" alt="Black Boats Ibiza" className="h-20 w-auto object-contain" />
-        <button onClick={onClose} className="lg:hidden text-gray-500 hover:text-white p-1 transition-colors">
+        <button onClick={onClose} className="lg:hidden text-gray-400 hover:text-gray-900 p-1 transition-colors">
           <X size={20} />
         </button>
       </div>
@@ -69,7 +69,7 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
           return (
             <Link key={href} href={href}
               className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all
-                ${active ? 'bg-[#C9A84C]/10 text-[#C9A84C] font-medium' : 'text-gray-400 hover:text-white hover:bg-[#1E1E1E]'}`}>
+                ${active ? 'bg-[#C9A84C]/10 text-[#C9A84C] font-medium' : 'text-gray-400 hover:text-gray-900 hover:bg-gray-100'}`}>
               <div className="flex items-center gap-3">
                 <Icon size={17} strokeWidth={active ? 2 : 1.5} />
                 <span>{label}</span>
@@ -80,13 +80,13 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
         })}
       </nav>
 
-      <div className="px-3 pb-3 border-t border-[#2A2A2A] pt-2">
+      <div className="px-3 pb-3 border-t border-gray-200 pt-2">
         {navBottom.filter(item => allowedKeys.length === 0 || allowedKeys.includes(item.key)).map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link key={href} href={href}
               className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all
-                ${active ? 'bg-[#C9A84C]/10 text-[#C9A84C] font-medium' : 'text-gray-400 hover:text-white hover:bg-[#1E1E1E]'}`}>
+                ${active ? 'bg-[#C9A84C]/10 text-[#C9A84C] font-medium' : 'text-gray-400 hover:text-gray-900 hover:bg-gray-100'}`}>
               <div className="flex items-center gap-3">
                 <Icon size={17} strokeWidth={active ? 2 : 1.5} />
                 <span>{label}</span>
@@ -96,16 +96,16 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
           )
         })}
         {user && (
-          <div className="mt-2 flex items-center gap-2 px-3 py-2.5 bg-[#1A1A1A] rounded-lg border border-[#2A2A2A]">
+          <div className="mt-2 flex items-center gap-2 px-3 py-2.5 bg-gray-50 rounded-lg border border-gray-200">
             <div className="w-7 h-7 rounded-full bg-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C] text-xs font-bold flex-shrink-0">
               {user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-medium truncate">{user.name}</p>
-              <p className="text-gray-600 text-[10px] capitalize">{user.role}</p>
+              <p className="text-gray-900 text-xs font-medium truncate">{user.name}</p>
+              <p className="text-gray-400 text-[10px] capitalize">{user.role}</p>
             </div>
             <button onClick={logout} title="Cerrar sesión"
-              className="text-gray-600 hover:text-red-400 transition-colors flex-shrink-0">
+              className="text-gray-400 hover:text-red-400 transition-colors flex-shrink-0">
               <LogOut size={14} />
             </button>
           </div>

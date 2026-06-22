@@ -137,19 +137,19 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">Buenos días</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Buenos días</h2>
         <p className="text-gray-400 text-sm mt-0.5 capitalize">{today}</p>
       </div>
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((s) => (
-          <div key={s.label} className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-4">
+          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-4">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-gray-400 text-xs font-medium">{s.label}</p>
-                <p className="text-white text-2xl font-bold mt-1">{s.value}</p>
-                <p className="text-gray-500 text-xs mt-0.5">{s.sub}</p>
+                <p className="text-gray-900 text-2xl font-bold mt-1">{s.value}</p>
+                <p className="text-gray-400 text-xs mt-0.5">{s.sub}</p>
               </div>
               <div className={`w-9 h-9 rounded-lg ${s.bg} flex items-center justify-center`}>
                 <s.icon size={18} className={s.color} />
@@ -161,29 +161,29 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         {/* Reservas de hoy */}
-        <div className="lg:col-span-3 bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
-            <h3 className="text-white font-semibold text-sm">Reservas de Hoy</h3>
+        <div className="lg:col-span-3 bg-white border border-gray-200 rounded-xl">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+            <h3 className="text-gray-900 font-semibold text-sm">Reservas de Hoy</h3>
             <Link href="/reservas" className="text-[#C9A84C] text-xs hover:underline flex items-center gap-1">
               Ver todas <ArrowRight size={12} />
             </Link>
           </div>
           {bookingsToday.length === 0 ? (
-            <div className="text-center py-10 text-gray-600 text-sm">No hay reservas hoy</div>
+            <div className="text-center py-10 text-gray-400 text-sm">No hay reservas hoy</div>
           ) : (
-            <div className="divide-y divide-[#1E1E1E]">
+            <div className="divide-y divide-gray-100">
               {bookingsToday.map((b) => {
                 const st = statusConfig[b.status as keyof typeof statusConfig]
                 const clientName = b.client ? `${b.client.first_name} ${b.client.last_name}` : 'Sin cliente'
                 return (
-                  <div key={b.id} className="flex items-center justify-between px-5 py-3 hover:bg-[#1A1A1A] transition-colors">
+                  <div key={b.id} className="flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] text-xs font-bold">
+                      <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] text-xs font-bold">
                         {clientName.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                       </div>
                       <div>
-                        <p className="text-white text-sm font-medium">{clientName}</p>
-                        <p className="text-gray-500 text-xs">{b.boat?.name ?? '—'} · {b.adults ?? 1} pax</p>
+                        <p className="text-gray-900 text-sm font-medium">{clientName}</p>
+                        <p className="text-gray-400 text-xs">{b.boat?.name ?? '—'} · {b.adults ?? 1} pax</p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -200,24 +200,24 @@ export default function DashboardPage() {
         </div>
 
         {/* Estado flota */}
-        <div className="lg:col-span-2 bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
-            <h3 className="text-white font-semibold text-sm">Estado Flota</h3>
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+            <h3 className="text-gray-900 font-semibold text-sm">Estado Flota</h3>
             <Link href="/flota" className="text-[#C9A84C] text-xs hover:underline flex items-center gap-1">
               Ver flota <ArrowRight size={12} />
             </Link>
           </div>
           {boats.length === 0 ? (
-            <div className="text-center py-10 text-gray-600 text-sm">No hay barcos</div>
+            <div className="text-center py-10 text-gray-400 text-sm">No hay barcos</div>
           ) : (
-            <div className="divide-y divide-[#1E1E1E]">
+            <div className="divide-y divide-gray-100">
               {boats.slice(0, 6).map((boat) => {
                 const st = boatStatusConfig[boat.status as keyof typeof boatStatusConfig]
                 return (
                   <div key={boat.id} className="flex items-center justify-between px-5 py-3">
                     <div>
-                      <p className="text-white text-sm font-medium">{boat.name}</p>
-                      <p className="text-gray-500 text-xs">{boat.type ?? '—'}</p>
+                      <p className="text-gray-900 text-sm font-medium">{boat.name}</p>
+                      <p className="text-gray-400 text-xs">{boat.type ?? '—'}</p>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className={`w-2 h-2 rounded-full ${st?.dot ?? 'bg-gray-500'}`} />
@@ -232,15 +232,15 @@ export default function DashboardPage() {
       </div>
 
       {/* Alertas */}
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-        <h3 className="text-white font-semibold text-sm mb-3">Alertas</h3>
+      <div className="bg-white border border-gray-200 rounded-xl p-5">
+        <h3 className="text-gray-900 font-semibold text-sm mb-3">Alertas</h3>
         <div className="space-y-2">
           {insuranceAlerts.map(b => (
             <div key={b.id} className="flex items-center gap-3 text-sm">
               <AlertCircle size={16} className="text-yellow-400 flex-shrink-0" />
               <span className="text-gray-300">
-                <strong className="text-white">{b.name}</strong> — Seguro vence el{' '}
-                <strong className="text-white">
+                <strong className="text-gray-900">{b.name}</strong> — Seguro vence el{' '}
+                <strong className="text-gray-900">
                   {new Date(b.insurance_expiry!).toLocaleDateString('es-ES')}
                 </strong>
               </span>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
             <div key={m.id} className="flex items-center gap-3 text-sm">
               <AlertCircle size={16} className="text-yellow-400 flex-shrink-0" />
               <span className="text-gray-300">
-                Mantenimiento pendiente: <strong className="text-white">{m.title}</strong>
+                Mantenimiento pendiente: <strong className="text-gray-900">{m.title}</strong>
               </span>
             </div>
           ))}

@@ -140,13 +140,13 @@ export default function InformesPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-white font-bold text-xl">Informes</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Análisis financiero y de rendimiento</p>
+          <h1 className="text-gray-900 font-bold text-xl">Informes</h1>
+          <p className="text-gray-400 text-sm mt-0.5">Análisis financiero y de rendimiento</p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setYear(y => y - 1)} className="px-3 py-2 bg-[#141414] border border-[#2A2A2A] text-gray-400 hover:text-white rounded-lg text-sm transition-colors">←</button>
-          <span className="text-white font-bold text-lg w-16 text-center">{year}</span>
-          <button onClick={() => setYear(y => y + 1)} className="px-3 py-2 bg-[#141414] border border-[#2A2A2A] text-gray-400 hover:text-white rounded-lg text-sm transition-colors">→</button>
+          <button onClick={() => setYear(y => y - 1)} className="px-3 py-2 bg-white border border-gray-200 text-gray-400 hover:text-gray-900 rounded-lg text-sm transition-colors">←</button>
+          <span className="text-gray-900 font-bold text-lg w-16 text-center">{year}</span>
+          <button onClick={() => setYear(y => y + 1)} className="px-3 py-2 bg-white border border-gray-200 text-gray-400 hover:text-gray-900 rounded-lg text-sm transition-colors">→</button>
         </div>
       </div>
 
@@ -158,7 +158,7 @@ export default function InformesPage() {
           { label: 'Beneficio neto', value: `${netYear.toLocaleString('es-ES')}€`,       icon: TrendingUp,   color: netYear >= 0 ? 'text-[#C9A84C]' : 'text-red-400', bg: 'bg-[#C9A84C]/10' },
           { label: 'Reservas año',   value: String(bookings.length),                     icon: CalendarDays, color: 'text-blue-400',   bg: 'bg-blue-400/10' },
         ].map(k => (
-          <div key={k.label} className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-4">
+          <div key={k.label} className="bg-white border border-gray-200 rounded-xl p-4">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-gray-400 text-xs">{k.label}</p>
@@ -173,8 +173,8 @@ export default function InformesPage() {
       </div>
 
       {/* Gráfico ingresos vs gastos */}
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-        <h2 className="text-white font-semibold text-sm mb-4">Ingresos vs Gastos ({year})</h2>
+      <div className="bg-white border border-gray-200 rounded-xl p-5">
+        <h2 className="text-gray-900 font-semibold text-sm mb-4">Ingresos vs Gastos ({year})</h2>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={chartData} barGap={4}>
             <XAxis dataKey="mes" tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -189,8 +189,8 @@ export default function InformesPage() {
 
       {/* Gráfico reservas y neto */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">Reservas por mes</h2>
+        <div className="bg-white border border-gray-200 rounded-xl p-5">
+          <h2 className="text-gray-900 font-semibold text-sm mb-4">Reservas por mes</h2>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={chartData}>
               <XAxis dataKey="mes" tick={{ fill: '#6B7280', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -200,8 +200,8 @@ export default function InformesPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">Rentabilidad neta mensual</h2>
+        <div className="bg-white border border-gray-200 rounded-xl p-5">
+          <h2 className="text-gray-900 font-semibold text-sm mb-4">Rentabilidad neta mensual</h2>
           <ResponsiveContainer width="100%" height={180}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
@@ -237,20 +237,20 @@ export default function InformesPage() {
           return { ...b, income, expTotal, netBase, expSharedTotal, expBBFixed, expBoat }
         })
         return (
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-[#2A2A2A] flex items-center gap-2">
+          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-200 flex items-center gap-2">
               <Percent size={15} className="text-[#C9A84C]" />
-              <h2 className="text-white font-semibold text-sm">División de ganancias por barco y socio ({year})</h2>
+              <h2 className="text-gray-900 font-semibold text-sm">División de ganancias por barco y socio ({year})</h2>
             </div>
             <div className="p-5 space-y-4">
               {boatDivision.map(b => (
-                <div key={b.boat_id} className="bg-[#1E1E1E] rounded-xl p-4 space-y-3">
+                <div key={b.boat_id} className="bg-gray-100 rounded-xl p-4 space-y-3">
                   <div className="flex items-center justify-between flex-wrap gap-2">
-                    <p className="text-white font-semibold text-sm">{b.boat_name}</p>
+                    <p className="text-gray-900 font-semibold text-sm">{b.boat_name}</p>
                     <div className="flex items-center gap-4 text-xs">
-                      <span className="text-gray-500">Ingresos: <span className="text-green-400 font-medium">{b.income.toLocaleString('es-ES')}€</span></span>
-                      <span className="text-gray-500">Gastos: <span className="text-red-400 font-medium">{b.expTotal.toLocaleString('es-ES')}€</span></span>
-                      <span className="text-gray-500">Neto: <span className={`font-bold ${(b.income - b.expTotal) >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{(b.income - b.expTotal).toLocaleString('es-ES')}€</span></span>
+                      <span className="text-gray-400">Ingresos: <span className="text-green-400 font-medium">{b.income.toLocaleString('es-ES')}€</span></span>
+                      <span className="text-gray-400">Gastos: <span className="text-red-400 font-medium">{b.expTotal.toLocaleString('es-ES')}€</span></span>
+                      <span className="text-gray-400">Neto: <span className={`font-bold ${(b.income - b.expTotal) >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{(b.income - b.expTotal).toLocaleString('es-ES')}€</span></span>
                     </div>
                   </div>
                   <div className="grid gap-2">
@@ -270,18 +270,18 @@ export default function InformesPage() {
 
                       return (
                         <div key={s.name} className="grid grid-cols-2 gap-2">
-                          <div className="bg-[#1A1A1A] border border-sky-400/20 rounded-lg p-3">
+                          <div className="bg-gray-50 border border-sky-400/20 rounded-lg p-3">
                             <p className="text-gray-400 text-xs mb-1">Socio · {s.name} ({s.profit_pct}%)</p>
                             <p className={`text-lg font-bold ${socioNet >= 0 ? 'text-sky-400' : 'text-red-400'}`}>{socioNet.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€</p>
-                            <p className="text-gray-600 text-xs mt-1">
+                            <p className="text-gray-400 text-xs mt-1">
                               {socioGross.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ bruto
                               {expSocioFixed > 0 && <span className="text-red-400/70"> − {expSocioFixed.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ gastos</span>}
                             </p>
                           </div>
-                          <div className="bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-lg p-3">
+                          <div className="bg-gray-50 border border-[#C9A84C]/20 rounded-lg p-3">
                             <p className="text-gray-400 text-xs mb-1">Black Boats ({100 - s.profit_pct}%)</p>
                             <p className={`text-lg font-bold ${bbNet >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{bbNet.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€</p>
-                            <p className="text-gray-600 text-xs mt-1">
+                            <p className="text-gray-400 text-xs mt-1">
                               {bbGross.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ bruto
                               {b.expBBFixed > 0 && <span className="text-red-400/70"> − {b.expBBFixed.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€ gastos</span>}
                             </p>
@@ -298,14 +298,14 @@ export default function InformesPage() {
       })()}
 
       {/* ── Informe mensual ── */}
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
-        <div className="px-5 py-4 border-b border-[#2A2A2A] flex items-center justify-between flex-wrap gap-3">
-          <h2 className="text-white font-semibold text-sm">Informe mensual detallado</h2>
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between flex-wrap gap-3">
+          <h2 className="text-gray-900 font-semibold text-sm">Informe mensual detallado</h2>
           <div className="flex gap-1 flex-wrap">
             {MONTHS_ES.map((m, i) => (
               <button key={i} onClick={() => setMonth(i)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all
-                  ${month === i ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-500 hover:text-white border border-transparent'}`}>
+                  ${month === i ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-400 hover:text-gray-900 border border-transparent'}`}>
                 {m}
               </button>
             ))}
@@ -315,20 +315,20 @@ export default function InformesPage() {
         <div className="p-5 space-y-4">
           {/* Resumen del mes */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-[#1E1E1E] rounded-xl p-4">
-              <p className="text-gray-500 text-xs mb-1">Facturado</p>
-              <p className="text-white text-xl font-bold">{totalMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-600 text-xs mt-0.5">{monthBookings.length} reservas</p>
+            <div className="bg-gray-100 rounded-xl p-4">
+              <p className="text-gray-400 text-xs mb-1">Facturado</p>
+              <p className="text-gray-900 text-xl font-bold">{totalMonth.toLocaleString('es-ES')}€</p>
+              <p className="text-gray-400 text-xs mt-0.5">{monthBookings.length} reservas</p>
             </div>
-            <div className="bg-[#1E1E1E] rounded-xl p-4">
-              <p className="text-gray-500 text-xs mb-1">Gastos</p>
+            <div className="bg-gray-100 rounded-xl p-4">
+              <p className="text-gray-400 text-xs mb-1">Gastos</p>
               <p className="text-red-400 text-xl font-bold">-{totalExpMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-600 text-xs mt-0.5">{monthExpenses.length} registros</p>
+              <p className="text-gray-400 text-xs mt-0.5">{monthExpenses.length} registros</p>
             </div>
-            <div className="bg-[#1E1E1E] rounded-xl p-4">
-              <p className="text-gray-500 text-xs mb-1">Beneficio neto</p>
+            <div className="bg-gray-100 rounded-xl p-4">
+              <p className="text-gray-400 text-xs mb-1">Beneficio neto</p>
               <p className={`text-xl font-bold ${netMonth >= 0 ? 'text-[#C9A84C]' : 'text-red-400'}`}>{netMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-600 text-xs mt-0.5">{totalMonth > 0 ? Math.round((netMonth / totalMonth) * 100) : 0}% margen</p>
+              <p className="text-gray-400 text-xs mt-0.5">{totalMonth > 0 ? Math.round((netMonth / totalMonth) * 100) : 0}% margen</p>
             </div>
           </div>
 
@@ -338,15 +338,15 @@ export default function InformesPage() {
             <div className="grid grid-cols-2 gap-3">
               {byGroup.map(g => (
                 <button key={g.key} onClick={() => setSelectedGroup(selectedGroup === g.key ? null : g.key)}
-                  className={`p-4 rounded-xl border text-left transition-all ${selectedGroup === g.key ? 'border-[#C9A84C]/50 bg-[#C9A84C]/5' : 'border-[#2A2A2A] bg-[#1E1E1E] hover:border-[#3A3A3A]'}`}>
+                  className={`p-4 rounded-xl border text-left transition-all ${selectedGroup === g.key ? 'border-[#C9A84C]/50 bg-[#C9A84C]/5' : 'border-gray-200 bg-gray-100 hover:border-[#3A3A3A]'}`}>
                   <div className="flex items-center gap-2 mb-2">
                     {g.key === 'efectivo' ? <Banknote size={15} className="text-green-400" /> : <CreditCard size={15} className="text-blue-400" />}
-                    <p className="text-white text-sm font-medium">{g.label}</p>
+                    <p className="text-gray-900 text-sm font-medium">{g.label}</p>
                   </div>
                   <p className={`text-xl font-bold ${g.color}`}>{g.total.toLocaleString('es-ES')}€</p>
-                  <p className="text-gray-600 text-xs mt-0.5">{g.count} reserva{g.count !== 1 ? 's' : ''}</p>
+                  <p className="text-gray-400 text-xs mt-0.5">{g.count} reserva{g.count !== 1 ? 's' : ''}</p>
                   {totalMonth > 0 && (
-                    <div className="mt-2 h-1 bg-[#2A2A2A] rounded-full overflow-hidden">
+                    <div className="mt-2 h-1 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full bg-[#C9A84C] rounded-full" style={{ width: `${Math.round((g.total / totalMonth) * 100)}%` }} />
                     </div>
                   )}
@@ -359,37 +359,37 @@ export default function InformesPage() {
           {selectedGroup && (() => {
             const g = byGroup.find(x => x.key === selectedGroup)!
             return (
-              <div className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-[#2A2A2A]">
-                  <p className="text-white text-sm font-medium">Reservas — {g.label} · {MONTHS_ES[month]} {year}</p>
-                  <button onClick={() => setSelectedGroup(null)} className="text-gray-500 hover:text-white transition-colors"><X size={14} /></button>
+              <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                  <p className="text-gray-900 text-sm font-medium">Reservas — {g.label} · {MONTHS_ES[month]} {year}</p>
+                  <button onClick={() => setSelectedGroup(null)} className="text-gray-400 hover:text-gray-900 transition-colors"><X size={14} /></button>
                 </div>
                 {g.bookings.length === 0 ? (
-                  <p className="text-center py-8 text-gray-600 text-sm">No hay reservas con este método</p>
+                  <p className="text-center py-8 text-gray-400 text-sm">No hay reservas con este método</p>
                 ) : (
                   <div className="overflow-x-auto"><table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#2A2A2A]">
-                        <th className="text-left px-4 py-2 text-gray-500 text-xs">Fecha</th>
-                        <th className="text-left px-4 py-2 text-gray-500 text-xs">Barco</th>
-                        <th className="text-right px-4 py-2 text-gray-500 text-xs">Importe</th>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left px-4 py-2 text-gray-400 text-xs">Fecha</th>
+                        <th className="text-left px-4 py-2 text-gray-400 text-xs">Barco</th>
+                        <th className="text-right px-4 py-2 text-gray-400 text-xs">Importe</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1E1E1E]">
+                    <tbody className="divide-y divide-gray-100">
                       {g.bookings.map(b => (
                         <tr key={b.id} className="hover:bg-[#222] transition-colors">
                           <td className="px-4 py-2.5 text-gray-400 text-xs">
                             {new Date(b.start_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
                           </td>
-                          <td className="px-4 py-2.5 text-white text-xs">{b.boat?.name ?? '—'}</td>
+                          <td className="px-4 py-2.5 text-gray-900 text-xs">{b.boat?.name ?? '—'}</td>
                           <td className="px-4 py-2.5 text-right text-[#C9A84C] font-semibold">{Number(b.total_price ?? 0).toLocaleString('es-ES')}€</td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot>
-                      <tr className="border-t border-[#2A2A2A] bg-[#141414]">
+                      <tr className="border-t border-gray-200 bg-white">
                         <td colSpan={2} className="px-4 py-2.5 text-gray-400 text-xs">Total</td>
-                        <td className="px-4 py-2.5 text-right text-white font-bold">{g.total.toLocaleString('es-ES')}€</td>
+                        <td className="px-4 py-2.5 text-right text-gray-900 font-bold">{g.total.toLocaleString('es-ES')}€</td>
                       </tr>
                     </tfoot>
                   </table></div>

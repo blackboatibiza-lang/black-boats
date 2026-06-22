@@ -63,7 +63,7 @@ export default function ReservaDetailPage() {
 
   if (!booking) {
     return (
-      <div className="text-center py-20 text-gray-500">
+      <div className="text-center py-20 text-gray-400">
         <p>Reserva no encontrada</p>
         <Link href="/reservas" className="text-[#C9A84C] text-sm mt-2 inline-block hover:underline">← Volver a reservas</Link>
       </div>
@@ -88,21 +88,21 @@ export default function ReservaDetailPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-white font-bold text-lg font-mono">{booking.booking_number}</h1>
+              <h1 className="text-gray-900 font-bold text-lg font-mono">{booking.booking_number}</h1>
               <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${st.color}`}>{st.label}</span>
             </div>
-            <p className="text-gray-500 text-xs mt-0.5">
+            <p className="text-gray-400 text-xs mt-0.5">
               Creada el {new Date(booking.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button className="p-2 text-gray-400 hover:text-white border border-[#2A2A2A] rounded-lg hover:border-[#C9A84C]/30 transition-all">
+          <button className="p-2 text-gray-400 hover:text-gray-900 border border-gray-200 rounded-lg hover:border-[#C9A84C]/30 transition-all">
             <Printer size={16} />
           </button>
           <Link href={`/reservas/${id}/editar`}
@@ -117,43 +117,43 @@ export default function ReservaDetailPage() {
         <div className="lg:col-span-2 space-y-4">
 
           {/* Cliente */}
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-            <p className="text-gray-500 text-xs mb-3 flex items-center gap-1.5"><Users size={11} /> CLIENTE</p>
+          <div className="bg-white border border-gray-200 rounded-xl p-5">
+            <p className="text-gray-400 text-xs mb-3 flex items-center gap-1.5"><Users size={11} /> CLIENTE</p>
             {booking.client ? (
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] font-bold">
+                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] font-bold">
                   {booking.client.first_name[0]}{booking.client.last_name[0]}
                 </div>
                 <div>
-                  <p className="text-white font-semibold">{clientName}</p>
+                  <p className="text-gray-900 font-semibold">{clientName}</p>
                   <div className="flex items-center gap-3 mt-0.5">
                     {booking.client.email && (
-                      <span className="text-gray-500 text-xs flex items-center gap-1"><Mail size={10} />{booking.client.email}</span>
+                      <span className="text-gray-400 text-xs flex items-center gap-1"><Mail size={10} />{booking.client.email}</span>
                     )}
                     {booking.client.phone && (
-                      <span className="text-gray-500 text-xs flex items-center gap-1"><Phone size={10} />{booking.client.phone}</span>
+                      <span className="text-gray-400 text-xs flex items-center gap-1"><Phone size={10} />{booking.client.phone}</span>
                     )}
                   </div>
                 </div>
-                <Link href={`/clientes/${booking.client.id}`} className="ml-auto text-gray-500 hover:text-[#C9A84C] transition-colors">
+                <Link href={`/clientes/${booking.client.id}`} className="ml-auto text-gray-400 hover:text-[#C9A84C] transition-colors">
                   <Pencil size={14} />
                 </Link>
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">Sin cliente asignado</p>
+              <p className="text-gray-400 text-sm">Sin cliente asignado</p>
             )}
           </div>
 
           {/* Barco y fechas */}
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-            <p className="text-gray-500 text-xs mb-3 flex items-center gap-1.5"><Anchor size={11} /> EMBARCACIÓN Y FECHAS</p>
+          <div className="bg-white border border-gray-200 rounded-xl p-5">
+            <p className="text-gray-400 text-xs mb-3 flex items-center gap-1.5"><Anchor size={11} /> EMBARCACIÓN Y FECHAS</p>
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-[#2A2A2A] flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
                 <Anchor size={18} className="text-[#C9A84C]" />
               </div>
               <div>
-                <p className="text-white font-semibold">{booking.boat?.name ?? '—'}</p>
-                <p className="text-gray-500 text-xs">
+                <p className="text-gray-900 font-semibold">{booking.boat?.name ?? '—'}</p>
+                <p className="text-gray-400 text-xs">
                   {booking.rental_type === 'with_captain' ? 'Con capitán' : 'Sin capitán'} ·{' '}
                   {booking.adults ?? 1} adultos{booking.children > 0 ? ` · ${booking.children} niños` : ''}
                 </p>
@@ -165,38 +165,38 @@ export default function ReservaDetailPage() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="bg-[#1E1E1E] rounded-lg p-3">
-                <p className="text-gray-500 text-xs mb-1 flex items-center gap-1"><CalendarDays size={10} /> SALIDA</p>
-                <p className="text-white font-medium">
+              <div className="bg-gray-100 rounded-lg p-3">
+                <p className="text-gray-400 text-xs mb-1 flex items-center gap-1"><CalendarDays size={10} /> SALIDA</p>
+                <p className="text-gray-900 font-medium">
                   {new Date(booking.start_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </p>
-                <p className="text-gray-500 text-xs flex items-center gap-1 mt-0.5"><Clock size={10} />{booking.start_time?.slice(0, 5) ?? '—'}</p>
+                <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5"><Clock size={10} />{booking.start_time?.slice(0, 5) ?? '—'}</p>
               </div>
-              <div className="bg-[#1E1E1E] rounded-lg p-3">
-                <p className="text-gray-500 text-xs mb-1 flex items-center gap-1"><CalendarDays size={10} /> REGRESO</p>
-                <p className="text-white font-medium">
+              <div className="bg-gray-100 rounded-lg p-3">
+                <p className="text-gray-400 text-xs mb-1 flex items-center gap-1"><CalendarDays size={10} /> REGRESO</p>
+                <p className="text-gray-900 font-medium">
                   {new Date(booking.end_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </p>
-                <p className="text-gray-500 text-xs flex items-center gap-1 mt-0.5"><Clock size={10} />{booking.end_time?.slice(0, 5) ?? '—'}</p>
+                <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5"><Clock size={10} />{booking.end_time?.slice(0, 5) ?? '—'}</p>
               </div>
             </div>
             {booking.departure_port && (
-              <p className="text-gray-500 text-xs mt-3">Puerto: {booking.departure_port}</p>
+              <p className="text-gray-400 text-xs mt-3">Puerto: {booking.departure_port}</p>
             )}
             {booking.route_notes && (
-              <p className="text-gray-500 text-xs mt-1">Ruta: {booking.route_notes}</p>
+              <p className="text-gray-400 text-xs mt-1">Ruta: {booking.route_notes}</p>
             )}
           </div>
 
           {/* Extras */}
           {booking.booking_extras?.length > 0 && (
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-              <p className="text-gray-500 text-xs mb-3 flex items-center gap-1.5"><Package size={11} /> EXTRAS CONTRATADOS</p>
+            <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <p className="text-gray-400 text-xs mb-3 flex items-center gap-1.5"><Package size={11} /> EXTRAS CONTRATADOS</p>
               <div className="space-y-2">
                 {booking.booking_extras.map((e: any) => (
                   <div key={e.id} className="flex items-center justify-between text-sm">
                     <span className="text-gray-300">{e.name} × {e.quantity}</span>
-                    <span className="text-white font-medium">{Number(e.total).toLocaleString('es-ES')}€</span>
+                    <span className="text-gray-900 font-medium">{Number(e.total).toLocaleString('es-ES')}€</span>
                   </div>
                 ))}
               </div>
@@ -205,8 +205,8 @@ export default function ReservaDetailPage() {
 
           {/* Notas */}
           {booking.internal_notes && (
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-              <p className="text-gray-500 text-xs mb-2">NOTAS INTERNAS</p>
+            <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <p className="text-gray-400 text-xs mb-2">NOTAS INTERNAS</p>
               <p className="text-gray-300 text-sm">{booking.internal_notes}</p>
             </div>
           )}
@@ -215,17 +215,17 @@ export default function ReservaDetailPage() {
         {/* Columna lateral */}
         <div className="space-y-4">
           {/* Precio */}
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-            <p className="text-gray-500 text-xs mb-3 flex items-center gap-1.5"><CreditCard size={11} /> PRECIO</p>
+          <div className="bg-white border border-gray-200 rounded-xl p-5">
+            <p className="text-gray-400 text-xs mb-3 flex items-center gap-1.5"><CreditCard size={11} /> PRECIO</p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Base ({days}d)</span>
-                <span className="text-white">{Number(booking.base_price).toLocaleString('es-ES')}€</span>
+                <span className="text-gray-900">{Number(booking.base_price).toLocaleString('es-ES')}€</span>
               </div>
               {Number(booking.extras_total) > 0 && (
                 <div className="flex justify-between">
                   <span className="text-gray-400">Extras</span>
-                  <span className="text-white">{Number(booking.extras_total).toLocaleString('es-ES')}€</span>
+                  <span className="text-gray-900">{Number(booking.extras_total).toLocaleString('es-ES')}€</span>
                 </div>
               )}
               {Number(booking.discount) > 0 && (
@@ -234,23 +234,23 @@ export default function ReservaDetailPage() {
                   <span className="text-green-400">−{Number(booking.discount).toLocaleString('es-ES')}€</span>
                 </div>
               )}
-              <div className="border-t border-[#2A2A2A] pt-2 flex justify-between font-bold">
-                <span className="text-white">Total</span>
+              <div className="border-t border-gray-200 pt-2 flex justify-between font-bold">
+                <span className="text-gray-900">Total</span>
                 <span className="text-[#C9A84C] text-lg">{Number(booking.total_price).toLocaleString('es-ES')}€</span>
               </div>
               {Number(booking.deposit_amount) > 0 && (
-                <p className="text-gray-500 text-xs">Fianza: {Number(booking.deposit_amount).toLocaleString('es-ES')}€</p>
+                <p className="text-gray-400 text-xs">Fianza: {Number(booking.deposit_amount).toLocaleString('es-ES')}€</p>
               )}
             </div>
-            <div className="mt-3 pt-3 border-t border-[#2A2A2A]">
+            <div className="mt-3 pt-3 border-t border-gray-200">
               <span className={`text-xs font-semibold ${pay.color}`}>{pay.label}</span>
             </div>
           </div>
 
           {/* Cambiar estado */}
           {nextStatuses[booking.status]?.length > 0 && (
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-              <p className="text-gray-500 text-xs mb-3">CAMBIAR ESTADO</p>
+            <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <p className="text-gray-400 text-xs mb-3">CAMBIAR ESTADO</p>
               <div className="space-y-2">
                 {nextStatuses[booking.status].map(s => {
                   const sc = statusConfig[s]
@@ -270,7 +270,7 @@ export default function ReservaDetailPage() {
           )}
 
           {/* Info adicional */}
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-2 text-xs text-gray-500">
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-2 text-xs text-gray-400">
             <div className="flex justify-between">
               <span>Origen</span>
               <span className="text-gray-300 capitalize">{booking.source ?? '—'}</span>

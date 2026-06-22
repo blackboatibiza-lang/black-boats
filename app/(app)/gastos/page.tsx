@@ -7,7 +7,7 @@ import { getSession, hasEditPerm } from '@/lib/session'
 
 const CATEGORIES = ['Combustible', 'Mantenimiento', 'Seguros', 'Amarres', 'Limpieza', 'Repuestos', 'Personal', 'Patrón', 'Broker', 'Marketing', 'Administrativo', 'Otro']
 
-const inputCls = 'w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50'
+const inputCls = 'w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50'
 const labelCls = 'text-gray-400 text-xs mb-1.5 block'
 
 export default function GastosPage() {
@@ -122,8 +122,8 @@ export default function GastosPage() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-white font-bold text-xl">Gastos</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Registro de gastos operativos</p>
+          <h1 className="text-gray-900 font-bold text-xl">Gastos</h1>
+          <p className="text-gray-400 text-sm mt-0.5">Registro de gastos operativos</p>
         </div>
         {canEdit && (
           <button onClick={() => setShowForm(v => !v)}
@@ -135,8 +135,8 @@ export default function GastosPage() {
 
       {/* Formulario */}
       {showForm && (
-        <div className="bg-[#141414] border border-[#C9A84C]/30 rounded-xl p-5 space-y-4">
-          <h3 className="text-white font-semibold text-sm">Registrar gasto</h3>
+        <div className="bg-white border border-[#C9A84C]/30 rounded-xl p-5 space-y-4">
+          <h3 className="text-gray-900 font-semibold text-sm">Registrar gasto</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Importe (€) *</label>
@@ -179,17 +179,17 @@ export default function GastosPage() {
             <div className="col-span-2">
               <label className={labelCls}>Justificante (foto / PDF)</label>
               {form.receipt_url ? (
-                <div className="flex items-center gap-3 p-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-100 border border-gray-200 rounded-lg">
                   <FileText size={16} className="text-[#C9A84C] flex-shrink-0" />
                   <a href={form.receipt_url} target="_blank" rel="noopener noreferrer"
                     className="text-[#C9A84C] text-xs hover:underline flex-1 truncate">Ver justificante</a>
-                  <button onClick={() => set('receipt_url', '')} className="text-gray-500 hover:text-red-400 transition-colors">
+                  <button onClick={() => set('receipt_url', '')} className="text-gray-400 hover:text-red-400 transition-colors">
                     <X size={14} />
                   </button>
                 </div>
               ) : (
                 <button onClick={() => fileRef.current?.click()} disabled={uploading}
-                  className="w-full py-3 border-2 border-dashed border-[#2A2A2A] hover:border-[#C9A84C]/40 rounded-lg flex items-center justify-center gap-2 text-gray-500 hover:text-gray-300 text-sm transition-colors">
+                  className="w-full py-3 border-2 border-dashed border-gray-200 hover:border-[#C9A84C]/40 rounded-lg flex items-center justify-center gap-2 text-gray-400 hover:text-gray-300 text-sm transition-colors">
                   {uploading
                     ? <div className="w-4 h-4 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
                     : <><Upload size={15} /> Subir justificante</>}
@@ -200,7 +200,7 @@ export default function GastosPage() {
             </div>
           </div>
           <div className="flex gap-2 justify-end pt-1">
-            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-400 hover:text-white text-sm transition-colors">Cancelar</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-400 hover:text-gray-900 text-sm transition-colors">Cancelar</button>
             <button onClick={handleSave} disabled={saving || !form.amount || !form.concept}
               className="px-4 py-2 bg-[#C9A84C] hover:bg-[#E8C97A] disabled:opacity-60 text-black text-sm font-semibold rounded-lg transition-colors">
               {saving ? 'Guardando...' : 'Guardar gasto'}
@@ -212,68 +212,68 @@ export default function GastosPage() {
       {/* Filtros */}
       <div className="flex gap-3 flex-wrap">
         <select value={filterBoat} onChange={e => setFilterBoat(e.target.value)}
-          className="px-3 py-2 bg-[#141414] border border-[#2A2A2A] rounded-lg text-sm text-gray-400 focus:outline-none focus:border-[#C9A84C]/50">
+          className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-400 focus:outline-none focus:border-[#C9A84C]/50">
           <option value="">Todos los barcos</option>
           {boats.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
         </select>
         <input type="month" value={filterMonth} onChange={e => setFilterMonth(e.target.value)}
-          className="px-3 py-2 bg-[#141414] border border-[#2A2A2A] rounded-lg text-sm text-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
+          className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
         {(filterBoat || filterMonth) && (
-          <button onClick={() => { setFilterBoat(''); setFilterMonth('') }} className="text-gray-500 hover:text-white text-sm transition-colors">
+          <button onClick={() => { setFilterBoat(''); setFilterMonth('') }} className="text-gray-400 hover:text-gray-900 text-sm transition-colors">
             Limpiar filtros
           </button>
         )}
         {filtered.length > 0 && (
           <div className="ml-auto flex items-center gap-1.5">
-            <span className="text-gray-500 text-sm">Total:</span>
-            <span className="text-white font-bold">{totalFiltered.toLocaleString('es-ES')}€</span>
+            <span className="text-gray-400 text-sm">Total:</span>
+            <span className="text-gray-900 font-bold">{totalFiltered.toLocaleString('es-ES')}€</span>
           </div>
         )}
       </div>
 
       {/* Lista */}
       {filtered.length === 0 ? (
-        <div className="text-center py-20 bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <Receipt size={36} className="mx-auto mb-3 text-gray-700" />
-          <p className="text-gray-500 text-sm">No hay gastos registrados</p>
+        <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
+          <Receipt size={36} className="mx-auto mb-3 text-gray-300" />
+          <p className="text-gray-400 text-sm">No hay gastos registrados</p>
         </div>
       ) : (
-        <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[600px]">
             <thead>
-              <tr className="border-b border-[#2A2A2A] bg-[#1A1A1A]">
-                <th className="text-left px-4 py-3 text-gray-500 text-xs font-medium">Fecha</th>
-                <th className="text-left px-4 py-3 text-gray-500 text-xs font-medium">Concepto</th>
-                <th className="text-left px-4 py-3 text-gray-500 text-xs font-medium">Categoría</th>
-                <th className="text-left px-4 py-3 text-gray-500 text-xs font-medium">Barco</th>
-                <th className="text-left px-4 py-3 text-gray-500 text-xs font-medium">Asignado a</th>
-                <th className="text-right px-4 py-3 text-gray-500 text-xs font-medium">Importe</th>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left px-4 py-3 text-gray-400 text-xs font-medium">Fecha</th>
+                <th className="text-left px-4 py-3 text-gray-400 text-xs font-medium">Concepto</th>
+                <th className="text-left px-4 py-3 text-gray-400 text-xs font-medium">Categoría</th>
+                <th className="text-left px-4 py-3 text-gray-400 text-xs font-medium">Barco</th>
+                <th className="text-left px-4 py-3 text-gray-400 text-xs font-medium">Asignado a</th>
+                <th className="text-right px-4 py-3 text-gray-400 text-xs font-medium">Importe</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1E1E1E]">
+            <tbody className="divide-y divide-gray-100">
               {filtered.map(e => (
-                <tr key={e.id} className="hover:bg-[#1A1A1A] transition-colors">
+                <tr key={e.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3 text-gray-400 text-xs whitespace-nowrap">
                     {new Date(e.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                   </td>
                   <td className="px-4 py-3">
-                    <p className="text-white text-sm">{e.concept}</p>
-                    {e.notes && <p className="text-gray-600 text-xs mt-0.5">{e.notes}</p>}
+                    <p className="text-gray-900 text-sm">{e.concept}</p>
+                    {e.notes && <p className="text-gray-400 text-xs mt-0.5">{e.notes}</p>}
                   </td>
                   <td className="px-4 py-3">
                     {e.category
-                      ? <span className="text-xs px-2 py-0.5 bg-[#2A2A2A] text-gray-400 rounded-full">{e.category}</span>
-                      : <span className="text-gray-700 text-xs">—</span>}
+                      ? <span className="text-xs px-2 py-0.5 bg-gray-200 text-gray-400 rounded-full">{e.category}</span>
+                      : <span className="text-gray-300 text-xs">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">{e.boat?.name ?? <span className="text-gray-700">General</span>}</td>
+                  <td className="px-4 py-3 text-gray-400 text-xs">{e.boat?.name ?? <span className="text-gray-300">General</span>}</td>
                   <td className="px-4 py-3 text-xs">
                     {e.assigned_to === 'blackboats'
                       ? <span className="px-2 py-0.5 bg-[#C9A84C]/10 text-[#C9A84C] rounded-full border border-[#C9A84C]/20">Black Boats</span>
                       : e.assignee
                         ? <span className="px-2 py-0.5 bg-sky-400/10 text-sky-400 rounded-full border border-sky-400/20">{e.assignee.name}</span>
-                        : <span className="text-gray-700">—</span>}
+                        : <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <span className="text-red-400 font-semibold">-{Number(e.amount).toLocaleString('es-ES')}€</span>
@@ -282,12 +282,12 @@ export default function GastosPage() {
                     <div className="flex items-center gap-2 justify-end">
                       {e.receipt_url && (
                         <a href={e.receipt_url} target="_blank" rel="noopener noreferrer"
-                          className="text-gray-600 hover:text-[#C9A84C] transition-colors" title="Ver justificante">
+                          className="text-gray-400 hover:text-[#C9A84C] transition-colors" title="Ver justificante">
                           <FileText size={14} />
                         </a>
                       )}
                       {canEdit && (
-                        <button onClick={() => handleDelete(e.id)} className="text-gray-700 hover:text-red-400 transition-colors">
+                        <button onClick={() => handleDelete(e.id)} className="text-gray-300 hover:text-red-400 transition-colors">
                           <Trash2 size={14} />
                         </button>
                       )}

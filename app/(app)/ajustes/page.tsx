@@ -50,7 +50,7 @@ const ROLE_DEFAULTS: Record<string, string[]> = {
   empleado: ['dashboard', 'flota', 'flota:edit', 'reservas', 'reservas:edit', 'clientes', 'clientes:edit', 'extras', 'extras:edit', 'gastos', 'gastos:edit'],
 }
 
-const inputCls = "w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50"
+const inputCls = "w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50"
 const labelCls = "text-gray-400 text-xs mb-1.5 block"
 
 // ── EMPRESA ──────────────────────────────────────────────────────
@@ -96,8 +96,8 @@ function EmpresaTab() {
 
   return (
     <div className="space-y-5 max-w-2xl">
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-        <h3 className="text-white font-semibold text-sm">Datos de la empresa</h3>
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+        <h3 className="text-gray-900 font-semibold text-sm">Datos de la empresa</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="col-span-2"><label className={labelCls}>Nombre / Razón social</label><input value={data.nombre} onChange={e => set('nombre', e.target.value)} className={inputCls} /></div>
           <div><label className={labelCls}>CIF / NIF</label><input value={data.cif} onChange={e => set('cif', e.target.value)} className={inputCls} /></div>
@@ -108,16 +108,16 @@ function EmpresaTab() {
         </div>
       </div>
 
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-        <h3 className="text-white font-semibold text-sm">Datos bancarios</h3>
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+        <h3 className="text-gray-900 font-semibold text-sm">Datos bancarios</h3>
         <div>
           <label className={labelCls}>IBAN</label>
           <input value={data.iban} onChange={e => set('iban', e.target.value)} className={inputCls} placeholder="ES00 0000 0000 0000 0000 0000" />
         </div>
       </div>
 
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-        <h3 className="text-white font-semibold text-sm">Configuración de facturación</h3>
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+        <h3 className="text-gray-900 font-semibold text-sm">Configuración de facturación</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>IVA por defecto (%)</label>
@@ -139,8 +139,8 @@ function EmpresaTab() {
         </div>
       </div>
 
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-        <h3 className="text-white font-semibold text-sm">Temporada</h3>
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+        <h3 className="text-gray-900 font-semibold text-sm">Temporada</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Inicio temporada (MM-DD)</label>
@@ -249,10 +249,10 @@ function UsuariosTab() {
 
       {/* Formulario */}
       {showForm && (
-        <div className="bg-[#141414] border border-[#C9A84C]/30 rounded-xl p-5 space-y-4">
+        <div className="bg-white border border-[#C9A84C]/30 rounded-xl p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-white font-semibold text-sm">{editId ? 'Editar usuario' : 'Nuevo usuario'}</h3>
-            <button onClick={resetForm} className="text-gray-500 hover:text-white"><X size={16} /></button>
+            <h3 className="text-gray-900 font-semibold text-sm">{editId ? 'Editar usuario' : 'Nuevo usuario'}</h3>
+            <button onClick={resetForm} className="text-gray-400 hover:text-gray-900"><X size={16} /></button>
           </div>
           {error && <p className="text-red-400 text-xs bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">{error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -281,12 +281,12 @@ function UsuariosTab() {
                     className={inputCls + ' pr-8'}
                     placeholder="••••••••"
                   />
-                  <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
+                  <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900">
                     {showPass ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
                 <button type="button" onClick={genPassword} title="Generar contraseña"
-                  className="px-2.5 border border-[#2A2A2A] rounded-lg text-gray-400 hover:text-white hover:border-[#C9A84C]/30 transition-all">
+                  className="px-2.5 border border-gray-200 rounded-lg text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/30 transition-all">
                   <RefreshCw size={13} />
                 </button>
               </div>
@@ -301,30 +301,30 @@ function UsuariosTab() {
               className="flex items-center gap-2 px-4 py-2 bg-[#C9A84C] hover:bg-[#E8C97A] disabled:opacity-60 text-black text-sm font-semibold rounded-lg transition-all">
               {saving ? <><div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" /> Guardando...</> : <><CheckCircle size={14} /> {editId ? 'Guardar cambios' : 'Crear usuario'}</>}
             </button>
-            <button onClick={resetForm} className="px-4 py-2 border border-[#2A2A2A] text-gray-400 hover:text-white rounded-lg text-sm transition-all">Cancelar</button>
+            <button onClick={resetForm} className="px-4 py-2 border border-gray-200 text-gray-400 hover:text-gray-900 rounded-lg text-sm transition-all">Cancelar</button>
           </div>
         </div>
       )}
 
       {/* Lista */}
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {users.length === 0 ? (
-          <div className="text-center py-12 text-gray-600 text-sm">No hay usuarios registrados</div>
+          <div className="text-center py-12 text-gray-400 text-sm">No hay usuarios registrados</div>
         ) : (
-          <div className="divide-y divide-[#1E1E1E]">
+          <div className="divide-y divide-gray-100">
             {users.map(u => {
               const r = roleInfo[u.role]
               return (
                 <div key={u.id} className="flex items-center gap-4 px-5 py-4">
-                  <div className="w-9 h-9 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] font-bold text-sm flex-shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] font-bold text-sm flex-shrink-0">
                     {u.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="text-white font-medium text-sm">{u.name}</p>
+                      <p className="text-gray-900 font-medium text-sm">{u.name}</p>
                       {!u.active && <span className="text-xs text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded">Inactivo</span>}
                     </div>
-                    <p className="text-gray-500 text-xs">{u.email}</p>
+                    <p className="text-gray-400 text-xs">{u.email}</p>
                   </div>
                   <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${r?.color ?? 'text-gray-400 bg-gray-400/10 border-gray-400/20'}`}>
                     {r?.label ?? u.role}
@@ -333,15 +333,15 @@ function UsuariosTab() {
                     <button onClick={() => toggleActive(u.id, u.active)}
                       title={u.active ? 'Desactivar' : 'Activar'}
                       className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all
-                        ${u.active ? 'border-[#2A2A2A] text-gray-500 hover:text-yellow-400 hover:border-yellow-400/30' : 'border-green-400/30 text-green-400 hover:bg-green-400/10'}`}>
+                        ${u.active ? 'border-gray-200 text-gray-400 hover:text-yellow-400 hover:border-yellow-400/30' : 'border-green-400/30 text-green-400 hover:bg-green-400/10'}`}>
                       {u.active ? <EyeOff size={13} /> : <Eye size={13} />}
                     </button>
                     <button onClick={() => startEdit(u)}
-                      className="w-8 h-8 rounded-lg border border-[#2A2A2A] text-gray-500 hover:text-white hover:border-[#C9A84C]/30 flex items-center justify-center transition-all">
+                      className="w-8 h-8 rounded-lg border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/30 flex items-center justify-center transition-all">
                       <Pencil size={13} />
                     </button>
                     <button onClick={() => deleteUser(u.id)}
-                      className="w-8 h-8 rounded-lg border border-[#2A2A2A] text-gray-500 hover:text-red-400 hover:border-red-400/30 flex items-center justify-center transition-all">
+                      className="w-8 h-8 rounded-lg border border-gray-200 text-gray-400 hover:text-red-400 hover:border-red-400/30 flex items-center justify-center transition-all">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -467,7 +467,7 @@ function PermisosTab() {
 
   if (users.length === 0) {
     return (
-      <div className="text-center py-20 text-gray-500 text-sm">
+      <div className="text-center py-20 text-gray-400 text-sm">
         Primero crea usuarios en la pestaña <span className="text-[#C9A84C]">Usuarios</span>
       </div>
     )
@@ -484,23 +484,23 @@ function PermisosTab() {
         const isExpanded = expanded[u.id] ?? false
         const allBoats   = userBoatIds.length === boats.length && boats.length > 0
         return (
-          <div key={u.id} className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
+          <div key={u.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] text-xs font-bold">
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] text-xs font-bold">
                   {u.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <p className="text-white font-medium text-sm">{u.name}</p>
-                  <p className="text-gray-500 text-xs capitalize">{u.role}{!u.active ? ' · Inactivo' : ''}</p>
+                  <p className="text-gray-900 font-medium text-sm">{u.name}</p>
+                  <p className="text-gray-400 text-xs capitalize">{u.role}{!u.active ? ' · Inactivo' : ''}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <select
                   onChange={e => e.target.value && applyRoleDefaults(u.id, e.target.value)}
                   defaultValue=""
-                  className="px-2 py-1.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-xs text-gray-400 focus:outline-none focus:border-[#C9A84C]/50">
+                  className="px-2 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-xs text-gray-400 focus:outline-none focus:border-[#C9A84C]/50">
                   <option value="" disabled>Aplicar preset de rol</option>
                   {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
                 </select>
@@ -522,7 +522,7 @@ function PermisosTab() {
                 const editKey = `${p.key}:edit`
                 const canEdit = has && p.canEdit && userPerms.includes(editKey)
                 return (
-                  <div key={p.key} className={`rounded-lg border transition-all ${has ? 'border-[#C9A84C]/40 bg-[#C9A84C]/5' : 'border-[#2A2A2A]'}`}>
+                  <div key={p.key} className={`rounded-lg border transition-all ${has ? 'border-[#C9A84C]/40 bg-[#C9A84C]/5' : 'border-gray-200'}`}>
                     {/* Fila acceso */}
                     <button onClick={() => {
                       togglePerm(u.id, p.key)
@@ -530,7 +530,7 @@ function PermisosTab() {
                       if (has && p.canEdit && userPerms.includes(editKey)) togglePerm(u.id, editKey)
                     }}
                       className={`flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-left transition-colors
-                        ${has ? 'text-[#C9A84C]' : 'text-gray-500 hover:text-gray-300'}`}>
+                        ${has ? 'text-[#C9A84C]' : 'text-gray-400 hover:text-gray-300'}`}>
                       <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${has ? 'bg-[#C9A84C]' : 'bg-[#3A3A3A]'}`} />
                       {p.label}
                     </button>
@@ -538,7 +538,7 @@ function PermisosTab() {
                     {has && p.canEdit && (
                       <button onClick={() => togglePerm(u.id, editKey)}
                         className={`flex items-center gap-1.5 w-full px-3 pb-2 text-[10px] transition-colors
-                          ${canEdit ? 'text-emerald-400' : 'text-gray-600 hover:text-gray-400'}`}>
+                          ${canEdit ? 'text-emerald-400' : 'text-gray-400 hover:text-gray-400'}`}>
                         {canEdit ? <Pencil size={10} /> : <Eye size={10} />}
                         {canEdit ? 'Puede editar' : 'Solo lectura'}
                       </button>
@@ -550,33 +550,33 @@ function PermisosTab() {
 
             {/* Acceso a embarcaciones */}
             {boats.length > 0 && (
-              <div className="border-t border-[#2A2A2A]">
+              <div className="border-t border-gray-200">
                 <button
                   onClick={() => setExpanded(prev => ({ ...prev, [u.id]: !isExpanded }))}
-                  className="w-full flex items-center justify-between px-5 py-3 text-xs text-gray-400 hover:text-white transition-colors">
+                  className="w-full flex items-center justify-between px-5 py-3 text-xs text-gray-400 hover:text-gray-900 transition-colors">
                   <div className="flex items-center gap-2">
                     <span className="font-medium">Acceso a embarcaciones</span>
                     {allBoats
                       ? <span className="text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-2 py-0.5 rounded-full">Todas</span>
                       : userBoatIds.length > 0
                       ? <span className="text-sky-400 bg-sky-400/10 border border-sky-400/30 px-2 py-0.5 rounded-full">{userBoatIds.length} asignada{userBoatIds.length !== 1 ? 's' : ''}</span>
-                      : <span className="text-gray-600 bg-[#1E1E1E] border border-[#2A2A2A] px-2 py-0.5 rounded-full">Sin restricción</span>
+                      : <span className="text-gray-400 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">Sin restricción</span>
                     }
                   </div>
-                  <span className="text-[10px] text-gray-600">{isExpanded ? '▲' : '▼'}</span>
+                  <span className="text-[10px] text-gray-400">{isExpanded ? '▲' : '▼'}</span>
                 </button>
                 {isExpanded && (
                   <div className="px-5 pb-4 space-y-2">
-                    <p className="text-gray-600 text-xs mb-3">
+                    <p className="text-gray-400 text-xs mb-3">
                       Si no se asigna ninguna embarcación, el usuario puede ver todas. Si se asignan, solo verá datos de las seleccionadas.
                     </p>
                     <div className="flex gap-2 mb-3">
                       <button onClick={() => selectAllBoats(u.id)}
-                        className="text-xs px-2.5 py-1 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-gray-400 hover:text-white hover:border-[#3A3A3A] transition-all">
+                        className="text-xs px-2.5 py-1 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 hover:text-gray-900 hover:border-[#3A3A3A] transition-all">
                         Todas
                       </button>
                       <button onClick={() => clearBoats(u.id)}
-                        className="text-xs px-2.5 py-1 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-gray-400 hover:text-white hover:border-[#3A3A3A] transition-all">
+                        className="text-xs px-2.5 py-1 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 hover:text-gray-900 hover:border-[#3A3A3A] transition-all">
                         Ninguna
                       </button>
                     </div>
@@ -585,32 +585,32 @@ function PermisosTab() {
                         const hasBoat = userBoatIds.includes(boat.id)
                         const row = userBoatRows.find(r => r.boat_id === boat.id)
                         return (
-                          <div key={boat.id} className={`rounded-lg border transition-all ${hasBoat ? 'border-sky-400/40 bg-sky-400/5' : 'border-[#2A2A2A]'}`}>
+                          <div key={boat.id} className={`rounded-lg border transition-all ${hasBoat ? 'border-sky-400/40 bg-sky-400/5' : 'border-gray-200'}`}>
                             <button onClick={() => toggleBoat(u.id, boat.id)}
-                              className={`flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-left ${hasBoat ? 'text-sky-400' : 'text-gray-500 hover:text-gray-300'}`}>
+                              className={`flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-left ${hasBoat ? 'text-sky-400' : 'text-gray-400 hover:text-gray-300'}`}>
                               <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${hasBoat ? 'bg-sky-400' : 'bg-[#3A3A3A]'}`} />
                               {boat.name}
                             </button>
                             {hasBoat && row && (
                               <div className="px-3 pb-2.5 grid grid-cols-2 gap-2">
                                 <div>
-                                  <label className="text-gray-500 text-[10px] block mb-1">% ganancia socio</label>
+                                  <label className="text-gray-400 text-[10px] block mb-1">% ganancia socio</label>
                                   <div className="flex items-center gap-1">
                                     <input type="number" min={0} max={100} step={1}
                                       value={row.profit_percentage}
                                       onChange={e => updateBoatPct(u.id, boat.id, 'profit_percentage', Number(e.target.value))}
-                                      className="w-full px-2 py-1 bg-[#1A1A1A] border border-[#2A2A2A] rounded text-xs text-white focus:outline-none focus:border-sky-400/50" />
-                                    <span className="text-gray-500 text-xs">%</span>
+                                      className="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-xs text-gray-900 focus:outline-none focus:border-sky-400/50" />
+                                    <span className="text-gray-400 text-xs">%</span>
                                   </div>
                                 </div>
                                 <div>
-                                  <label className="text-gray-500 text-[10px] block mb-1">% gastos socio</label>
+                                  <label className="text-gray-400 text-[10px] block mb-1">% gastos socio</label>
                                   <div className="flex items-center gap-1">
                                     <input type="number" min={0} max={100} step={1}
                                       value={row.expense_percentage}
                                       onChange={e => updateBoatPct(u.id, boat.id, 'expense_percentage', Number(e.target.value))}
-                                      className="w-full px-2 py-1 bg-[#1A1A1A] border border-[#2A2A2A] rounded text-xs text-white focus:outline-none focus:border-sky-400/50" />
-                                    <span className="text-gray-500 text-xs">%</span>
+                                      className="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-xs text-gray-900 focus:outline-none focus:border-sky-400/50" />
+                                    <span className="text-gray-400 text-xs">%</span>
                                   </div>
                                 </div>
                               </div>
@@ -628,16 +628,16 @@ function PermisosTab() {
       })}
 
       {/* Tabla referencia de roles */}
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
-        <h3 className="text-white font-semibold text-sm mb-3">Referencia de roles</h3>
+      <div className="bg-white border border-gray-200 rounded-xl p-5">
+        <h3 className="text-gray-900 font-semibold text-sm mb-3">Referencia de roles</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {ROLES.map(r => (
             <div key={r.value} className="flex items-start gap-2.5">
               <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0
                 ${r.value === 'admin' ? 'bg-[#C9A84C]' : r.value === 'socio' ? 'bg-violet-400' : r.value === 'empleado' ? 'bg-blue-400' : 'bg-gray-400'}`} />
               <div>
-                <p className="text-white text-xs font-medium">{r.label}</p>
-                <p className="text-gray-500 text-xs">{r.desc}</p>
+                <p className="text-gray-900 text-xs font-medium">{r.label}</p>
+                <p className="text-gray-400 text-xs">{r.desc}</p>
               </div>
             </div>
           ))}
@@ -660,10 +660,10 @@ export default function AjustesPage() {
   return (
     <div className="space-y-5">
       {/* Tabs */}
-      <div className="flex items-center gap-1 bg-[#141414] border border-[#2A2A2A] rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl p-1 w-fit">
         {tabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === t.id ? 'bg-[#C9A84C] text-black' : 'text-gray-400 hover:text-white'}`}>
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === t.id ? 'bg-[#C9A84C] text-black' : 'text-gray-400 hover:text-gray-900'}`}>
             <t.icon size={14} /> {t.label}
           </button>
         ))}

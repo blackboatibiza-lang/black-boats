@@ -101,35 +101,35 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
 
   return (
     <div className="space-y-4">
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {/* Month nav */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
-          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-gray-400 hover:text-white hover:border-[#C9A84C]/30 transition-all">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/30 transition-all">
             <ChevronLeft size={16} />
           </button>
           <div className="text-center">
-            <p className="text-white font-semibold">{MONTHS_ES[month]} {year}</p>
-            <p className="text-gray-600 text-xs">{visibleBookings.filter(b => {
+            <p className="text-gray-900 font-semibold">{MONTHS_ES[month]} {year}</p>
+            <p className="text-gray-400 text-xs">{visibleBookings.filter(b => {
               const s = new Date(b.start_date + 'T00:00:00')
               return s.getFullYear() === year && s.getMonth() === month
             }).length} reservas este mes</p>
           </div>
-          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-gray-400 hover:text-white hover:border-[#C9A84C]/30 transition-all">
+          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/30 transition-all">
             <ChevronRight size={16} />
           </button>
         </div>
 
         {/* Day headers */}
-        <div className="grid grid-cols-7 border-b border-[#1E1E1E]">
+        <div className="grid grid-cols-7 border-b border-gray-100">
           {DAYS_ES.map(d => (
-            <div key={d} className={`text-center py-2.5 text-xs font-medium ${d === 'S' || d === 'D' ? 'text-[#C9A84C]/60' : 'text-gray-500'}`}>{d}</div>
+            <div key={d} className={`text-center py-2.5 text-xs font-medium ${d === 'S' || d === 'D' ? 'text-[#C9A84C]/60' : 'text-gray-400'}`}>{d}</div>
           ))}
         </div>
 
         {/* Cells */}
         <div className="grid grid-cols-7">
           {cells.map((day, i) => {
-            if (!day) return <div key={i} className="h-14 sm:h-20 border-b border-r border-[#1A1A1A] last:border-r-0" />
+            if (!day) return <div key={i} className="h-14 sm:h-20 border-b border-r border-gray-100 last:border-r-0" />
             const dayBookings = bookingsForDay(day)
             const isToday = isSameDay(day, today)
             const isSelected = selected && isSameDay(day, selected)
@@ -138,8 +138,8 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
               <button
                 key={i}
                 onClick={() => setSelected(isSelected ? null : day)}
-                className={`h-14 sm:h-20 p-1 sm:p-1.5 border-b border-r border-[#1A1A1A] last:border-r-0 text-left transition-colors relative
-                  ${isSelected ? 'bg-[#C9A84C]/10' : 'hover:bg-[#1A1A1A]'}
+                className={`h-14 sm:h-20 p-1 sm:p-1.5 border-b border-r border-gray-100 last:border-r-0 text-left transition-colors relative
+                  ${isSelected ? 'bg-[#C9A84C]/10' : 'hover:bg-gray-50'}
                   ${isWeekend ? 'bg-[#0F0F0F]' : ''}`}
               >
                 <span className={`text-xs font-medium block mb-1 w-6 h-6 flex items-center justify-center rounded-full
@@ -158,7 +158,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
                     )
                   })}
                   {dayBookings.length > 2 && (
-                    <p className="text-[10px] text-gray-600 px-1">+{dayBookings.length - 2} más</p>
+                    <p className="text-[10px] text-gray-400 px-1">+{dayBookings.length - 2} más</p>
                   )}
                 </div>
               </button>
@@ -182,17 +182,17 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
 
       {/* Selected day panel */}
       {selected && (
-        <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
-          <div className="px-5 py-3.5 border-b border-[#2A2A2A]">
-            <p className="text-white font-semibold text-sm">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-gray-200">
+            <p className="text-gray-900 font-semibold text-sm">
               {selected.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
-            <p className="text-gray-500 text-xs">{selectedBookings.length} reserva{selectedBookings.length !== 1 ? 's' : ''}</p>
+            <p className="text-gray-400 text-xs">{selectedBookings.length} reserva{selectedBookings.length !== 1 ? 's' : ''}</p>
           </div>
           {selectedBookings.length === 0 ? (
-            <div className="text-center py-8 text-gray-600 text-sm">Sin reservas este día</div>
+            <div className="text-center py-8 text-gray-400 text-sm">Sin reservas este día</div>
           ) : (
-            <div className="divide-y divide-[#1E1E1E]">
+            <div className="divide-y divide-gray-100">
               {selectedBookings.map(b => {
                 const st = STATUS[b.status as BookingStatus]
                 const c  = boatColors[b.boat_id] ?? BOAT_PALETTE[0]
@@ -202,8 +202,8 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
                     <div className="flex items-center gap-3">
                       <div className={`w-2.5 h-8 rounded-sm flex-shrink-0 ${c.dot}`} />
                       <div>
-                        <p className="text-white text-sm font-medium">{canEdit ? clientName : '— Restringido —'}</p>
-                        <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
+                        <p className="text-gray-900 text-sm font-medium">{canEdit ? clientName : '— Restringido —'}</p>
+                        <div className="flex items-center gap-3 text-xs text-gray-400 mt-0.5">
                           <span className="flex items-center gap-1"><Anchor size={10} />{b.boat?.name ?? '—'}</span>
                           <span className="flex items-center gap-1"><Clock size={10} />{b.start_time?.slice(0,5) ?? '—'} → {b.end_time?.slice(0,5) ?? '—'}</span>
                           {canEdit && <span className="flex items-center gap-1"><Users size={10} />{b.adults ?? 1} pax</span>}
@@ -211,13 +211,13 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-white font-semibold text-sm">{Number(b.total_price).toLocaleString('es-ES')}€</p>
+                      <p className="text-gray-900 font-semibold text-sm">{Number(b.total_price).toLocaleString('es-ES')}€</p>
                       <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${st?.color ?? ''}`}>{st?.label}</span>
                     </div>
                   </div>
                 )
                 return canEdit
-                  ? <Link key={b.id} href={`/reservas/${b.id}`} className="flex items-center justify-between px-5 py-3 hover:bg-[#1A1A1A] transition-colors">{inner}</Link>
+                  ? <Link key={b.id} href={`/reservas/${b.id}`} className="flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors">{inner}</Link>
                   : <div key={b.id} className="flex items-center justify-between px-5 py-3">{inner}</div>
               })}
             </div>
@@ -232,9 +232,9 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
 function ListView({ bookings, canEdit, onDelete }: { bookings: any[]; canEdit: boolean; onDelete: (id: string) => void }) {
   if (bookings.length === 0) {
     return (
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl">
-        <div className="text-center py-16 text-gray-500">
-          <CalendarDays size={32} className="mx-auto mb-3 text-gray-700" />
+      <div className="bg-white border border-gray-200 rounded-xl">
+        <div className="text-center py-16 text-gray-400">
+          <CalendarDays size={32} className="mx-auto mb-3 text-gray-300" />
           <p>No hay reservas</p>
           {canEdit && (
             <Link href="/reservas/nueva" className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#C9A84C] text-black text-sm font-semibold rounded-lg">
@@ -246,69 +246,69 @@ function ListView({ bookings, canEdit, onDelete }: { bookings: any[]; canEdit: b
     )
   }
   return (
-    <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2A2A2A]">
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">N° Reserva</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Cliente</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Barco</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Fecha</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Pax</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Total</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Pago</th>
-              <th className="text-left px-5 py-3.5 text-gray-500 font-medium text-xs">Estado</th>
+            <tr className="border-b border-gray-200">
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">N° Reserva</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Cliente</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Barco</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Fecha</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Pax</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Total</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Pago</th>
+              <th className="text-left px-5 py-3.5 text-gray-400 font-medium text-xs">Estado</th>
               {canEdit && <th className="px-5 py-3.5" />}
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#1E1E1E]">
+          <tbody className="divide-y divide-gray-100">
             {bookings.map(b => {
               const st = STATUS[b.status as BookingStatus]
               const pay = PAY[b.payment_status as keyof typeof PAY]
               const clientName = b.client ? `${b.client.first_name} ${b.client.last_name}` : 'Sin cliente'
               const isMultiDay = b.start_date !== b.end_date
               return (
-                <tr key={b.id} className="hover:bg-[#1A1A1A] transition-colors">
+                <tr key={b.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-5 py-3.5">
                     {canEdit
                       ? <Link href={`/reservas/${b.id}`} className="text-[#C9A84C] hover:underline font-mono text-xs">{b.booking_number}</Link>
-                      : <span className="text-gray-500 font-mono text-xs">{b.booking_number}</span>}
+                      : <span className="text-gray-400 font-mono text-xs">{b.booking_number}</span>}
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] text-xs font-bold flex-shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] text-xs font-bold flex-shrink-0">
                         {clientName.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                       </div>
-                      <span className="text-white font-medium">{clientName}</span>
+                      <span className="text-gray-900 font-medium">{clientName}</span>
                     </div>
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-1.5 text-gray-300">
-                      <Anchor size={13} className="text-gray-500 flex-shrink-0" />
+                      <Anchor size={13} className="text-gray-400 flex-shrink-0" />
                       {b.boat?.name ?? '—'}
                     </div>
-                    <span className="text-xs text-gray-600">
+                    <span className="text-xs text-gray-400">
                       {b.rental_type === 'with_captain' ? 'Con capitán' : 'Sin capitán'}
                     </span>
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-1.5 text-gray-300">
-                      <CalendarDays size={13} className="text-gray-500" />
+                      <CalendarDays size={13} className="text-gray-400" />
                       {new Date(b.start_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
                       {isMultiDay && ` → ${new Date(b.end_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}`}
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-gray-600">
+                    <div className="flex items-center gap-1 text-xs text-gray-400">
                       <Clock size={11} /> {b.start_time?.slice(0, 5) ?? '—'}
                     </div>
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-1 text-gray-300">
-                      <Users size={13} className="text-gray-500" /> {b.adults ?? 1}
+                      <Users size={13} className="text-gray-400" /> {b.adults ?? 1}
                     </div>
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className="text-white font-semibold">{Number(b.total_price).toLocaleString('es-ES')}€</span>
+                    <span className="text-gray-900 font-semibold">{Number(b.total_price).toLocaleString('es-ES')}€</span>
                   </td>
                   <td className="px-5 py-3.5">
                     <span className={`text-xs font-medium ${pay?.color ?? 'text-gray-400'}`}>{pay?.label ?? b.payment_status}</span>
@@ -324,7 +324,7 @@ function ListView({ bookings, canEdit, onDelete }: { bookings: any[]; canEdit: b
                             onDelete(b.id)
                           }
                         }}
-                        className="text-gray-600 hover:text-red-400 transition-colors"
+                        className="text-gray-400 hover:text-red-400 transition-colors"
                         title="Eliminar reserva">
                         <Trash2 size={15} />
                       </button>
@@ -419,7 +419,7 @@ export default function ReservasPage() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === f
                   ? 'bg-[#C9A84C] text-black border-[#C9A84C]'
-                  : 'bg-[#141414] text-gray-400 border-[#2A2A2A] hover:text-white'
+                  : 'bg-white text-gray-400 border-gray-200 hover:text-gray-900'
               }`}>
               {f === 'all' ? `Todas (${counts.all})` : `${STATUS[f].label} (${counts[f] ?? 0})`}
             </button>
@@ -429,20 +429,20 @@ export default function ReservasPage() {
           {/* Search — hidden in calendar */}
           {view === 'list' && (
             <div className="relative">
-              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Buscar reserva..."
-                className="pl-9 pr-4 py-2 bg-[#141414] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50 w-44" />
+                className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50 w-44" />
             </div>
           )}
           {/* View toggle */}
-          <div className="flex border border-[#2A2A2A] rounded-lg overflow-hidden">
+          <div className="flex border border-gray-200 rounded-lg overflow-hidden">
             <button onClick={() => setView('list')}
-              className={`px-3 py-2 flex items-center gap-1.5 text-sm transition-colors ${view === 'list' ? 'bg-[#C9A84C]/10 text-[#C9A84C]' : 'text-gray-400 hover:text-white'}`}>
+              className={`px-3 py-2 flex items-center gap-1.5 text-sm transition-colors ${view === 'list' ? 'bg-[#C9A84C]/10 text-[#C9A84C]' : 'text-gray-400 hover:text-gray-900'}`}>
               <List size={15} />
             </button>
             <button onClick={() => setView('calendar')}
-              className={`px-3 py-2 flex items-center gap-1.5 text-sm border-l border-[#2A2A2A] transition-colors ${view === 'calendar' ? 'bg-[#C9A84C]/10 text-[#C9A84C]' : 'text-gray-400 hover:text-white'}`}>
+              className={`px-3 py-2 flex items-center gap-1.5 text-sm border-l border-gray-200 transition-colors ${view === 'calendar' ? 'bg-[#C9A84C]/10 text-[#C9A84C]' : 'text-gray-400 hover:text-gray-900'}`}>
               <CalendarDays size={15} />
             </button>
           </div>

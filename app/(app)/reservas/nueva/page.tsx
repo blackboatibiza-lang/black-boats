@@ -324,31 +324,31 @@ export default function NuevaReservaPage() {
           <div key={s.n} className="flex items-center flex-1 last:flex-none">
             <button
               onClick={() => step > s.n && setStep(s.n as Step)}
-              className={`flex items-center gap-2 text-xs font-medium transition-colors ${step === s.n ? 'text-[#C9A84C]' : step > s.n ? 'text-gray-400 hover:text-white cursor-pointer' : 'text-gray-600 cursor-default'}`}
+              className={`flex items-center gap-2 text-xs font-medium transition-colors ${step === s.n ? 'text-[#C9A84C]' : step > s.n ? 'text-gray-400 hover:text-gray-900 cursor-pointer' : 'text-gray-400 cursor-default'}`}
             >
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${step === s.n ? 'bg-[#C9A84C] border-[#C9A84C] text-black' : step > s.n ? 'bg-[#2A2A2A] border-[#2A2A2A] text-gray-300' : 'bg-transparent border-[#2A2A2A] text-gray-600'}`}>
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${step === s.n ? 'bg-[#C9A84C] border-[#C9A84C] text-black' : step > s.n ? 'bg-gray-200 border-gray-200 text-gray-300' : 'bg-transparent border-gray-200 text-gray-400'}`}>
                 {step > s.n ? <CheckCircle size={14} /> : s.n}
               </div>
               <span className="hidden sm:block">{s.label}</span>
             </button>
-            {i < STEPS.length - 1 && <div className={`flex-1 h-px mx-3 ${step > s.n ? 'bg-[#C9A84C]/30' : 'bg-[#2A2A2A]'}`} />}
+            {i < STEPS.length - 1 && <div className={`flex-1 h-px mx-3 ${step > s.n ? 'bg-[#C9A84C]/30' : 'bg-gray-200'}`} />}
           </div>
         ))}
       </div>
 
-      <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl">
+      <div className="bg-white border border-gray-200 rounded-xl">
 
         {/* ── PASO 1: CLIENTE ── */}
         {step === 1 && (
           <div className="p-6 space-y-4">
-            <h2 className="text-white font-semibold text-base">¿Quién hace la reserva?</h2>
+            <h2 className="text-gray-900 font-semibold text-base">¿Quién hace la reserva?</h2>
             <div className="flex gap-2">
               <button onClick={() => { setNewClient(false); setSelectedClient(null) }}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${!newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-[#2A2A2A] text-gray-400 hover:text-white'}`}>
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${!newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
                 Cliente existente
               </button>
               <button onClick={() => { setNewClient(true); setSelectedClient(null) }}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-[#2A2A2A] text-gray-400 hover:text-white'}`}>
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${newClient ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
                 <Plus size={14} className="inline mr-1" /> Nuevo cliente
               </button>
             </div>
@@ -356,29 +356,29 @@ export default function NuevaReservaPage() {
             {!newClient ? (
               <div className="space-y-3">
                 <div className="relative">
-                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input value={clientSearch} onChange={e => setClientSearch(e.target.value)}
                     placeholder="Buscar por nombre, email o teléfono..."
-                    className="w-full pl-9 pr-4 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                    className="w-full pl-9 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
                 </div>
                 <div className="max-h-64 overflow-y-auto space-y-1.5">
                   {filteredClients.map(c => (
                     <button key={c.id} onClick={() => setSelectedClient(c)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border text-left transition-all ${selectedClient?.id === c.id ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40' : 'border-[#2A2A2A] hover:border-[#C9A84C]/20 hover:bg-[#1E1E1E]'}`}>
-                      <div className="w-9 h-9 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] text-xs font-bold flex-shrink-0">
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border text-left transition-all ${selectedClient?.id === c.id ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40' : 'border-gray-200 hover:border-[#C9A84C]/20 hover:bg-gray-100'}`}>
+                      <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] text-xs font-bold flex-shrink-0">
                         {c.first_name[0]}{c.last_name[0]}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <p className="text-white text-sm font-medium">{c.first_name} {c.last_name}</p>
+                          <p className="text-gray-900 text-sm font-medium">{c.first_name} {c.last_name}</p>
                           {c.is_vip && <Star size={11} className="text-[#C9A84C] fill-[#C9A84C]" />}
                         </div>
-                        <p className="text-gray-500 text-xs truncate">{c.email ?? ''}{c.phone ? ` · ${c.phone}` : ''}</p>
+                        <p className="text-gray-400 text-xs truncate">{c.email ?? ''}{c.phone ? ` · ${c.phone}` : ''}</p>
                       </div>
                       {selectedClient?.id === c.id && <CheckCircle size={16} className="text-[#C9A84C] ml-auto flex-shrink-0" />}
                     </button>
                   ))}
-                  {filteredClients.length === 0 && <p className="text-gray-600 text-sm text-center py-6">No se encontraron clientes</p>}
+                  {filteredClients.length === 0 && <p className="text-gray-400 text-sm text-center py-6">No se encontraron clientes</p>}
                 </div>
               </div>
             ) : (
@@ -395,7 +395,7 @@ export default function NuevaReservaPage() {
                     <label className="text-gray-400 text-xs mb-1.5 block">{f.label}</label>
                     <input value={(clientForm as any)[f.k]} onChange={e => setClientForm(p => ({ ...p, [f.k]: e.target.value }))}
                       placeholder={f.ph}
-                      className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                      className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
                   </div>
                 ))}
                 <div className="col-span-2">
@@ -412,18 +412,18 @@ export default function NuevaReservaPage() {
         {/* ── PASO 2: BARCO ── */}
         {step === 2 && (
           <div className="p-6 space-y-4">
-            <h2 className="text-white font-semibold text-base">Selecciona el barco</h2>
+            <h2 className="text-gray-900 font-semibold text-base">Selecciona el barco</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {boats.map(boat => (
                 <button key={boat.id} onClick={() => { setSelectedBoat(boat); if (boat.captain_required) setRentalType('with_captain') }}
-                  className={`text-left p-4 rounded-xl border transition-all ${selectedBoat?.id === boat.id ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50' : 'border-[#2A2A2A] hover:border-[#C9A84C]/20 hover:bg-[#1E1E1E]'}`}>
+                  className={`text-left p-4 rounded-xl border transition-all ${selectedBoat?.id === boat.id ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50' : 'border-gray-200 hover:border-[#C9A84C]/20 hover:bg-gray-100'}`}>
                   {boat.image_url && (
                     <img src={boat.image_url} alt={boat.name} className="w-full h-24 object-cover rounded-lg mb-3" />
                   )}
                   <div className="flex items-start justify-between mb-1">
                     <div>
-                      <p className="text-white font-semibold text-sm">{boat.name}</p>
-                      <p className="text-gray-500 text-xs">{boat.model ?? boat.type}</p>
+                      <p className="text-gray-900 font-semibold text-sm">{boat.name}</p>
+                      <p className="text-gray-400 text-xs">{boat.model ?? boat.type}</p>
                     </div>
                     {selectedBoat?.id === boat.id && <CheckCircle size={16} className="text-[#C9A84C] flex-shrink-0" />}
                   </div>
@@ -441,7 +441,7 @@ export default function NuevaReservaPage() {
                 <div className="flex gap-2">
                   {(['with_captain', 'bareboat'] as const).map(t => (
                     <button key={t} onClick={() => setRentalType(t)}
-                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${rentalType === t ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-[#2A2A2A] text-gray-400 hover:text-white'}`}>
+                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all ${rentalType === t ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
                       {t === 'with_captain' ? '🧑‍✈️ Con capitán' : '🎯 Sin capitán'}
                     </button>
                   ))}
@@ -455,7 +455,7 @@ export default function NuevaReservaPage() {
                 <select
                   value={captainId}
                   onChange={e => setCaptainId(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50">
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
                   <option value="">— Sin asignar —</option>
                   {staffUsers.map(u => (
                     <option key={u.id} value={u.id}>{u.name} · {u.role}</option>
@@ -469,7 +469,7 @@ export default function NuevaReservaPage() {
         {/* ── PASO 3: TARIFA + FECHAS ── */}
         {step === 3 && (
           <div className="p-6 space-y-5">
-            <h2 className="text-white font-semibold text-base">Fecha y tarifa</h2>
+            <h2 className="text-gray-900 font-semibold text-base">Fecha y tarifa</h2>
 
             {/* Fechas primero para calcular temporada */}
             <div className="grid grid-cols-2 gap-3">
@@ -478,23 +478,23 @@ export default function NuevaReservaPage() {
                 <input type="date" value={startDate}
                   onChange={e => { setStartDate(e.target.value); if (!endDate) setEndDate(e.target.value) }}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Fecha regreso</label>
                 <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
                   min={startDate}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block flex items-center gap-1"><Clock size={11} /> Hora salida</label>
                 <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block flex items-center gap-1"><Clock size={11} /> Hora regreso</label>
                 <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
             </div>
 
@@ -503,23 +503,23 @@ export default function NuevaReservaPage() {
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Adultos</label>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => setAdults(Math.max(1, adults - 1))} className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2A2A2A] text-white hover:border-[#C9A84C]/40">−</button>
-                  <span className="text-white font-semibold w-5 text-center">{adults}</span>
-                  <button onClick={() => setAdults(Math.min(selectedBoat?.capacity ?? 20, adults + 1))} className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2A2A2A] text-white hover:border-[#C9A84C]/40">+</button>
+                  <button onClick={() => setAdults(Math.max(1, adults - 1))} className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-gray-900 hover:border-[#C9A84C]/40">−</button>
+                  <span className="text-gray-900 font-semibold w-5 text-center">{adults}</span>
+                  <button onClick={() => setAdults(Math.min(selectedBoat?.capacity ?? 20, adults + 1))} className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-gray-900 hover:border-[#C9A84C]/40">+</button>
                 </div>
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Niños</label>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => setChildren(Math.max(0, children - 1))} className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2A2A2A] text-white hover:border-[#C9A84C]/40">−</button>
-                  <span className="text-white font-semibold w-5 text-center">{children}</span>
-                  <button onClick={() => setChildren(children + 1)} className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2A2A2A] text-white hover:border-[#C9A84C]/40">+</button>
+                  <button onClick={() => setChildren(Math.max(0, children - 1))} className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-gray-900 hover:border-[#C9A84C]/40">−</button>
+                  <span className="text-gray-900 font-semibold w-5 text-center">{children}</span>
+                  <button onClick={() => setChildren(children + 1)} className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-gray-900 hover:border-[#C9A84C]/40">+</button>
                 </div>
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Origen</label>
                 <select value={source} onChange={e => setSource(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50">
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
                   {SOURCES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
               </div>
@@ -529,13 +529,13 @@ export default function NuevaReservaPage() {
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Puerto de salida</label>
                 <input value={departurePort} onChange={e => setDeparturePort(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Ruta / destino</label>
                 <input value={routeNotes} onChange={e => setRouteNotes(e.target.value)}
                   placeholder="Formentera, Es Vedrà, Norte..."
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
             </div>
 
@@ -559,11 +559,11 @@ export default function NuevaReservaPage() {
                     if (!info) return null
                     return (
                       <button key={t} onClick={() => setSelectedTariff(t)}
-                        className={`text-left p-3 rounded-lg border transition-all ${selectedTariff === t ? 'bg-[#1E1E1E] border-[#C9A84C]/40' : 'border-[#2A2A2A] hover:border-[#2A2A2A] hover:bg-[#1A1A1A]'}`}>
+                        className={`text-left p-3 rounded-lg border transition-all ${selectedTariff === t ? 'bg-gray-100 border-[#C9A84C]/40' : 'border-gray-200 hover:border-gray-200 hover:bg-gray-50'}`}>
                         <div className="flex items-center justify-between">
                           <div>
                             <p className={`text-sm font-medium ${info.color}`}>{info.label}</p>
-                            <p className="text-gray-600 text-xs mt-0.5">{info.desc}</p>
+                            <p className="text-gray-400 text-xs mt-0.5">{info.desc}</p>
                           </div>
                           {selectedTariff === t && <CheckCircle size={15} className="text-[#C9A84C] flex-shrink-0" />}
                         </div>
@@ -586,7 +586,7 @@ export default function NuevaReservaPage() {
                         )
                         return (
                           <button key={d} onClick={() => setSelectedDuration(d)}
-                            className={`flex-1 py-2.5 px-3 rounded-lg text-sm border transition-all ${selectedDuration === d ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-[#2A2A2A] text-gray-400 hover:text-white'}`}>
+                            className={`flex-1 py-2.5 px-3 rounded-lg text-sm border transition-all ${selectedDuration === d ? 'bg-[#C9A84C]/10 border-[#C9A84C]/40 text-[#C9A84C]' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
                             <span className="font-medium">{DURATION_INFO[d]?.label ?? d}</span>
                             {row && <span className="text-xs ml-2 opacity-70">({row.hours})</span>}
                             {row && <span className="block text-sm font-bold mt-0.5">{Number(row.price).toLocaleString('es-ES')}€</span>}
@@ -598,20 +598,20 @@ export default function NuevaReservaPage() {
                 )}
 
                 {/* Madrugadores */}
-                <label className="flex items-center gap-2 cursor-pointer p-3 bg-[#1A1A1A] rounded-lg border border-[#2A2A2A] hover:border-[#C9A84C]/20 transition-colors">
+                <label className="flex items-center gap-2 cursor-pointer p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-[#C9A84C]/20 transition-colors">
                   <input type="checkbox" checked={earlyBird} onChange={e => setEarlyBird(e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
                   <div>
                     <p className="text-gray-300 text-sm font-medium">Especial madrugadores <span className="text-green-400">−10%</span></p>
-                    <p className="text-gray-600 text-xs">Consultar disponibilidad y horario</p>
+                    <p className="text-gray-400 text-xs">Consultar disponibilidad y horario</p>
                   </div>
                 </label>
 
                 {/* Preview precio */}
                 {selectedPricingRow && (
-                  <div className="bg-[#1E1E1E] rounded-lg px-4 py-3 space-y-1.5">
+                  <div className="bg-gray-100 rounded-lg px-4 py-3 space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-400">Precio tarifa</span>
-                      <span className={earlyBird ? 'line-through text-gray-600' : 'text-white font-semibold'}>{Number(selectedPricingRow.price).toLocaleString('es-ES')}€</span>
+                      <span className={earlyBird ? 'line-through text-gray-400' : 'text-gray-900 font-semibold'}>{Number(selectedPricingRow.price).toLocaleString('es-ES')}€</span>
                     </div>
                     {earlyBird && (
                       <div className="flex justify-between text-sm">
@@ -622,10 +622,10 @@ export default function NuevaReservaPage() {
                     {fuelExtra > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-400">Combustible extra</span>
-                        <span className="text-white">+{fuelExtra}€</span>
+                        <span className="text-gray-900">+{fuelExtra}€</span>
                       </div>
                     )}
-                    <div className="border-t border-[#2A2A2A] pt-1.5 flex justify-between font-bold">
+                    <div className="border-t border-gray-200 pt-1.5 flex justify-between font-bold">
                       <span className="text-gray-300">Subtotal</span>
                       <span className="text-[#C9A84C]">{(basePrice + fuelExtra).toLocaleString('es-ES')}€</span>
                     </div>
@@ -638,7 +638,7 @@ export default function NuevaReservaPage() {
               <label className="text-gray-400 text-xs mb-1.5 block">Notas internas</label>
               <textarea value={internalNotes} onChange={e => setInternalNotes(e.target.value)} rows={2}
                 placeholder="Solo visible para el equipo..."
-                className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
+                className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
             </div>
           </div>
         )}
@@ -646,25 +646,25 @@ export default function NuevaReservaPage() {
         {/* ── PASO 4: EXTRAS ── */}
         {step === 4 && (
           <div className="p-6 space-y-4">
-            <h2 className="text-white font-semibold text-base">Extras y servicios</h2>
+            <h2 className="text-gray-900 font-semibold text-base">Extras y servicios</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {extras.map(extra => {
                 const sel = selectedExtras.find(e => e.id === extra.id)
                 return (
-                  <div key={extra.id} className={`flex items-center justify-between p-3 rounded-lg border transition-all ${sel ? 'bg-[#C9A84C]/5 border-[#C9A84C]/30' : 'border-[#2A2A2A]'}`}>
+                  <div key={extra.id} className={`flex items-center justify-between p-3 rounded-lg border transition-all ${sel ? 'bg-[#C9A84C]/5 border-[#C9A84C]/30' : 'border-gray-200'}`}>
                     <div className="min-w-0">
-                      <p className="text-white text-sm font-medium">{extra.name}</p>
+                      <p className="text-gray-900 text-sm font-medium">{extra.name}</p>
                       <p className="text-[#C9A84C] text-xs">{Number(extra.price) === 0 ? 'Variable' : `${Number(extra.price)}€ / ${extra.unit}`}</p>
                     </div>
                     {sel ? (
                       <div className="flex items-center gap-1.5 flex-shrink-0">
-                        <button onClick={() => updateExtraQty(extra.id, sel.quantity - 1)} className="w-6 h-6 rounded bg-[#2A2A2A] text-white text-xs hover:bg-[#3A3A3A]">−</button>
-                        <span className="text-white text-sm w-4 text-center">{sel.quantity}</span>
-                        <button onClick={() => updateExtraQty(extra.id, sel.quantity + 1)} className="w-6 h-6 rounded bg-[#2A2A2A] text-white text-xs hover:bg-[#3A3A3A]">+</button>
+                        <button onClick={() => updateExtraQty(extra.id, sel.quantity - 1)} className="w-6 h-6 rounded bg-gray-200 text-gray-900 text-xs hover:bg-[#3A3A3A]">−</button>
+                        <span className="text-gray-900 text-sm w-4 text-center">{sel.quantity}</span>
+                        <button onClick={() => updateExtraQty(extra.id, sel.quantity + 1)} className="w-6 h-6 rounded bg-gray-200 text-gray-900 text-xs hover:bg-[#3A3A3A]">+</button>
                         <button onClick={() => removeExtra(extra.id)} className="w-6 h-6 rounded bg-red-500/20 text-red-400 flex items-center justify-center hover:bg-red-500/30 ml-1"><X size={12} /></button>
                       </div>
                     ) : (
-                      <button onClick={() => addExtra(extra)} className="flex-shrink-0 w-7 h-7 rounded-lg bg-[#2A2A2A] text-[#C9A84C] flex items-center justify-center hover:bg-[#C9A84C]/20 transition-colors">
+                      <button onClick={() => addExtra(extra)} className="flex-shrink-0 w-7 h-7 rounded-lg bg-gray-200 text-[#C9A84C] flex items-center justify-center hover:bg-[#C9A84C]/20 transition-colors">
                         <Plus size={14} />
                       </button>
                     )}
@@ -673,14 +673,14 @@ export default function NuevaReservaPage() {
               })}
             </div>
             {selectedExtras.length > 0 && (
-              <div className="bg-[#1E1E1E] rounded-lg p-3 space-y-1.5">
+              <div className="bg-gray-100 rounded-lg p-3 space-y-1.5">
                 {selectedExtras.map(e => (
                   <div key={e.id} className="flex justify-between text-sm">
                     <span className="text-gray-400">{e.name} × {e.quantity}</span>
-                    <span className="text-white">{formatPrice(e.price * e.quantity)}</span>
+                    <span className="text-gray-900">{formatPrice(e.price * e.quantity)}</span>
                   </div>
                 ))}
-                <div className="border-t border-[#2A2A2A] pt-1.5 flex justify-between text-sm font-semibold">
+                <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-semibold">
                   <span className="text-gray-300">Total extras</span>
                   <span className="text-[#C9A84C]">{formatPrice(extrasTotal)}</span>
                 </div>
@@ -692,23 +692,23 @@ export default function NuevaReservaPage() {
         {/* ── PASO 5: RESUMEN ── */}
         {step === 5 && (
           <div className="p-6 space-y-4">
-            <h2 className="text-white font-semibold text-base">Resumen de la reserva</h2>
+            <h2 className="text-gray-900 font-semibold text-base">Resumen de la reserva</h2>
             <div className="space-y-3">
 
               {/* Cliente */}
-              <div className="bg-[#1E1E1E] rounded-lg p-4">
-                <p className="text-gray-500 text-xs mb-2">CLIENTE</p>
+              <div className="bg-gray-100 rounded-lg p-4">
+                <p className="text-gray-400 text-xs mb-2">CLIENTE</p>
                 {selectedClient
-                  ? <><p className="text-white font-medium">{selectedClient.first_name} {selectedClient.last_name}</p><p className="text-gray-500 text-xs">{selectedClient.email}{selectedClient.phone ? ` · ${selectedClient.phone}` : ''}</p></>
-                  : <><p className="text-white font-medium">{clientForm.first_name} {clientForm.last_name} <span className="text-[#C9A84C] text-xs">(nuevo)</span></p><p className="text-gray-500 text-xs">{clientForm.email}</p></>
+                  ? <><p className="text-gray-900 font-medium">{selectedClient.first_name} {selectedClient.last_name}</p><p className="text-gray-400 text-xs">{selectedClient.email}{selectedClient.phone ? ` · ${selectedClient.phone}` : ''}</p></>
+                  : <><p className="text-gray-900 font-medium">{clientForm.first_name} {clientForm.last_name} <span className="text-[#C9A84C] text-xs">(nuevo)</span></p><p className="text-gray-400 text-xs">{clientForm.email}</p></>
                 }
               </div>
 
               {/* Barco + tarifa */}
-              <div className="bg-[#1E1E1E] rounded-lg p-4">
-                <p className="text-gray-500 text-xs mb-2">BARCO Y TARIFA</p>
-                <p className="text-white font-medium">{selectedBoat?.name}</p>
-                <p className="text-gray-500 text-xs">
+              <div className="bg-gray-100 rounded-lg p-4">
+                <p className="text-gray-400 text-xs mb-2">BARCO Y TARIFA</p>
+                <p className="text-gray-900 font-medium">{selectedBoat?.name}</p>
+                <p className="text-gray-400 text-xs">
                   {TARIFF_INFO[selectedTariff]?.label} · {DURATION_INFO[selectedDuration]?.label}
                   {selectedPricingRow?.hours ? ` (${selectedPricingRow.hours})` : ''}
                   {earlyBird ? ' · Madrugadores −10%' : ''}
@@ -717,52 +717,52 @@ export default function NuevaReservaPage() {
               </div>
 
               {/* Fecha */}
-              <div className="bg-[#1E1E1E] rounded-lg p-4">
-                <p className="text-gray-500 text-xs mb-2">FECHA</p>
-                <p className="text-white font-medium">
+              <div className="bg-gray-100 rounded-lg p-4">
+                <p className="text-gray-400 text-xs mb-2">FECHA</p>
+                <p className="text-gray-900 font-medium">
                   {startDate ? new Date(startDate).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }) : '—'}
                   {endDate && endDate !== startDate && ` → ${new Date(endDate).toLocaleDateString('es-ES', { day: '2-digit', month: 'long' })}`}
                 </p>
-                <p className="text-gray-500 text-xs">{startTime} → {endTime} · {adults} adultos{children > 0 ? ` · ${children} niños` : ''} · {departurePort}</p>
-                {routeNotes && <p className="text-gray-500 text-xs">Ruta: {routeNotes}</p>}
+                <p className="text-gray-400 text-xs">{startTime} → {endTime} · {adults} adultos{children > 0 ? ` · ${children} niños` : ''} · {departurePort}</p>
+                {routeNotes && <p className="text-gray-400 text-xs">Ruta: {routeNotes}</p>}
               </div>
 
               {/* Desglose precio */}
-              <div className="bg-[#1E1E1E] rounded-lg p-4 space-y-2">
-                <p className="text-gray-500 text-xs mb-1">DESGLOSE DE PRECIO</p>
+              <div className="bg-gray-100 rounded-lg p-4 space-y-2">
+                <p className="text-gray-400 text-xs mb-1">DESGLOSE DE PRECIO</p>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">Tarifa base{earlyBird ? ' (−10%)' : ''}</span>
-                  <span className="text-white">{formatPrice(basePrice)}</span>
+                  <span className="text-gray-900">{formatPrice(basePrice)}</span>
                 </div>
                 {fuelExtra > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-400">Combustible extra</span>
-                    <span className="text-white">+{formatPrice(fuelExtra)}</span>
+                    <span className="text-gray-900">+{formatPrice(fuelExtra)}</span>
                   </div>
                 )}
                 {selectedExtras.map(e => (
                   <div key={e.id} className="flex justify-between text-sm">
                     <span className="text-gray-400">{e.name} × {e.quantity}</span>
-                    <span className="text-white">{formatPrice(e.price * e.quantity)}</span>
+                    <span className="text-gray-900">{formatPrice(e.price * e.quantity)}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-400">Descuento adicional</span>
                   <div className="flex items-center gap-1">
                     <input type="number" value={discount} onChange={e => setDiscount(Number(e.target.value))} min={0}
-                      className="w-20 px-2 py-1 bg-[#2A2A2A] border border-[#3A3A3A] rounded text-white text-right text-sm focus:outline-none" />
+                      className="w-20 px-2 py-1 bg-gray-200 border border-[#3A3A3A] rounded text-gray-900 text-right text-sm focus:outline-none" />
                     <span className="text-gray-400 text-xs">€</span>
                   </div>
                 </div>
-                <div className="border-t border-[#2A2A2A] pt-2 flex justify-between font-bold text-base">
-                  <span className="text-white">TOTAL</span>
+                <div className="border-t border-gray-200 pt-2 flex justify-between font-bold text-base">
+                  <span className="text-gray-900">TOTAL</span>
                   <span className="text-[#C9A84C] text-xl">{formatPrice(totalPrice)}</span>
                 </div>
               </div>
 
               {/* Método de pago + fianza */}
-              <div className="bg-[#1E1E1E] rounded-lg p-4 space-y-4">
-                <p className="text-gray-500 text-xs">PAGO Y FIANZA</p>
+              <div className="bg-gray-100 rounded-lg p-4 space-y-4">
+                <p className="text-gray-400 text-xs">PAGO Y FIANZA</p>
 
                 {/* Pago total */}
                 <div className="space-y-2">
@@ -776,7 +776,7 @@ export default function NuevaReservaPage() {
                       { value: 'link',     label: '🔗 Link de pago' },
                     ].map(m => (
                       <button key={m.value} onClick={() => setPaymentMethod(m.value)}
-                        className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-white font-medium' : 'border-[#2A2A2A] text-gray-400 hover:text-white'}`}>
+                        className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
                         {m.label}
                       </button>
                     ))}
@@ -784,20 +784,20 @@ export default function NuevaReservaPage() {
                   {paymentMethod === 'link' && (
                     <input type="url" value={paymentLink} onChange={e => setPaymentLink(e.target.value)}
                       placeholder="https://pay.sumup.com/... o Stripe link"
-                      className="w-full px-3 py-2 bg-[#141414] border border-[#C9A84C]/30 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/60" />
+                      className="w-full px-3 py-2 bg-white border border-[#C9A84C]/30 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/60" />
                   )}
                 </div>
 
                 {/* Fianza */}
-                <div className="border-t border-[#2A2A2A] pt-3 space-y-3">
+                <div className="border-t border-gray-200 pt-3 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-300 text-sm font-medium">Fianza</p>
-                      <p className="text-gray-600 text-xs">{rentalType === 'bareboat' ? 'Requerida (sin patrón)' : 'Opcional'}</p>
+                      <p className="text-gray-400 text-xs">{rentalType === 'bareboat' ? 'Requerida (sin patrón)' : 'Opcional'}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <input type="number" value={depositAmount} onChange={e => setDepositAmount(Number(e.target.value))} min={0}
-                        className="w-24 px-3 py-2 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-white text-right text-sm font-semibold focus:outline-none focus:border-[#C9A84C]/50" />
+                        className="w-24 px-3 py-2 bg-gray-200 border border-[#3A3A3A] rounded-lg text-gray-900 text-right text-sm font-semibold focus:outline-none focus:border-[#C9A84C]/50" />
                       <span className="text-gray-400 text-sm">€</span>
                     </div>
                   </div>
@@ -813,7 +813,7 @@ export default function NuevaReservaPage() {
                           { value: 'link',     label: '🔗 Link de pago' },
                         ].map(m => (
                           <button key={m.value} onClick={() => setDepositMethod(m.value)}
-                            className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${depositMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-white font-medium' : 'border-[#2A2A2A] text-gray-400 hover:text-white'}`}>
+                            className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${depositMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-400 hover:text-gray-900'}`}>
                             {m.label}
                           </button>
                         ))}
@@ -821,7 +821,7 @@ export default function NuevaReservaPage() {
                       {depositMethod === 'link' && (
                         <input type="url" value={depositLink} onChange={e => setDepositLink(e.target.value)}
                           placeholder="Link de pago para la fianza"
-                          className="w-full px-3 py-2 bg-[#141414] border border-[#C9A84C]/30 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/60" />
+                          className="w-full px-3 py-2 bg-white border border-[#C9A84C]/30 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/60" />
                       )}
                     </div>
                   )}
@@ -836,9 +836,9 @@ export default function NuevaReservaPage() {
         )}
 
         {/* Navegación */}
-        <div className="px-6 py-4 border-t border-[#2A2A2A] flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <button onClick={() => step > 1 ? setStep((step - 1) as Step) : router.back()}
-            className="flex items-center gap-2 px-4 py-2 border border-[#2A2A2A] text-gray-400 hover:text-white hover:border-[#C9A84C]/30 rounded-lg text-sm transition-all">
+            className="flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/30 rounded-lg text-sm transition-all">
             <ChevronLeft size={16} /> {step === 1 ? 'Cancelar' : 'Atrás'}
           </button>
           {step < 5 ? (

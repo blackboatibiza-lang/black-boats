@@ -49,13 +49,13 @@ export default function MantenimientoPage() {
           { label: 'Vencidas', value: overdue.length, icon: AlertCircle, color: 'text-red-400', bg: 'bg-red-400/10' },
           { label: 'Completadas', value: completed.length, icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-400/10' },
         ].map(s => (
-          <div key={s.label} className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-4 flex items-center gap-3">
+          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3">
             <div className={`w-9 h-9 rounded-lg ${s.bg} flex items-center justify-center flex-shrink-0`}>
               <s.icon size={17} className={s.color} />
             </div>
             <div>
-              <p className="text-white text-xl font-bold">{s.value}</p>
-              <p className="text-gray-500 text-xs">{s.label}</p>
+              <p className="text-gray-900 text-xl font-bold">{s.value}</p>
+              <p className="text-gray-400 text-xs">{s.label}</p>
             </div>
           </div>
         ))}
@@ -68,9 +68,9 @@ export default function MantenimientoPage() {
       </div>
 
       {tasks.length === 0 ? (
-        <div className="text-center py-20 bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <Wrench size={36} className="mx-auto mb-3 text-gray-700" />
-          <p className="text-gray-500">No hay tareas de mantenimiento</p>
+        <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
+          <Wrench size={36} className="mx-auto mb-3 text-gray-300" />
+          <p className="text-gray-400">No hay tareas de mantenimiento</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -79,7 +79,7 @@ export default function MantenimientoPage() {
             return (
               <div
                 key={task.id}
-                className={`bg-[#141414] border rounded-xl p-5 flex items-start gap-4 ${isOverdue ? 'border-red-400/30' : 'border-[#2A2A2A]'}`}
+                className={`bg-white border rounded-xl p-5 flex items-start gap-4 ${isOverdue ? 'border-red-400/30' : 'border-gray-200'}`}
               >
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${task.is_completed ? 'bg-green-400/10' : isOverdue ? 'bg-red-400/10' : 'bg-yellow-400/10'}`}>
                   {task.is_completed
@@ -92,8 +92,8 @@ export default function MantenimientoPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="text-white font-semibold">{task.title}</p>
-                      <p className="text-gray-500 text-xs mt-0.5">
+                      <p className="text-gray-900 font-semibold">{task.title}</p>
+                      <p className="text-gray-400 text-xs mt-0.5">
                         {task.boat?.name ?? '—'}{task.description ? ` · ${task.description}` : ''}
                       </p>
                     </div>
@@ -118,7 +118,7 @@ export default function MantenimientoPage() {
                 {!task.is_completed && (
                   <button
                     onClick={() => markComplete(task.id)}
-                    className="text-xs px-3 py-1.5 border border-[#2A2A2A] text-gray-400 hover:text-white hover:border-[#C9A84C]/40 rounded-lg transition-colors flex-shrink-0"
+                    className="text-xs px-3 py-1.5 border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-[#C9A84C]/40 rounded-lg transition-colors flex-shrink-0"
                   >
                     Completar
                   </button>

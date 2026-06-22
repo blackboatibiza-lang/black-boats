@@ -21,20 +21,20 @@ export default function Header({ onMenuOpen }: { onMenuOpen?: () => void }) {
   const title = titles[base] || 'Black Boats'
 
   return (
-    <header className="h-14 lg:h-16 flex items-center justify-between px-4 lg:px-6 border-b border-[#2A2A2A] bg-[#0A0A0A] flex-shrink-0">
+    <header className="h-14 lg:h-16 flex items-center justify-between px-4 lg:px-6 border-b border-gray-200 bg-white flex-shrink-0">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuOpen}
-          className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#1E1E1E] text-gray-400 hover:text-white transition-colors">
+          className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-900 transition-colors">
           <Menu size={20} />
         </button>
-        <h1 className="text-white font-semibold text-base lg:text-lg">{title}</h1>
+        <h1 className="text-gray-900 font-semibold text-base lg:text-lg">{title}</h1>
       </div>
       <div className="flex items-center gap-2">
-        <button className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#1E1E1E] text-gray-400 hover:text-white transition-colors">
+        <button className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-900 transition-colors">
           <Search size={18} />
         </button>
-        <button className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#1E1E1E] text-gray-400 hover:text-white transition-colors relative">
+        <button className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-900 transition-colors relative">
           <Bell size={18} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#C9A84C] rounded-full" />
         </button>

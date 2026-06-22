@@ -31,7 +31,7 @@ const TARIFF_LABELS: Record<string, { label: string; color: string }> = {
 const DURATION_LABELS: Record<string, string> = { half: 'Medio día', full: 'Día completo' }
 const SEASON_ORDER = ['MAY_OCT', 'JUN_SEP', 'JUN', 'JUL', 'AGO', 'SEP', 'JUL_AGO']
 
-const inputCls = 'w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50'
+const inputCls = 'w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50'
 const labelCls = 'text-gray-400 text-xs mb-1.5 block'
 
 // ── PRICE CELL ──────────────────────────────────────────────────────
@@ -46,12 +46,12 @@ function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: numb
     <td className="px-3 py-2">
       <div className="flex items-center gap-1">
         <input value={price} onChange={e => setPrice(e.target.value)} autoFocus onKeyDown={e => e.key === 'Enter' && save()}
-          className="w-20 px-2 py-1 bg-[#0A0A0A] border border-[#C9A84C]/50 rounded text-white text-xs text-right focus:outline-none" />
-        <span className="text-gray-500 text-xs">€</span>
+          className="w-20 px-2 py-1 bg-white border border-[#C9A84C]/50 rounded text-gray-900 text-xs text-right focus:outline-none" />
+        <span className="text-gray-400 text-xs">€</span>
         {row.fuel_extra !== null && <>
-          <span className="text-gray-600 text-xs">+</span>
+          <span className="text-gray-400 text-xs">+</span>
           <input value={fuel} onChange={e => setFuel(e.target.value)} placeholder="fuel"
-            className="w-16 px-2 py-1 bg-[#0A0A0A] border border-[#C9A84C]/50 rounded text-white text-xs text-right focus:outline-none" />
+            className="w-16 px-2 py-1 bg-white border border-[#C9A84C]/50 rounded text-gray-900 text-xs text-right focus:outline-none" />
         </>}
         <button onClick={save} className="text-green-400 hover:text-green-300"><CheckCircle size={13} /></button>
         <button onClick={() => { setEditing(false); setPrice(String(row.price)) }} className="text-red-400 hover:text-red-300"><X size={13} /></button>
@@ -62,8 +62,8 @@ function PriceCell({ row, onSave }: { row: any; onSave: (id: string, price: numb
   return (
     <td className="px-3 py-2 text-right">
       <button onClick={() => setEditing(true)} className="group flex items-center gap-1.5 ml-auto hover:text-[#C9A84C] transition-colors">
-        <span className="text-white font-semibold">{Number(row.price).toLocaleString('es-ES')}€</span>
-        {row.fuel_extra && <span className="text-gray-500 text-xs">+{row.fuel_extra}€ fuel</span>}
+        <span className="text-gray-900 font-semibold">{Number(row.price).toLocaleString('es-ES')}€</span>
+        {row.fuel_extra && <span className="text-gray-400 text-xs">+{row.fuel_extra}€ fuel</span>}
       </button>
     </td>
   )
@@ -98,8 +98,8 @@ function PreciosTab({ boatId }: { boatId: string }) {
   }, {})
 
   if (pricing.length === 0) return (
-    <div className="text-center py-16 text-gray-500 text-sm">
-      <Tag size={32} className="mx-auto mb-3 text-gray-700" />
+    <div className="text-center py-16 text-gray-400 text-sm">
+      <Tag size={32} className="mx-auto mb-3 text-gray-300" />
       No hay tarifas configuradas para este barco
     </div>
   )
@@ -107,23 +107,23 @@ function PreciosTab({ boatId }: { boatId: string }) {
   return (
     <div className="space-y-4">
       {Object.entries(bySeason).map(([season, rows]) => (
-        <div key={season} className="bg-[#141414] border border-[#2A2A2A] rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-[#2A2A2A] bg-[#1A1A1A]">
-            <p className="text-white font-semibold text-sm">{SEASON_LABELS[season] ?? season}</p>
+        <div key={season} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+            <p className="text-gray-900 font-semibold text-sm">{SEASON_LABELS[season] ?? season}</p>
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#1E1E1E]">
-                <th className="text-left px-3 py-2 text-gray-500 text-xs font-medium">Tarifa</th>
-                <th className="text-left px-3 py-2 text-gray-500 text-xs font-medium">Duración</th>
-                <th className="text-right px-3 py-2 text-gray-500 text-xs font-medium">Precio</th>
+              <tr className="border-b border-gray-100">
+                <th className="text-left px-3 py-2 text-gray-400 text-xs font-medium">Tarifa</th>
+                <th className="text-left px-3 py-2 text-gray-400 text-xs font-medium">Duración</th>
+                <th className="text-right px-3 py-2 text-gray-400 text-xs font-medium">Precio</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1E1E1E]">
+            <tbody className="divide-y divide-gray-100">
               {rows.map(row => {
                 const t = TARIFF_LABELS[row.tariff]
                 return (
-                  <tr key={row.id} className="hover:bg-[#1A1A1A] transition-colors">
+                  <tr key={row.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-3 py-2.5">
                       <span className={`text-xs font-medium ${t?.color ?? 'text-gray-400'}`}>{t?.label ?? row.tariff}</span>
                     </td>
@@ -203,13 +203,13 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
           { label: 'Vencidas',   value: overdue.length,   icon: AlertCircle,  color: 'text-red-400',    bg: 'bg-red-400/10' },
           { label: 'Completadas',value: completed.length, icon: CheckCircle,  color: 'text-green-400',  bg: 'bg-green-400/10' },
         ].map(s => (
-          <div key={s.label} className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-3 flex items-center gap-3">
+          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3">
             <div className={`w-8 h-8 rounded-lg ${s.bg} flex items-center justify-center flex-shrink-0`}>
               <s.icon size={15} className={s.color} />
             </div>
             <div>
-              <p className="text-white text-lg font-bold">{s.value}</p>
-              <p className="text-gray-500 text-xs">{s.label}</p>
+              <p className="text-gray-900 text-lg font-bold">{s.value}</p>
+              <p className="text-gray-400 text-xs">{s.label}</p>
             </div>
           </div>
         ))}
@@ -223,8 +223,8 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
       </div>
 
       {showForm && (
-        <div className="bg-[#141414] border border-[#C9A84C]/30 rounded-xl p-5 space-y-3">
-          <h3 className="text-white font-semibold text-sm">Nueva tarea de mantenimiento</h3>
+        <div className="bg-white border border-[#C9A84C]/30 rounded-xl p-5 space-y-3">
+          <h3 className="text-gray-900 font-semibold text-sm">Nueva tarea de mantenimiento</h3>
           <div>
             <label className={labelCls}>Título *</label>
             <input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} className={inputCls} placeholder="Ej: Cambio de aceite" />
@@ -249,7 +249,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
             <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} rows={2} className={inputCls + ' resize-none'} />
           </div>
           <div className="flex gap-2 justify-end">
-            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-400 hover:text-white text-sm transition-colors">Cancelar</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-400 hover:text-gray-900 text-sm transition-colors">Cancelar</button>
             <button onClick={addTask} disabled={saving || !form.title}
               className="px-4 py-2 bg-[#C9A84C] hover:bg-[#E8C97A] disabled:opacity-60 text-black text-sm font-semibold rounded-lg transition-colors">
               {saving ? 'Guardando...' : 'Guardar'}
@@ -259,8 +259,8 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
       )}
 
       {tasks.length === 0 ? (
-        <div className="text-center py-16 text-gray-500 text-sm bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <Wrench size={32} className="mx-auto mb-3 text-gray-700" />
+        <div className="text-center py-16 text-gray-400 text-sm bg-white border border-gray-200 rounded-xl">
+          <Wrench size={32} className="mx-auto mb-3 text-gray-300" />
           No hay tareas de mantenimiento
         </div>
       ) : (
@@ -268,7 +268,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
           {tasks.map(task => {
             const isOverdue = !task.is_completed && task.scheduled_date && new Date(task.scheduled_date) < new Date()
             return (
-              <div key={task.id} className={`bg-[#141414] border rounded-xl p-4 flex items-start gap-3 ${isOverdue ? 'border-red-500/30' : 'border-[#2A2A2A]'}`}>
+              <div key={task.id} className={`bg-white border rounded-xl p-4 flex items-start gap-3 ${isOverdue ? 'border-red-500/30' : 'border-gray-200'}`}>
                 <button onClick={() => !task.is_completed && markComplete(task.id)}
                   className={`w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 transition-colors flex items-center justify-center
                     ${task.is_completed ? 'bg-green-400 border-green-400' : 'border-[#3A3A3A] hover:border-[#C9A84C]'}`}>
@@ -276,7 +276,7 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
                 </button>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className={`text-sm font-medium ${task.is_completed ? 'line-through text-gray-500' : 'text-white'}`}>{task.title}</p>
+                    <p className={`text-sm font-medium ${task.is_completed ? 'line-through text-gray-400' : 'text-gray-900'}`}>{task.title}</p>
                     {task.priority && (
                       <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${priorityColor[task.priority]}`}>
                         {priorityLabel[task.priority]}
@@ -284,15 +284,15 @@ function MantenimientoTab({ boatId }: { boatId: string }) {
                     )}
                     {isOverdue && <span className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 px-2 py-0.5 rounded-full">Vencida</span>}
                   </div>
-                  {task.description && <p className="text-gray-500 text-xs mt-1">{task.description}</p>}
+                  {task.description && <p className="text-gray-400 text-xs mt-1">{task.description}</p>}
                   {task.scheduled_date && (
-                    <p className="text-gray-600 text-xs mt-1 flex items-center gap-1">
+                    <p className="text-gray-400 text-xs mt-1 flex items-center gap-1">
                       <Clock size={10} /> {new Date(task.scheduled_date).toLocaleDateString('es-ES')}
                       {task.is_completed && task.completed_date && ` · Completada ${new Date(task.completed_date).toLocaleDateString('es-ES')}`}
                     </p>
                   )}
                 </div>
-                <button onClick={() => deleteTask(task.id)} className="text-gray-700 hover:text-red-400 transition-colors flex-shrink-0">
+                <button onClick={() => deleteTask(task.id)} className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0">
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -418,12 +418,12 @@ export default function BoatDetailPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-white font-bold text-lg">{boatName || 'Barco'}</h1>
-            <p className="text-gray-500 text-xs capitalize">{currentStatus?.label ?? form.status}</p>
+            <h1 className="text-gray-900 font-bold text-lg">{boatName || 'Barco'}</h1>
+            <p className="text-gray-400 text-xs capitalize">{currentStatus?.label ?? form.status}</p>
           </div>
         </div>
         {activeTab === 'info' && (
@@ -443,11 +443,11 @@ export default function BoatDetailPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-[#141414] border border-[#2A2A2A] rounded-xl p-1 w-fit">
+      <div className="flex gap-1 bg-white border border-gray-200 rounded-xl p-1 w-fit">
         {tabs.map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
-              ${activeTab === t.id ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-400 hover:text-white'}`}>
+              ${activeTab === t.id ? 'bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30' : 'text-gray-400 hover:text-gray-900'}`}>
             <t.icon size={14} /> {t.label}
           </button>
         ))}
@@ -457,8 +457,8 @@ export default function BoatDetailPage() {
       {activeTab === 'info' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-              <h2 className="text-white font-semibold text-sm">Información básica</h2>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+              <h2 className="text-gray-900 font-semibold text-sm">Información básica</h2>
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2">
                   <label className={labelCls}>Nombre *</label>
@@ -486,8 +486,8 @@ export default function BoatDetailPage() {
               </div>
             </div>
 
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-              <h2 className="text-white font-semibold text-sm">Dimensiones y capacidad</h2>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+              <h2 className="text-gray-900 font-semibold text-sm">Dimensiones y capacidad</h2>
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className={labelCls}>Eslora (m)</label>
@@ -514,8 +514,8 @@ export default function BoatDetailPage() {
               </div>
             </div>
 
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-              <h2 className="text-white font-semibold text-sm">Tarifas base (€)</h2>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+              <h2 className="text-gray-900 font-semibold text-sm">Tarifas base (€)</h2>
               <div className="grid grid-cols-2 gap-3">
                 {[
                   { label: 'Por hora', key: 'hourly_rate' },
@@ -532,8 +532,8 @@ export default function BoatDetailPage() {
               </div>
             </div>
 
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-              <h2 className="text-white font-semibold text-sm">Documentación</h2>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+              <h2 className="text-gray-900 font-semibold text-sm">Documentación</h2>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={labelCls}>Vencimiento seguro</label>
@@ -546,8 +546,8 @@ export default function BoatDetailPage() {
               </div>
             </div>
 
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-3">
-              <h2 className="text-white font-semibold text-sm">Descripción y notas</h2>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+              <h2 className="text-gray-900 font-semibold text-sm">Descripción y notas</h2>
               <div>
                 <label className={labelCls}>Descripción pública</label>
                 <textarea value={form.description} onChange={e => set('description', e.target.value)} rows={3} className={inputCls + ' resize-none'} />
@@ -561,33 +561,33 @@ export default function BoatDetailPage() {
 
           {/* Columna lateral */}
           <div className="space-y-4">
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-3">
-              <h2 className="text-white font-semibold text-sm flex items-center gap-2">
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+              <h2 className="text-gray-900 font-semibold text-sm flex items-center gap-2">
                 <Camera size={15} className="text-[#C9A84C]" /> Foto del barco
               </h2>
               {form.image_url ? (
                 <div className="relative">
                   <img src={form.image_url} alt={form.name} className="w-full h-44 object-cover rounded-lg" />
                   <button onClick={() => set('image_url', '')}
-                    className="absolute top-2 right-2 w-7 h-7 bg-black/70 hover:bg-red-500/80 text-white rounded-full flex items-center justify-center transition-colors">
+                    className="absolute top-2 right-2 w-7 h-7 bg-black/70 hover:bg-red-500/80 text-gray-900 rounded-full flex items-center justify-center transition-colors">
                     <X size={13} />
                   </button>
                   <button onClick={() => fileRef.current?.click()}
-                    className="absolute bottom-2 right-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/70 hover:bg-black text-white text-xs rounded-lg transition-colors">
+                    className="absolute bottom-2 right-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/70 hover:bg-black text-gray-900 text-xs rounded-lg transition-colors">
                     <Upload size={11} /> Cambiar
                   </button>
                 </div>
               ) : (
                 <button onClick={() => fileRef.current?.click()} disabled={uploading}
-                  className="w-full h-44 border-2 border-dashed border-[#2A2A2A] hover:border-[#C9A84C]/40 rounded-lg flex flex-col items-center justify-center gap-2 transition-colors group">
+                  className="w-full h-44 border-2 border-dashed border-gray-200 hover:border-[#C9A84C]/40 rounded-lg flex flex-col items-center justify-center gap-2 transition-colors group">
                   {uploading
                     ? <div className="w-6 h-6 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
                     : <>
-                        <div className="w-10 h-10 rounded-full bg-[#1E1E1E] group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
-                          <Upload size={18} className="text-gray-500 group-hover:text-[#C9A84C] transition-colors" />
+                        <div className="w-10 h-10 rounded-full bg-gray-100 group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
+                          <Upload size={18} className="text-gray-400 group-hover:text-[#C9A84C] transition-colors" />
                         </div>
-                        <p className="text-gray-500 text-xs group-hover:text-gray-300">Subir foto</p>
-                        <p className="text-gray-600 text-xs">JPG, PNG, WEBP · máx 5MB</p>
+                        <p className="text-gray-400 text-xs group-hover:text-gray-300">Subir foto</p>
+                        <p className="text-gray-400 text-xs">JPG, PNG, WEBP · máx 5MB</p>
                       </>}
                 </button>
               )}
@@ -599,12 +599,12 @@ export default function BoatDetailPage() {
                 }} />
             </div>
 
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-3">
-              <h2 className="text-white font-semibold text-sm">Estado</h2>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+              <h2 className="text-gray-900 font-semibold text-sm">Estado</h2>
               <div className="space-y-2">
                 {STATUSES.map(s => (
                   <button key={s.value} onClick={() => set('status', s.value)}
-                    className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-[#2A2A2A] text-gray-500 hover:text-gray-300'}`}>
+                    className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-gray-200 text-gray-400 hover:text-gray-300'}`}>
                     {form.status === s.value && <CheckCircle size={13} className="inline mr-1.5" />}
                     {s.label}
                   </button>

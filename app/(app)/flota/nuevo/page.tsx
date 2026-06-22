@@ -95,12 +95,12 @@ export default function NuevoBarcoPage() {
     <div className="max-w-3xl mx-auto space-y-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-white font-bold text-lg">Nuevo barco</h1>
-            <p className="text-gray-500 text-xs">Añadir embarcación a la flota</p>
+            <h1 className="text-gray-900 font-bold text-lg">Nuevo barco</h1>
+            <p className="text-gray-400 text-xs">Añadir embarcación a la flota</p>
           </div>
         </div>
         <button onClick={handleSave} disabled={saving}
@@ -121,23 +121,23 @@ export default function NuevoBarcoPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
 
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-            <h2 className="text-white font-semibold text-sm">Información básica</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+            <h2 className="text-gray-900 font-semibold text-sm">Información básica</h2>
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
                 <label className="text-gray-400 text-xs mb-1.5 block">Nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Ej: Quicksilver 605"
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Modelo</label>
                 <input value={form.model} onChange={e => set('model', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Tipo</label>
                 <select value={form.type} onChange={e => set('type', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50">
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
                   <option value="">Seleccionar...</option>
                   {BOAT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -145,33 +145,33 @@ export default function NuevoBarcoPage() {
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Año</label>
                 <input type="number" value={form.year} onChange={e => set('year', e.target.value)} placeholder="2024"
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Matrícula</label>
                 <input value={form.registration_number} onChange={e => set('registration_number', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
             </div>
           </div>
 
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-            <h2 className="text-white font-semibold text-sm">Dimensiones y capacidad</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+            <h2 className="text-gray-900 font-semibold text-sm">Dimensiones y capacidad</h2>
             <div className="grid grid-cols-3 gap-3">
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Eslora (m)</label>
                 <input type="number" step="0.01" value={form.length_meters} onChange={e => set('length_meters', e.target.value)} placeholder="6.12"
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Pasajeros máx.</label>
                 <input type="number" value={form.capacity} onChange={e => set('capacity', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Camarotes</label>
                 <input type="number" value={form.cabins} onChange={e => set('cabins', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
             </div>
             <div className="flex gap-4">
@@ -186,8 +186,8 @@ export default function NuevoBarcoPage() {
             </div>
           </div>
 
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-            <h2 className="text-white font-semibold text-sm">Tarifas (€)</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+            <h2 className="text-gray-900 font-semibold text-sm">Tarifas (€)</h2>
             <div className="grid grid-cols-2 gap-3">
               {[
                 { key: 'hourly_rate', label: 'Por hora' },
@@ -199,83 +199,83 @@ export default function NuevoBarcoPage() {
                 <div key={f.key}>
                   <label className="text-gray-400 text-xs mb-1.5 block">{f.label}</label>
                   <input type="number" value={(form as any)[f.key]} onChange={e => set(f.key, e.target.value)} placeholder="0"
-                    className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50" />
+                    className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50" />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-4">
-            <h2 className="text-white font-semibold text-sm">Documentación</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+            <h2 className="text-gray-900 font-semibold text-sm">Documentación</h2>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Vencimiento seguro</label>
                 <input type="date" value={form.insurance_expiry} onChange={e => set('insurance_expiry', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>
                 <label className="text-gray-400 text-xs mb-1.5 block">Próximo mantenimiento</label>
                 <input type="date" value={form.next_maintenance} onChange={e => set('next_maintenance', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50" />
+                  className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
             </div>
           </div>
 
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-3">
-            <h2 className="text-white font-semibold text-sm">Descripción y notas</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+            <h2 className="text-gray-900 font-semibold text-sm">Descripción y notas</h2>
             <div>
               <label className="text-gray-400 text-xs mb-1.5 block">Descripción pública</label>
               <textarea value={form.description} onChange={e => set('description', e.target.value)} rows={3}
-                className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
+                className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
             </div>
             <div>
               <label className="text-gray-400 text-xs mb-1.5 block">Notas internas</label>
               <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={2}
-                className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
+                className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50 resize-none" />
             </div>
           </div>
         </div>
 
         {/* Lateral */}
         <div className="space-y-4">
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-3">
-            <h2 className="text-white font-semibold text-sm flex items-center gap-2">
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+            <h2 className="text-gray-900 font-semibold text-sm flex items-center gap-2">
               <Camera size={15} className="text-[#C9A84C]" /> Foto del barco
             </h2>
             {imagePreview ? (
               <div className="relative">
                 <img src={imagePreview} alt="Preview" className="w-full h-44 object-cover rounded-lg" />
                 <button onClick={() => { setImagePreview(''); setPendingFile(null) }}
-                  className="absolute top-2 right-2 w-7 h-7 bg-black/70 hover:bg-red-500/80 text-white rounded-full flex items-center justify-center transition-colors">
+                  className="absolute top-2 right-2 w-7 h-7 bg-black/70 hover:bg-red-500/80 text-gray-900 rounded-full flex items-center justify-center transition-colors">
                   <X size={13} />
                 </button>
                 <button onClick={() => fileRef.current?.click()}
-                  className="absolute bottom-2 right-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/70 hover:bg-black text-white text-xs rounded-lg transition-colors">
+                  className="absolute bottom-2 right-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/70 hover:bg-black text-gray-900 text-xs rounded-lg transition-colors">
                   <Upload size={11} /> Cambiar
                 </button>
               </div>
             ) : (
               <button onClick={() => fileRef.current?.click()}
-                className="w-full h-44 border-2 border-dashed border-[#2A2A2A] hover:border-[#C9A84C]/40 rounded-lg flex flex-col items-center justify-center gap-2 transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-[#1E1E1E] group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
-                  <Upload size={18} className="text-gray-500 group-hover:text-[#C9A84C] transition-colors" />
+                className="w-full h-44 border-2 border-dashed border-gray-200 hover:border-[#C9A84C]/40 rounded-lg flex flex-col items-center justify-center gap-2 transition-colors group">
+                <div className="w-10 h-10 rounded-full bg-gray-100 group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
+                  <Upload size={18} className="text-gray-400 group-hover:text-[#C9A84C] transition-colors" />
                 </div>
-                <p className="text-gray-500 text-xs group-hover:text-gray-300 transition-colors">Subir foto</p>
-                <p className="text-gray-600 text-xs">JPG, PNG, WEBP · máx 5MB</p>
+                <p className="text-gray-400 text-xs group-hover:text-gray-300 transition-colors">Subir foto</p>
+                <p className="text-gray-400 text-xs">JPG, PNG, WEBP · máx 5MB</p>
               </button>
             )}
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden"
               onChange={e => { const f = e.target.files?.[0]; if (f) handleFileSelect(f); e.target.value = '' }} />
           </div>
 
-          <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 space-y-2">
-            <h2 className="text-white font-semibold text-sm mb-3">Estado inicial</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-2">
+            <h2 className="text-gray-900 font-semibold text-sm mb-3">Estado inicial</h2>
             {[
               { value: 'available', label: 'Disponible', color: 'text-green-400 border-green-400/40 bg-green-400/10' },
               { value: 'inactive',  label: 'Inactivo',   color: 'text-gray-400 border-gray-400/40 bg-gray-400/10' },
             ].map(s => (
               <button key={s.value} onClick={() => set('status', s.value)}
-                className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-[#2A2A2A] text-gray-500 hover:text-gray-300'}`}>
+                className={`w-full py-2.5 rounded-lg text-sm font-medium border transition-all ${form.status === s.value ? s.color : 'border-gray-200 text-gray-400 hover:text-gray-300'}`}>
                 {s.label}
               </button>
             ))}

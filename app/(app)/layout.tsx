@@ -21,7 +21,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onMenuOpen={() => setMobileOpen(true)} />
-        <main className="flex-1 overflow-y-auto bg-[#0D0D0D] p-4 lg:p-6">
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-4 lg:p-6">
           {children}
         </main>
       </div>

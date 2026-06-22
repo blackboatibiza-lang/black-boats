@@ -30,7 +30,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#0A0A0A] text-white antialiased">
+      <body className="min-h-full flex flex-col bg-white text-gray-900 antialiased">
         {children}
       </body>
     </html>

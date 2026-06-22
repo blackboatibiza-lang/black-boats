@@ -46,9 +46,9 @@ export default function TripulacionPage() {
       </div>
 
       {crew.length === 0 ? (
-        <div className="text-center py-20 bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <UserCheck size={36} className="mx-auto mb-3 text-gray-700" />
-          <p className="text-gray-500">No hay personal registrado todavía</p>
+        <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
+          <UserCheck size={36} className="mx-auto mb-3 text-gray-300" />
+          <p className="text-gray-400">No hay personal registrado todavía</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -57,14 +57,14 @@ export default function TripulacionPage() {
               new Date(member.license_expiry) < new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
             const roleColor = roleColors[member.role] ?? 'text-gray-400 bg-gray-400/10'
             return (
-              <div key={member.id} className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5">
+              <div key={member.id} className="bg-white border border-gray-200 rounded-xl p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[#C9A84C] font-bold">
+                    <div className="w-11 h-11 rounded-full bg-gray-200 flex items-center justify-center text-[#C9A84C] font-bold">
                       {member.first_name[0]}{member.last_name[0]}
                     </div>
                     <div>
-                      <p className="text-white font-semibold">{member.first_name} {member.last_name}</p>
+                      <p className="text-gray-900 font-semibold">{member.first_name} {member.last_name}</p>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${roleColor}`}>
                         {member.role}
                       </span>
@@ -91,7 +91,7 @@ export default function TripulacionPage() {
                   )}
                 </div>
                 {member.license_expiry && (
-                  <div className={`text-xs pt-3 border-t border-[#2A2A2A] ${licExpirySoon ? 'text-yellow-400' : 'text-gray-500'}`}>
+                  <div className={`text-xs pt-3 border-t border-gray-200 ${licExpirySoon ? 'text-yellow-400' : 'text-gray-400'}`}>
                     Licencia vence: {new Date(member.license_expiry).toLocaleDateString('es-ES')}
                     {licExpirySoon && ' ⚠'}
                   </div>

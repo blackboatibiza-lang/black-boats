@@ -70,7 +70,7 @@ export default function FlotaPage() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === f
                   ? 'bg-[#C9A84C] text-black border-[#C9A84C]'
-                  : 'bg-[#141414] text-gray-400 border-[#2A2A2A] hover:text-white'
+                  : 'bg-white text-gray-400 border-gray-200 hover:text-gray-900'
               }`}
             >
               {f === 'all' ? 'Todos' : statusConfig[f].label} ({counts[f] ?? 0})
@@ -79,12 +79,12 @@ export default function FlotaPage() {
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Buscar barco..."
-              className="pl-9 pr-4 py-2 bg-[#141414] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50 w-52"
+              className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50 w-52"
             />
           </div>
           {canEdit && (
@@ -99,9 +99,9 @@ export default function FlotaPage() {
       </div>
 
       {filtered.length === 0 && !loading && (
-        <div className="text-center py-20 bg-[#141414] border border-[#2A2A2A] rounded-xl">
-          <Anchor size={36} className="mx-auto mb-3 text-gray-700" />
-          <p className="text-gray-500">No hay barcos todavía</p>
+        <div className="text-center py-20 bg-white border border-gray-200 rounded-xl">
+          <Anchor size={36} className="mx-auto mb-3 text-gray-300" />
+          <p className="text-gray-400">No hay barcos todavía</p>
           {canEdit && (
             <Link href="/flota/nuevo" className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#C9A84C] text-black text-sm font-semibold rounded-lg">
               <Plus size={15} /> Añadir primer barco
@@ -119,9 +119,9 @@ export default function FlotaPage() {
             <Link
               key={boat.id}
               href={`/flota/${boat.id}`}
-              className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-5 hover:border-[#C9A84C]/30 hover:bg-[#171717] transition-all group"
+              className="bg-white border border-gray-200 rounded-xl p-5 hover:border-[#C9A84C]/30 hover:bg-[#171717] transition-all group"
             >
-              <div className="w-full h-36 bg-[#1E1E1E] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-36 bg-gray-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                 {boat.image_url
                   ? <img src={boat.image_url} alt={boat.name} className="w-full h-full object-cover rounded-lg" />
                   : <Anchor size={32} className="text-[#2A2A2A] group-hover:text-[#C9A84C]/20 transition-colors" />
@@ -129,28 +129,28 @@ export default function FlotaPage() {
               </div>
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="text-white font-semibold">{boat.name}</h3>
-                  <p className="text-gray-500 text-sm">{boat.model ?? boat.type ?? '—'}</p>
+                  <h3 className="text-gray-900 font-semibold">{boat.name}</h3>
+                  <p className="text-gray-400 text-sm">{boat.model ?? boat.type ?? '—'}</p>
                 </div>
                 <span className={`text-xs px-2 py-1 rounded-full border font-medium ${st.color}`}>{st.label}</span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center mb-4">
-                <div className="bg-[#1E1E1E] rounded-lg py-2">
-                  <p className="text-white text-sm font-semibold">{boat.length_meters ? `${boat.length_meters}m` : '—'}</p>
-                  <p className="text-gray-500 text-xs">Eslora</p>
+                <div className="bg-gray-100 rounded-lg py-2">
+                  <p className="text-gray-900 text-sm font-semibold">{boat.length_meters ? `${boat.length_meters}m` : '—'}</p>
+                  <p className="text-gray-400 text-xs">Eslora</p>
                 </div>
-                <div className="bg-[#1E1E1E] rounded-lg py-2">
-                  <p className="text-white text-sm font-semibold">{boat.capacity ?? '—'}</p>
-                  <p className="text-gray-500 text-xs">Pax</p>
+                <div className="bg-gray-100 rounded-lg py-2">
+                  <p className="text-gray-900 text-sm font-semibold">{boat.capacity ?? '—'}</p>
+                  <p className="text-gray-400 text-xs">Pax</p>
                 </div>
-                <div className="bg-[#1E1E1E] rounded-lg py-2">
+                <div className="bg-gray-100 rounded-lg py-2">
                   <p className="text-[#C9A84C] text-sm font-semibold">
                     {boat.full_day_rate ? `${Number(boat.full_day_rate).toLocaleString()}€` : '—'}
                   </p>
-                  <p className="text-gray-500 text-xs">Día</p>
+                  <p className="text-gray-400 text-xs">Día</p>
                 </div>
               </div>
-              <div className="flex items-center justify-between text-xs text-gray-500">
+              <div className="flex items-center justify-between text-xs text-gray-400">
                 <span>{boat.type ?? ''}{boat.captain_required ? ' · Capitán requerido' : ''}</span>
                 {insuranceSoon && (
                   <span className="flex items-center gap-1 text-yellow-400">

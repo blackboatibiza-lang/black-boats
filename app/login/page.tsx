@@ -57,7 +57,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex justify-center mb-10">
@@ -65,10 +65,10 @@ export default function LoginPage() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleLogin} className="bg-[#141414] border border-[#2A2A2A] rounded-2xl p-7 space-y-5">
+        <form onSubmit={handleLogin} className="bg-white border border-gray-200 rounded-2xl p-7 space-y-5">
           <div>
-            <h2 className="text-white font-semibold text-lg mb-1">Iniciar sesión</h2>
-            <p className="text-gray-500 text-sm">Accede al panel de gestión</p>
+            <h2 className="text-gray-900 font-semibold text-lg mb-1">Iniciar sesión</h2>
+            <p className="text-gray-400 text-sm">Accede al panel de gestión</p>
           </div>
 
           <div className="space-y-1.5">
@@ -79,7 +79,7 @@ export default function LoginPage() {
               onChange={e => setEmail(e.target.value)}
               placeholder="tu@email.com"
               required
-              className="w-full px-3 py-2.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50"
+              className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50"
             />
           </div>
 
@@ -92,10 +92,10 @@ export default function LoginPage() {
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-3 py-2.5 pr-10 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C]/50"
+                className="w-full px-3 py-2.5 pr-10 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50"
               />
               <button type="button" onClick={() => setShowPw(!showPw)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                 {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
             </div>
@@ -115,7 +115,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-gray-700 text-xs mt-6">Black Boats Ibiza © 2025</p>
+        <p className="text-center text-gray-400 text-xs mt-6">Black Boats Ibiza © 2025</p>
       </div>
     </div>
   )
