@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard, Anchor, CalendarDays, Users, Package,
-  CreditCard, Settings, ChevronRight, LogOut, Receipt, BarChart2, X,
+  CreditCard, Settings, ChevronRight, LogOut, Receipt, BarChart2, X, Clock,
 } from 'lucide-react'
 import { getSession, clearSession } from '@/lib/session'
 import { useEffect, useState } from 'react'
@@ -18,6 +18,7 @@ const nav = [
   { href: '/gastos',      label: 'Gastos',      icon: Receipt,         key: 'gastos'      },
   { href: '/facturacion', label: 'Facturación', icon: CreditCard,      key: 'facturacion' },
   { href: '/informes',    label: 'Informes',    icon: BarChart2,       key: 'informes'    },
+  { href: '/fichajes',    label: 'Fichajes',    icon: Clock,           key: 'fichajes'    },
 ]
 
 const navBottom = [
