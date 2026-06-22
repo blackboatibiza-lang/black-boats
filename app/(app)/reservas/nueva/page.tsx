@@ -302,6 +302,37 @@ export default function NuevaReservaPage() {
         )
         if (ee) console.warn('Extras no guardados:', ee.message)
       }
+
+      // Sync Google Calendar
+      try {
+        const calRes = await fetch('/api/calendar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: booking.id,
+            booking_number: booking.booking_number,
+            start_date: bookingData.start_date,
+            end_date: bookingData.end_date,
+            start_time: bookingData.start_time,
+            end_time: bookingData.end_time,
+            client_name: selectedClient
+              ? `${selectedClient.first_name} ${selectedClient.last_name}`
+              : `${clientForm.first_name} ${clientForm.last_name}`,
+            boat_name: selectedBoat?.name ?? '',
+            total_price: totalPrice,
+            adults,
+            rental_type: rentalType,
+            departure_port: departurePort,
+          }),
+        })
+        const calData = await calRes.json()
+        if (calData.eventId) {
+          await supabase.from('bookings').update({ calendar_event_id: calData.eventId }).eq('id', booking.id)
+        }
+      } catch (calErr) {
+        console.warn('Google Calendar sync failed:', calErr)
+      }
+
       router.push(`/reservas/${booking.id}`)
     } catch (e: any) {
       setError(e.message ?? 'Error desconocido al guardar')

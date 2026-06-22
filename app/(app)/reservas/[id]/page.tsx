@@ -38,7 +38,7 @@ export default function ReservaDetailPage() {
     const supabase = createClient()
     const { data } = await supabase
       .from('bookings')
-      .select('*, client:clients(*), boat:boats(*), booking_extras(*), captain:staff_users!captain_id(id,name,role)')
+      .select('*, client:clients(*), boat:boats(*), booking_extras(*), captain:staff_users!captain_id(id,name,role), calendar_event_id')
       .eq('id', id)
       .single()
     setBooking(data)
@@ -49,6 +49,14 @@ export default function ReservaDetailPage() {
     setUpdatingStatus(true)
     const supabase = createClient()
     await supabase.from('bookings').update({ status, updated_at: new Date().toISOString() }).eq('id', id)
+    // If cancelled, delete calendar event
+    if (status === 'cancelled' && booking?.calendar_event_id) {
+      fetch('/api/calendar', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: booking.calendar_event_id }),
+      }).catch(() => {})
+    }
     await load()
     setUpdatingStatus(false)
   }

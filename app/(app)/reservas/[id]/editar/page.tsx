@@ -105,6 +105,10 @@ export default function EditarReservaPage() {
   const [depositLink, setDepositLink]             = useState('')
   const [paymentStatus, setPaymentStatus]         = useState('pending')
 
+  const [calendarEventId, setCalendarEventId]     = useState<string | null>(null)
+  const [bookingNumber, setBookingNumber]         = useState('')
+  const [clientName, setClientName]               = useState('')
+
   useEffect(() => {
     load()
   }, [id])
@@ -113,7 +117,7 @@ export default function EditarReservaPage() {
     const supabase = createClient()
     const [{ data: booking }, { data: boatsData }, { data: pricingData }, { data: staffData }] = await Promise.all([
       supabase.from('bookings')
-        .select('*, boat:boats(*), booking_extras(*)')
+        .select('*, boat:boats(*), booking_extras(*), client:clients(first_name,last_name), calendar_event_id, booking_number')
         .eq('id', id).single(),
       supabase.from('boats').select('*').order('name'),
       supabase.from('boat_pricing').select('*'),
@@ -150,6 +154,9 @@ export default function EditarReservaPage() {
     }
 
     if (booking?.captain_id) setCaptainId(booking.captain_id)
+    if (booking?.calendar_event_id) setCalendarEventId(booking.calendar_event_id)
+    if (booking?.booking_number) setBookingNumber(booking.booking_number)
+    if (booking?.client) setClientName(`${booking.client.first_name} ${booking.client.last_name}`)
     setBoats(boatsData ?? [])
     setAllPricing(pricingData ?? [])
     setStaffUsers(staffData ?? [])
@@ -251,6 +258,29 @@ export default function EditarReservaPage() {
       }).eq('id', id)
 
       if (err) throw new Error(`${err.message}${err.details ? ' — ' + err.details : ''}`)
+
+      // Sync Google Calendar
+      if (calendarEventId) {
+        fetch('/api/calendar', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventId: calendarEventId,
+            booking_number: bookingNumber,
+            start_date: startDate,
+            end_date: endDate || startDate,
+            start_time: startTime,
+            end_time: endTime,
+            client_name: clientName,
+            boat_name: selectedBoat?.name ?? '',
+            total_price: totalPrice,
+            adults,
+            rental_type: rentalType,
+            departure_port: departurePort,
+          }),
+        }).catch(() => {})
+      }
+
       router.push(`/reservas/${id}`)
     } catch (e: any) {
       setError(e.message ?? 'Error al guardar')

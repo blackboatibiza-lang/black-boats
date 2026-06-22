@@ -361,7 +361,7 @@ export default function ReservasPage() {
     const supabase = createClient()
     let bkQuery = supabase
       .from('bookings')
-      .select('*, client:clients(first_name,last_name), boat:boats(name,id)')
+      .select('*, client:clients(first_name,last_name), boat:boats(name,id), calendar_event_id')
       .order('start_date', { ascending: false })
     if (hasLimit) bkQuery = bkQuery.in('boat_id', boatIds)
 
@@ -379,6 +379,15 @@ export default function ReservasPage() {
 
   async function handleDelete(id: string) {
     const supabase = createClient()
+    // Delete Google Calendar event if exists
+    const booking = bookings.find(b => b.id === id)
+    if (booking?.calendar_event_id) {
+      fetch('/api/calendar', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: booking.calendar_event_id }),
+      }).catch(() => {})
+    }
     await supabase.from('bookings').delete().eq('id', id)
     setBookings(prev => prev.filter(b => b.id !== id))
   }
