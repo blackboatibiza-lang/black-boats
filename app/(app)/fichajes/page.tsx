@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase'
 import { getSession } from '@/lib/session'
 import {
   Clock, CheckCircle, AlertCircle, ChevronLeft, ChevronRight,
-  Bell, BellOff, Users, CalendarDays, BarChart2, Save, LogIn, LogOut,
+  Bell, BellOff, Users, CalendarDays, BarChart2, Save, LogIn, LogOut, Pencil, X,
 } from 'lucide-react'
 
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
@@ -411,92 +411,155 @@ function WeekTab({ userId, readOnly = true }: { session?: any; userId: string; r
   )
 }
 
-// ── EQUIPO HOY (admin) ────────────────────────────────────────────
+// ── EQUIPO (admin) ────────────────────────────────────────────────
 function EquipoTab() {
   const supabase = createClient()
-  const todayStr = toDateStr(new Date())
-  const dayOfWeek = (new Date().getDay() + 6) % 7
-  const weekStartStr = toDateStr(getWeekStart())
+  const [date, setDate] = useState(toDateStr(new Date()))
   const [employees, setEmployees] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState<any>(null) // { emp, entry }
+  const [editIn, setEditIn] = useState('')
+  const [editOut, setEditOut] = useState('')
+  const [saving, setSaving] = useState(false)
 
-  useEffect(() => {
-    async function load() {
-      const [{ data: emps }, { data: entries }, { data: scheds }] = await Promise.all([
-        supabase.from('staff_users').select('id,name,role').eq('active', true).neq('role', 'socio').order('name'),
-        supabase.from('time_entries').select('*').eq('date', todayStr),
-        supabase.from('schedules').select('*').eq('week_start', weekStartStr).eq('day_of_week', dayOfWeek),
-      ])
-      const entMap: Record<string, any> = {}
-      for (const e of entries ?? []) entMap[e.user_id] = e
-      const schedMap: Record<string, any> = {}
-      for (const s of scheds ?? []) schedMap[s.user_id] = s
-      setEmployees((emps ?? []).map(emp => ({
-        ...emp,
-        entry: entMap[emp.id],
-        sched: schedMap[emp.id],
-      })))
-      setLoading(false)
+  const load = useCallback(async () => {
+    setLoading(true)
+    const d = new Date(date + 'T12:00:00')
+    const dayOfWeek = (d.getDay() + 6) % 7
+    const ws = toDateStr(getWeekStart(d))
+    const [{ data: emps }, { data: entries }, { data: scheds }] = await Promise.all([
+      supabase.from('staff_users').select('id,name,role').eq('active', true).neq('role', 'socio').order('name'),
+      supabase.from('time_entries').select('*').eq('date', date),
+      supabase.from('schedules').select('*').eq('week_start', ws).eq('day_of_week', dayOfWeek),
+    ])
+    const entMap: Record<string, any> = {}
+    for (const e of entries ?? []) entMap[e.user_id] = e
+    const schedMap: Record<string, any> = {}
+    for (const s of scheds ?? []) schedMap[s.user_id] = s
+    setEmployees((emps ?? []).map(emp => ({ ...emp, entry: entMap[emp.id], sched: schedMap[emp.id] })))
+    setLoading(false)
+  }, [date])
+
+  useEffect(() => { load() }, [load])
+
+  function openEdit(emp: any) {
+    const entry = emp.entry
+    const toLocal = (ts: string) => {
+      if (!ts) return ''
+      const d = new Date(ts)
+      return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`
     }
-    load()
-  }, [])
+    setEditIn(toLocal(entry?.clock_in))
+    setEditOut(toLocal(entry?.clock_out))
+    setEditing(emp)
+  }
 
-  if (loading) return <div className="flex justify-center py-16"><div className="w-6 h-6 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" /></div>
+  async function saveEdit() {
+    if (!editing) return
+    setSaving(true)
+    const toISO = (time: string) => time ? new Date(`${date}T${time}:00`).toISOString() : null
+    const clock_in = toISO(editIn) || null
+    const clock_out = toISO(editOut) || null
+    await supabase.from('time_entries').upsert({
+      user_id: editing.id, date,
+      clock_in, clock_out,
+      ...(editing.entry?.id ? { id: editing.entry.id } : {}),
+    }, { onConflict: 'user_id,date' })
+    setSaving(false)
+    setEditing(null)
+    load()
+  }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100">
-        <p className="text-gray-900 font-semibold text-sm">Estado del equipo hoy</p>
-        <p className="text-gray-700 text-xs mt-0.5">
-          {new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
-        </p>
+    <div className="space-y-3">
+      <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3">
+        <CalendarDays size={16} className="text-gray-700" />
+        <input type="date" value={date} onChange={e => setDate(e.target.value)}
+          className="flex-1 text-sm text-gray-900 bg-transparent focus:outline-none" />
       </div>
-      <div className="divide-y divide-gray-100">
-        {employees.map(emp => {
-          const entry = emp.entry
-          const sched = emp.sched
-          const isOff = sched?.is_day_off
-          const hasEntry = !!entry?.clock_in
-          const done = hasEntry && !!entry?.clock_out
-          const wm = workedMins(entry)
-          const hasSched = !isOff && sched?.start_time
 
-          let statusEl
-          if (isOff) statusEl = <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded-full">Día libre</span>
-          else if (!hasSched) statusEl = <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded-full">Sin horario</span>
-          else if (done) statusEl = <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full flex items-center gap-1"><CheckCircle size={11} /> Completado</span>
-          else if (hasEntry) statusEl = <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full flex items-center gap-1"><Clock size={11} /> Trabajando</span>
-          else statusEl = <span className="text-xs px-2 py-1 bg-red-100 text-red-600 rounded-full flex items-center gap-1"><AlertCircle size={11} /> Sin fichar</span>
+      {loading ? (
+        <div className="flex justify-center py-16"><div className="w-6 h-6 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" /></div>
+      ) : (
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="divide-y divide-gray-100">
+            {employees.map(emp => {
+              const entry = emp.entry
+              const sched = emp.sched
+              const isOff = sched?.is_day_off
+              const hasEntry = !!entry?.clock_in
+              const done = hasEntry && !!entry?.clock_out
+              const wm = workedMins(entry)
+              const hasSched = !isOff && sched?.start_time
 
-          return (
-            <div key={emp.id} className="flex items-center justify-between px-5 py-3.5">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] text-sm font-bold">
-                  {emp.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <p className="text-gray-900 text-sm font-medium">{emp.name}</p>
-                  {hasSched && (
-                    <p className="text-gray-700 text-xs">{sched.start_time?.slice(0,5)} – {sched.end_time?.slice(0,5)}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                {hasEntry && (
-                  <div className="text-right hidden sm:block">
-                    <p className="text-xs text-gray-700">
-                      <span className="font-mono">{fmtTime(entry?.clock_in)}</span>
-                      {entry?.clock_out && <span className="font-mono"> → {fmtTime(entry?.clock_out)}</span>}
-                    </p>
-                    {wm > 0 && <p className="text-xs text-gray-700">{fmtMins(wm)} trabajadas</p>}
+              let statusEl
+              if (isOff) statusEl = <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded-full">Día libre</span>
+              else if (done) statusEl = <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full flex items-center gap-1"><CheckCircle size={11} /> Completado</span>
+              else if (hasEntry) statusEl = <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full flex items-center gap-1"><Clock size={11} /> Trabajando</span>
+              else statusEl = <span className="text-xs px-2 py-1 bg-red-100 text-red-600 rounded-full flex items-center gap-1"><AlertCircle size={11} /> Sin fichar</span>
+
+              return (
+                <div key={emp.id} className="flex items-center justify-between px-5 py-3.5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] text-sm font-bold">
+                      {emp.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-gray-900 text-sm font-medium">{emp.name}</p>
+                      {hasSched && <p className="text-gray-700 text-xs">{sched.start_time?.slice(0,5)} – {sched.end_time?.slice(0,5)}</p>}
+                      {hasEntry && (
+                        <p className="text-gray-700 text-xs font-mono">
+                          {fmtTime(entry?.clock_in)}{entry?.clock_out ? ` → ${fmtTime(entry?.clock_out)}` : ''}{wm > 0 ? ` · ${fmtMins(wm)}` : ''}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                )}
-                {statusEl}
+                  <div className="flex items-center gap-2">
+                    {statusEl}
+                    <button onClick={() => openEdit(emp)} className="p-1.5 text-gray-400 hover:text-[#C9A84C] hover:bg-gray-100 rounded-lg transition-colors" title="Editar fichaje">
+                      <Pencil size={14} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Edit modal */}
+      {editing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-900 font-semibold">Editar fichaje</p>
+                <p className="text-gray-700 text-xs mt-0.5">{editing.name} · {date}</p>
+              </div>
+              <button onClick={() => setEditing(null)} className="text-gray-400 hover:text-gray-700 p-1"><X size={18} /></button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-gray-700 text-xs block mb-1">Hora de entrada</label>
+                <input type="time" value={editIn} onChange={e => setEditIn(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60" />
+              </div>
+              <div>
+                <label className="text-gray-700 text-xs block mb-1">Hora de salida</label>
+                <input type="time" value={editOut} onChange={e => setEditOut(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60" />
               </div>
             </div>
-          )
-        })}
-      </div>
+            <div className="flex gap-2 pt-1">
+              <button onClick={() => setEditing(null)} className="flex-1 py-2 border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50">Cancelar</button>
+              <button onClick={saveEdit} disabled={saving}
+                className="flex-1 py-2 bg-[#C9A84C] text-black font-semibold text-sm rounded-lg hover:bg-[#E8C97A] disabled:opacity-60">
+                {saving ? 'Guardando...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
