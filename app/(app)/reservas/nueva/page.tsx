@@ -508,7 +508,6 @@ export default function NuevaReservaPage() {
                 <label className="text-gray-700 text-xs mb-1.5 block">Fecha salida *</label>
                 <input type="date" value={startDate}
                   onChange={e => { setStartDate(e.target.value); if (!endDate) setEndDate(e.target.value) }}
-                  min={new Date().toISOString().split('T')[0]}
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
               </div>
               <div>

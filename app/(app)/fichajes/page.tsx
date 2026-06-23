@@ -345,8 +345,8 @@ function WeekTab({ userId, readOnly = true }: { session?: any; userId: string; r
       </div>
 
       {/* Days table */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-x-auto">
+        <table className="w-full text-sm min-w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
               <th className="text-left px-4 py-3 text-gray-700 font-medium text-xs">Día</th>
