@@ -348,16 +348,12 @@ export default function EditarReservaPage() {
             ))}
           </div>
         </div>
-        {rentalType === 'with_captain' && staffUsers.length > 0 && (
+        {rentalType === 'with_captain' && (
           <div>
             <label className={labelCls}>Capitán asignado</label>
-            <select value={captainId} onChange={e => setCaptainId(e.target.value)}
-              className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
-              <option value="">— Sin asignar —</option>
-              {staffUsers.map(u => (
-                <option key={u.id} value={u.id}>{u.name} · {u.role}</option>
-              ))}
-            </select>
+            <input type="text" value={captainId} onChange={e => setCaptainId(e.target.value)}
+              placeholder="Nombre del capitán"
+              className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
           </div>
         )}
       </div>
