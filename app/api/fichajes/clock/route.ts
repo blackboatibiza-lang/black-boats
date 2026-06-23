@@ -9,24 +9,35 @@ export async function POST(req: NextRequest) {
   const now = new Date().toISOString()
 
   const { data: existing } = await supabase
-    .from('time_entries').select('*').eq('user_id', user_id).eq('date', date).single()
+    .from('time_entries').select('*').eq('user_id', user_id).eq('date', date).maybeSingle()
+
+  const periods: { in: string; out: string | null }[] = existing?.periods ?? []
+  const lastPeriod = periods[periods.length - 1]
+  const isClockedIn = lastPeriod && !lastPeriod.out
 
   if (action === 'in') {
-    if (existing) return NextResponse.json({ error: 'Ya fichaste entrada hoy' }, { status: 409 })
-    const { data, error } = await supabase.from('time_entries')
-      .insert({ user_id, date, clock_in: now })
-      .select().single()
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ entry: data })
+    if (isClockedIn) return NextResponse.json({ error: 'Ya estás fichado' }, { status: 409 })
+    const newPeriods = [...periods, { in: now, out: null }]
+    let result
+    if (existing) {
+      result = await supabase.from('time_entries')
+        .update({ periods: newPeriods, clock_in: existing.clock_in ?? now, clock_out: null })
+        .eq('id', existing.id).select().single()
+    } else {
+      result = await supabase.from('time_entries')
+        .insert({ user_id, date, clock_in: now, clock_out: null, periods: newPeriods })
+        .select().single()
+    }
+    if (result.error) return NextResponse.json({ error: result.error.message }, { status: 500 })
+    return NextResponse.json({ entry: result.data })
   }
 
   if (action === 'out') {
-    if (!existing) return NextResponse.json({ error: 'No hay entrada fichada hoy' }, { status: 409 })
-    if (existing.clock_out) return NextResponse.json({ error: 'Ya fichaste salida hoy' }, { status: 409 })
+    if (!isClockedIn) return NextResponse.json({ error: 'No estás fichado' }, { status: 409 })
+    const newPeriods = [...periods.slice(0, -1), { in: lastPeriod.in, out: now }]
     const { data, error } = await supabase.from('time_entries')
-      .update({ clock_out: now })
-      .eq('id', existing.id)
-      .select().single()
+      .update({ periods: newPeriods, clock_out: now })
+      .eq('id', existing.id).select().single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ entry: data })
   }

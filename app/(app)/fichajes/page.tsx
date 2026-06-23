@@ -43,9 +43,22 @@ function schedMins(start?: string | null, end?: string | null, start2?: string |
   return total
 }
 function workedMins(entry: any, now?: Date): number {
-  if (!entry?.clock_in) return 0
-  const end = entry.clock_out ? new Date(entry.clock_out) : (now ?? new Date())
-  return Math.round((end.getTime() - new Date(entry.clock_in).getTime()) / 60000)
+  if (!entry) return 0
+  const periods: { in: string; out: string | null }[] = entry.periods ?? []
+  if (periods.length === 0) {
+    if (!entry.clock_in) return 0
+    const end = entry.clock_out ? new Date(entry.clock_out) : (now ?? new Date())
+    return Math.round((end.getTime() - new Date(entry.clock_in).getTime()) / 60000)
+  }
+  return periods.reduce((acc, p) => {
+    const end = p.out ? new Date(p.out) : (now ?? new Date())
+    return acc + Math.round((end.getTime() - new Date(p.in).getTime()) / 60000)
+  }, 0)
+}
+function isClockedIn(entry: any): boolean {
+  const periods: { in: string; out: string | null }[] = entry?.periods ?? []
+  if (periods.length > 0) return !periods[periods.length - 1].out
+  return !!entry?.clock_in && !entry?.clock_out
 }
 function fmtMins(m: number): string {
   const h = Math.floor(Math.abs(m) / 60)
@@ -186,8 +199,9 @@ function ClockTab({ session, now, notifStatus, onRequestNotif }: any) {
     setClocking(false)
   }
 
-  const status = !entry?.clock_in ? 'out' : !entry?.clock_out ? 'in' : 'done'
-  const workedToday = workedMins(entry, status === 'in' ? now : undefined)
+  const clockedIn = isClockedIn(entry)
+  const status = !entry?.clock_in ? 'out' : clockedIn ? 'in' : 'paused'
+  const workedToday = workedMins(entry, clockedIn ? now : undefined)
   const scheduledToday = schedMins(sched?.start_time, sched?.end_time, sched?.start_time_2, sched?.end_time_2)
   const isOff = sched?.is_day_off
 
@@ -208,35 +222,25 @@ function ClockTab({ session, now, notifStatus, onRequestNotif }: any) {
               <div className="inline-flex items-center gap-2 px-5 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium">
                 <CheckCircle size={16} /> Día libre hoy
               </div>
-            ) : status === 'done' ? (
-              <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-5 py-3 bg-green-50 text-green-700 border border-green-200 rounded-xl text-sm font-medium">
-                  <CheckCircle size={16} /> Jornada completada
-                </div>
-                <p className="text-gray-700 text-sm">
-                  Entrada: <strong>{fmtTime(entry?.clock_in)}</strong> · Salida: <strong>{fmtTime(entry?.clock_out)}</strong>
-                </p>
-              </div>
             ) : status === 'in' ? (
               <div className="space-y-4">
-                <p className="text-gray-700 text-sm">
-                  Entrada fichada a las <strong className="text-gray-900">{fmtTime(entry?.clock_in)}</strong>
-                </p>
+                <p className="text-gray-700 text-sm">Trabajando desde las <strong className="text-gray-900">{fmtTime(entry?.periods?.at(-1)?.in ?? entry?.clock_in)}</strong></p>
                 <button onClick={() => handleClock('out')} disabled={clocking}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-red-500 hover:bg-red-600 text-white font-bold text-lg rounded-2xl transition-all disabled:opacity-60 shadow-lg shadow-red-200">
-                  <LogOut size={22} /> {clocking ? 'Fichando...' : 'Fichar Salida'}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-2xl transition-all disabled:opacity-60 shadow-lg shadow-amber-200">
+                  <LogOut size={22} /> {clocking ? 'Fichando...' : 'Pausar / Fichar Salida'}
                 </button>
               </div>
             ) : (
               <div className="space-y-4">
-                {sched && (
-                  <p className="text-gray-700 text-sm">
-                    Turno hoy: <strong className="text-gray-900">{sched.start_time?.slice(0,5)} – {sched.end_time?.slice(0,5)}</strong>
-                  </p>
+                {status === 'paused' && (
+                  <p className="text-amber-600 text-sm font-medium">⏸ Pausado · {fmtMins(workedToday)} acumuladas</p>
+                )}
+                {sched && status === 'out' && (
+                  <p className="text-gray-700 text-sm">Turno: <strong className="text-gray-900">{sched.start_time?.slice(0,5)} – {sched.end_time?.slice(0,5)}</strong></p>
                 )}
                 <button onClick={() => handleClock('in')} disabled={clocking}
                   className="inline-flex items-center gap-2 px-8 py-4 bg-[#C9A84C] hover:bg-[#E8C97A] text-black font-bold text-lg rounded-2xl transition-all disabled:opacity-60 shadow-lg shadow-yellow-200">
-                  <LogIn size={22} /> {clocking ? 'Fichando...' : 'Fichar Entrada'}
+                  <LogIn size={22} /> {clocking ? 'Fichando...' : status === 'paused' ? 'Reanudar' : 'Fichar Entrada'}
                 </button>
               </div>
             )}
