@@ -28,11 +28,19 @@ function fmtTime(ts?: string | null): string {
   if (!ts) return '—'
   return new Date(ts).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
 }
-function schedMins(start?: string | null, end?: string | null): number {
-  if (!start || !end) return 0
-  const [sh, sm] = start.split(':').map(Number)
-  const [eh, em] = end.split(':').map(Number)
-  return (eh * 60 + em) - (sh * 60 + sm)
+function schedMins(start?: string | null, end?: string | null, start2?: string | null, end2?: string | null): number {
+  let total = 0
+  if (start && end) {
+    const [sh, sm] = start.split(':').map(Number)
+    const [eh, em] = end.split(':').map(Number)
+    total += Math.max(0, (eh * 60 + em) - (sh * 60 + sm))
+  }
+  if (start2 && end2) {
+    const [sh, sm] = start2.split(':').map(Number)
+    const [eh, em] = end2.split(':').map(Number)
+    total += Math.max(0, (eh * 60 + em) - (sh * 60 + sm))
+  }
+  return total
 }
 function workedMins(entry: any, now?: Date): number {
   if (!entry?.clock_in) return 0
@@ -180,7 +188,7 @@ function ClockTab({ session, now, notifStatus, onRequestNotif }: any) {
 
   const status = !entry?.clock_in ? 'out' : !entry?.clock_out ? 'in' : 'done'
   const workedToday = workedMins(entry, status === 'in' ? now : undefined)
-  const scheduledToday = schedMins(sched?.start_time, sched?.end_time)
+  const scheduledToday = schedMins(sched?.start_time, sched?.end_time, sched?.start_time_2, sched?.end_time_2)
   const isOff = sched?.is_day_off
 
   return (
@@ -306,7 +314,7 @@ function WeekTab({ userId, readOnly = true }: { session?: any; userId: string; r
     const dateStr = toDateStr(date)
     const sched = schedules[i]
     const entry = entries[dateStr]
-    const sm = sched?.is_day_off ? 0 : schedMins(sched?.start_time, sched?.end_time)
+    const sm = sched?.is_day_off ? 0 : schedMins(sched?.start_time, sched?.end_time, sched?.start_time_2, sched?.end_time_2)
     const wm = workedMins(entry)
     totalSched += sm; totalWorked += wm
     return { date, dateStr, sched, entry, sm, wm }
@@ -565,13 +573,16 @@ function EquipoTab() {
 }
 
 // ── HORARIOS (admin) ──────────────────────────────────────────────
+type DaySched = { start: string; end: string; start2: string; end2: string; off: boolean }
+const emptyDay = (): DaySched => ({ start: '09:00', end: '13:00', start2: '', end2: '', off: false })
+
 function HorariosTab() {
   const supabase = createClient()
   const [employees, setEmployees] = useState<any[]>([])
   const [selectedEmp, setSelectedEmp] = useState('')
   const [weekStart, setWeekStart] = useState(getWeekStart())
-  const [schedule, setSchedule] = useState<Record<number, { start: string; end: string; off: boolean }>>(() =>
-    Object.fromEntries(Array.from({ length: 7 }, (_, i) => [i, { start: '09:00', end: '18:00', off: false }]))
+  const [schedule, setSchedule] = useState<Record<number, DaySched>>(() =>
+    Object.fromEntries(Array.from({ length: 7 }, (_, i) => [i, emptyDay()]))
   )
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -585,11 +596,15 @@ function HorariosTab() {
     if (!selectedEmp) return
     const ws = toDateStr(weekStart)
     const { data } = await supabase.from('schedules').select('*').eq('user_id', selectedEmp).eq('week_start', ws)
-    const newSched: Record<number, { start: string; end: string; off: boolean }> = Object.fromEntries(
-      Array.from({ length: 7 }, (_, i) => [i, { start: '09:00', end: '18:00', off: false }])
-    )
+    const newSched: Record<number, DaySched> = Object.fromEntries(Array.from({ length: 7 }, (_, i) => [i, emptyDay()]))
     for (const row of data ?? []) {
-      newSched[row.day_of_week] = { start: row.start_time?.slice(0,5) ?? '09:00', end: row.end_time?.slice(0,5) ?? '18:00', off: row.is_day_off }
+      newSched[row.day_of_week] = {
+        start: row.start_time?.slice(0,5) ?? '09:00',
+        end: row.end_time?.slice(0,5) ?? '13:00',
+        start2: row.start_time_2?.slice(0,5) ?? '',
+        end2: row.end_time_2?.slice(0,5) ?? '',
+        off: row.is_day_off,
+      }
     }
     setSchedule(newSched)
   }, [selectedEmp, weekStart])
@@ -606,16 +621,18 @@ function HorariosTab() {
       day_of_week: i,
       start_time: schedule[i].start + ':00',
       end_time: schedule[i].end + ':00',
+      start_time_2: schedule[i].start2 ? schedule[i].start2 + ':00' : null,
+      end_time_2: schedule[i].end2 ? schedule[i].end2 + ':00' : null,
       is_day_off: schedule[i].off,
     }))
-    await supabase.from('schedules').upsert(rows, { onConflict: 'user_id,week_start,day_of_week' })
+    const { error } = await supabase.from('schedules').upsert(rows, { onConflict: 'user_id,week_start,day_of_week' })
+    if (error) console.error(error)
     setSaving(false); setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
 
-  function copyToNextWeek() {
-    setWeekStart(w => addDays(w, 7))
-  }
+  const totalWeekMins = Object.values(schedule).reduce((acc, d) =>
+    acc + (d.off ? 0 : schedMins(d.start, d.end, d.start2, d.end2)), 0)
 
   return (
     <div className="space-y-4">
@@ -630,36 +647,53 @@ function HorariosTab() {
           </div>
           <button onClick={() => setWeekStart(w => addDays(w, 7))} className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700"><ChevronRight size={16} /></button>
         </div>
+        <div className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border ${totalWeekMins === 2400 ? 'bg-green-50 border-green-200 text-green-700' : 'bg-amber-50 border-amber-200 text-amber-700'}`}>
+          <Clock size={14} />
+          {fmtMins(totalWeekMins)} / 40h
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="divide-y divide-gray-100">
           {Array.from({ length: 7 }, (_, i) => {
             const day = schedule[i]
+            const dayMins = day.off ? 0 : schedMins(day.start, day.end, day.start2, day.end2)
+            const set = (field: keyof DaySched, val: any) => setSchedule(s => ({ ...s, [i]: { ...s[i], [field]: val } }))
             return (
-              <div key={i} className={`flex items-center gap-4 px-5 py-3.5 ${day.off ? 'opacity-50' : ''}`}>
-                <div className="w-24 flex-shrink-0">
-                  <p className="text-gray-900 text-sm font-medium">{DAYS[i]}</p>
-                  <p className="text-gray-700 text-xs">{addDays(weekStart, i).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</p>
-                </div>
-                <label className="flex items-center gap-2 text-xs text-gray-700 select-none cursor-pointer">
-                  <input type="checkbox" checked={day.off}
-                    onChange={e => setSchedule(s => ({ ...s, [i]: { ...s[i], off: e.target.checked } }))}
-                    className="w-4 h-4 accent-[#C9A84C]" />
-                  Libre
-                </label>
-                {!day.off && (
-                  <div className="flex items-center gap-2 flex-1">
-                    <input type="time" value={day.start}
-                      onChange={e => setSchedule(s => ({ ...s, [i]: { ...s[i], start: e.target.value } }))}
-                      className="px-2 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60 w-28" />
-                    <span className="text-gray-700 text-xs">–</span>
-                    <input type="time" value={day.end}
-                      onChange={e => setSchedule(s => ({ ...s, [i]: { ...s[i], end: e.target.value } }))}
-                      className="px-2 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60 w-28" />
-                    <span className="text-gray-700 text-xs ml-1">{fmtMins(schedMins(day.start, day.end))}</span>
+              <div key={i} className={`px-4 py-3 ${day.off ? 'opacity-40' : ''}`}>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="w-20 flex-shrink-0">
+                    <p className="text-gray-900 text-sm font-medium">{DAYS[i]}</p>
+                    <p className="text-gray-500 text-xs">{addDays(weekStart, i).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</p>
                   </div>
-                )}
+                  <label className="flex items-center gap-1.5 text-xs text-gray-600 select-none cursor-pointer mr-1">
+                    <input type="checkbox" checked={day.off} onChange={e => set('off', e.target.checked)} className="w-4 h-4 accent-[#C9A84C]" />
+                    Libre
+                  </label>
+                  {!day.off && (
+                    <div className="flex flex-wrap items-center gap-2 flex-1">
+                      {/* Turno 1 */}
+                      <div className="flex items-center gap-1.5">
+                        <input type="time" value={day.start} onChange={e => set('start', e.target.value)}
+                          className="px-2 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60 w-[6.5rem]" />
+                        <span className="text-gray-400 text-xs">–</span>
+                        <input type="time" value={day.end} onChange={e => set('end', e.target.value)}
+                          className="px-2 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60 w-[6.5rem]" />
+                      </div>
+                      {/* Turno 2 */}
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-gray-400 text-xs">+</span>
+                        <input type="time" value={day.start2} onChange={e => set('start2', e.target.value)}
+                          placeholder="--:--"
+                          className="px-2 py-1.5 bg-gray-50 border border-dashed border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60 w-[6.5rem]" />
+                        <span className="text-gray-400 text-xs">–</span>
+                        <input type="time" value={day.end2} onChange={e => set('end2', e.target.value)}
+                          className="px-2 py-1.5 bg-gray-50 border border-dashed border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/60 w-[6.5rem]" />
+                      </div>
+                      <span className="text-[#C9A84C] text-xs font-semibold">{fmtMins(dayMins)}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             )
           })}
@@ -667,7 +701,7 @@ function HorariosTab() {
       </div>
 
       <div className="flex gap-3 justify-end">
-        <button onClick={copyToNextWeek} className="px-4 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 text-sm rounded-lg transition-colors">
+        <button onClick={() => setWeekStart(w => addDays(w, 7))} className="px-4 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 text-sm rounded-lg transition-colors">
           Copiar a semana siguiente →
         </button>
         <button onClick={save} disabled={saving}
@@ -705,7 +739,7 @@ function InformeTab() {
           const date = toDateStr(addDays(weekStart, i))
           const sched = (scheds ?? []).find((s: any) => s.user_id === emp.id && s.day_of_week === i)
           const entry = (entries ?? []).find((e: any) => e.user_id === emp.id && e.date === date)
-          if (sched && !sched.is_day_off) totalSched += schedMins(sched.start_time, sched.end_time)
+          if (sched && !sched.is_day_off) totalSched += schedMins(sched.start_time, sched.end_time, sched.start_time_2, sched.end_time_2)
           totalWorked += workedMins(entry)
         }
         return { ...emp, totalSched, totalWorked, balance: totalWorked - totalSched }
