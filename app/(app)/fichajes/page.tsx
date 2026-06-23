@@ -428,7 +428,7 @@ function EquipoTab() {
     const dayOfWeek = (d.getDay() + 6) % 7
     const ws = toDateStr(getWeekStart(d))
     const [{ data: emps }, { data: entries }, { data: scheds }] = await Promise.all([
-      supabase.from('staff_users').select('id,name,role').neq('role', 'socio').order('name'),
+      supabase.from('staff_users').select('id,name,role').order('name'),
       supabase.from('time_entries').select('*').eq('date', date),
       supabase.from('schedules').select('*').eq('week_start', ws).eq('day_of_week', dayOfWeek),
     ])
@@ -577,7 +577,7 @@ function HorariosTab() {
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    supabase.from('staff_users').select('id,name').neq('role', 'socio').order('name')
+    supabase.from('staff_users').select('id,name').order('name')
       .then(({ data }) => { setEmployees(data ?? []); if (data?.length) setSelectedEmp(data[0].id) })
   }, [])
 
@@ -694,7 +694,7 @@ function InformeTab() {
       const days = Array.from({ length: 7 }, (_, i) => toDateStr(addDays(weekStart, i)))
 
       const [{ data: emps }, { data: entries }, { data: scheds }] = await Promise.all([
-        supabase.from('staff_users').select('id,name').neq('role', 'socio').order('name'),
+        supabase.from('staff_users').select('id,name').order('name'),
         supabase.from('time_entries').select('*').in('date', days),
         supabase.from('schedules').select('*').eq('week_start', ws),
       ])
