@@ -34,9 +34,10 @@ function schedMins(start?: string | null, end?: string | null): number {
   const [eh, em] = end.split(':').map(Number)
   return (eh * 60 + em) - (sh * 60 + sm)
 }
-function workedMins(entry: any): number {
-  if (!entry?.clock_in || !entry?.clock_out) return 0
-  return Math.round((new Date(entry.clock_out).getTime() - new Date(entry.clock_in).getTime()) / 60000)
+function workedMins(entry: any, now?: Date): number {
+  if (!entry?.clock_in) return 0
+  const end = entry.clock_out ? new Date(entry.clock_out) : (now ?? new Date())
+  return Math.round((end.getTime() - new Date(entry.clock_in).getTime()) / 60000)
 }
 function fmtMins(m: number): string {
   const h = Math.floor(Math.abs(m) / 60)
@@ -178,7 +179,7 @@ function ClockTab({ session, now, notifStatus, onRequestNotif }: any) {
   }
 
   const status = !entry?.clock_in ? 'out' : !entry?.clock_out ? 'in' : 'done'
-  const workedToday = workedMins(entry)
+  const workedToday = workedMins(entry, status === 'in' ? now : undefined)
   const scheduledToday = schedMins(sched?.start_time, sched?.end_time)
   const isOff = sched?.is_day_off
 
