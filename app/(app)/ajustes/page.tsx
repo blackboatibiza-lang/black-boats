@@ -37,6 +37,7 @@ const ALL_PERMISSIONS = [
   { key: 'clientes',    label: 'Clientes',    group: 'operacion', canEdit: true  },
   { key: 'extras',      label: 'Extras',      group: 'operacion', canEdit: true  },
   { key: 'gastos',      label: 'Gastos',      group: 'operacion', canEdit: true  },
+  { key: 'fichajes',    label: 'Fichajes',    group: 'operacion', canEdit: true  },
   { key: 'facturacion', label: 'Facturación', group: 'admin',     canEdit: true  },
   { key: 'informes',    label: 'Informes',    group: 'admin',     canEdit: false },
   { key: 'ajustes',     label: 'Ajustes',     group: 'admin',     canEdit: true  },
