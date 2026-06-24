@@ -1,5 +1,5 @@
 export type BoatStatus = 'available' | 'rented' | 'maintenance' | 'inactive'
-export type BookingStatus = 'pending' | 'confirmed' | 'active' | 'completed' | 'cancelled'
+export type BookingStatus = 'pending' | 'confirmed' | 'active' | 'completed' | 'cancelled' | 'reservado' | 'finalizado'
 export type RentalType = 'with_captain' | 'bareboat'
 export type PaymentStatus = 'pending' | 'partial' | 'paid' | 'refunded'
 

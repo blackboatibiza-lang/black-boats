@@ -36,12 +36,12 @@ const PAYMENT_METHODS = [
 ]
 
 const SOURCES = [
-  { value: 'direct',   label: 'Directo' },
-  { value: 'web',      label: 'Web' },
-  { value: 'booking',  label: 'Booking.com' },
-  { value: 'airbnb',   label: 'Airbnb' },
-  { value: 'referral', label: 'Referido' },
-  { value: 'other',    label: 'Otro' },
+  { value: 'directo',        label: 'Directo' },
+  { value: 'broker',         label: 'Broker' },
+  { value: 'redes_sociales', label: 'Redes Sociales' },
+  { value: 'whatsapp',       label: 'WhatsApp' },
+  { value: 'samboats',       label: 'Samboats' },
+  { value: 'clickboats',     label: 'Click&Boats' },
 ]
 
 function getCandidateSeasons(date: string): string[] {
@@ -68,6 +68,7 @@ export default function EditarReservaPage() {
   const [allPricing, setAllPricing] = useState<any[]>([])
   const [staffUsers, setStaffUsers] = useState<any[]>([])
   const [captainId, setCaptainId] = useState<string>('')
+  const [captainFee, setCaptainFee] = useState<string>('')
 
   // Campos editables
   const [rentalType, setRentalType]     = useState<'with_captain' | 'bareboat'>('with_captain')
@@ -82,7 +83,9 @@ export default function EditarReservaPage() {
   const [departurePort, setDeparturePort] = useState('')
   const [routeNotes, setRouteNotes]     = useState('')
   const [internalNotes, setInternalNotes] = useState('')
-  const [source, setSource]             = useState('direct')
+  const [source, setSource]             = useState('directo')
+  const [brokerName, setBrokerName]     = useState('')
+  const [brokerCommission, setBrokerCommission] = useState('')
 
   // Tarifa
   const [selectedTariff, setSelectedTariff]   = useState('patron_fuel')
@@ -98,10 +101,9 @@ export default function EditarReservaPage() {
   const [customBase, setCustomBase]     = useState(0)
 
   // Pago
-  const [paymentMethod, setPaymentMethod]         = useState('cash')
+  const [payments, setPayments]                   = useState<{ method: string; amount: string }[]>([{ method: 'cash', amount: '' }])
   const [depositMethod, setDepositMethod]         = useState('cash')
   const [depositAmount, setDepositAmount]         = useState(0)
-  const [paymentLink, setPaymentLink]             = useState('')
   const [depositLink, setDepositLink]             = useState('')
   const [paymentStatus, setPaymentStatus]         = useState('pending')
 
@@ -145,12 +147,17 @@ export default function EditarReservaPage() {
       setDepositAmount(Number(booking.deposit_amount ?? 0))
       setPaymentStatus(booking.payment_status ?? 'pending')
 
-      // Extraer método y link desde internal_notes si se guardaron
+      // Extraer métodos de pago desde internal_notes
       const notes = booking.internal_notes ?? ''
-      const mMatch = notes.match(/Método pago: (\w+)/)
-      if (mMatch) setPaymentMethod(mMatch[1])
-      const lMatch = notes.match(/Link pago: (.+?)(\s*\||\s*$)/)
-      if (lMatch) setPaymentLink(lMatch[1].trim())
+      const multiMatch = notes.match(/((?:\w+: \d+(?:\.\d+)?€)(?:\s*\+\s*(?:\w+: \d+(?:\.\d+)?€))*)/)
+      if (multiMatch) {
+        const parts = multiMatch[1].split('+').map((s: string) => s.trim()).filter(Boolean)
+        const parsed = parts.map((s: string) => { const m = s.match(/(\w+): (\d+(?:\.\d+)?)€/); return m ? { method: m[1], amount: m[2] } : null }).filter(Boolean)
+        if (parsed.length > 0) setPayments(parsed as { method: string; amount: string }[])
+      } else {
+        const mMatch = notes.match(/Método pago: (\w+)/)
+        if (mMatch) setPayments([{ method: mMatch[1], amount: '' }])
+      }
     }
 
     if (booking?.captain_id) setCaptainId(booking.captain_id)
@@ -228,9 +235,8 @@ export default function EditarReservaPage() {
         selectedPricingRow ? `Tarifa: ${TARIFF_INFO[selectedTariff]?.label}` : '',
         earlyBird ? 'Madrugadores −10%' : '',
         fuelExtra ? `Fuel extra: +${fuelExtra}€` : '',
-        `Método pago: ${paymentMethod}`,
-        paymentLink ? `Link pago: ${paymentLink}` : '',
-        depositMethod !== paymentMethod ? `Método fianza: ${depositMethod}` : '',
+        payments.filter(p => p.method && Number(p.amount) > 0).map(p => `${p.method}: ${p.amount}€`).join(' + ') || `Método pago: ${payments[0]?.method ?? 'cash'}`,
+        depositAmount > 0 ? `Método fianza: ${depositMethod}` : '',
         depositLink ? `Link fianza: ${depositLink}` : '',
       ].filter(Boolean).join(' | ')
 
@@ -258,6 +264,28 @@ export default function EditarReservaPage() {
       }).eq('id', id)
 
       if (err) throw new Error(`${err.message}${err.details ? ' — ' + err.details : ''}`)
+
+      // Auto-create captain expense (non-blocking)
+      if (rentalType === 'with_captain' && captainId.trim() && Number(captainFee) > 0) {
+        createClient().from('expenses').insert({
+          amount: Number(captainFee),
+          concept: captainId.trim(),
+          category: 'Patrón',
+          date: startDate,
+          notes: `Pago patrón reserva editada`,
+        }).then(({ error: e }) => { if (e) console.warn('Captain expense:', e.message) })
+      }
+
+      // Auto-create broker expense if new commission entered (non-blocking)
+      if (source === 'broker' && brokerName.trim() && Number(brokerCommission) > 0) {
+        createClient().from('expenses').insert({
+          amount: Number(brokerCommission),
+          concept: brokerName.trim(),
+          category: 'Broker',
+          date: startDate,
+          notes: `Comisión broker reserva editada`,
+        }).then(({ error: e }) => { if (e) console.warn('Broker expense:', e.message) })
+      }
 
       // Sync Google Calendar
       if (calendarEventId) {
@@ -349,11 +377,19 @@ export default function EditarReservaPage() {
           </div>
         </div>
         {rentalType === 'with_captain' && (
-          <div>
+          <div className="space-y-2">
             <label className={labelCls}>Capitán asignado</label>
             <input type="text" value={captainId} onChange={e => setCaptainId(e.target.value)}
               placeholder="Nombre del capitán"
               className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
+            {captainId.trim() && (
+              <div className="flex items-center gap-2">
+                <input type="number" value={captainFee} onChange={e => setCaptainFee(e.target.value)}
+                  placeholder="Pago al capitán (€)" min={0} step={0.01}
+                  className="flex-1 px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
+                <span className="text-gray-500 text-sm">€</span>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -406,6 +442,23 @@ export default function EditarReservaPage() {
             </select>
           </div>
         </div>
+
+        {source === 'broker' && (
+          <div className="grid grid-cols-2 gap-3 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+            <div>
+              <label className={labelCls}>Nombre del broker *</label>
+              <input value={brokerName} onChange={e => setBrokerName(e.target.value)}
+                placeholder="Nombre del broker" className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Comisión broker (€)</label>
+              <input type="number" value={brokerCommission} onChange={e => setBrokerCommission(e.target.value)}
+                placeholder="0.00" min="0" step="0.01" className={inputCls} />
+            </div>
+            <p className="col-span-2 text-yellow-700 text-xs">La comisión se añadirá automáticamente como gasto si introduces un importe.</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Puerto de salida</label>
@@ -545,29 +598,27 @@ export default function EditarReservaPage() {
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-5">
         <h3 className="text-gray-900 font-semibold text-sm">Método de pago y fianza</h3>
 
-        {/* Pago principal */}
+        {/* Pago principal — múltiples métodos */}
         <div className="space-y-2">
-          <label className={labelCls}>Método de pago del total</label>
-          <div className="grid grid-cols-2 gap-2">
-            {PAYMENT_METHODS.map(m => (
-              <button key={m.value} onClick={() => setPaymentMethod(m.value)}
-                className={`py-2.5 px-3 rounded-lg text-sm border text-left transition-all ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
-                {m.label}
-              </button>
-            ))}
-          </div>
-          {paymentMethod === 'link' && (
-            <div className="flex items-center gap-2 mt-2">
-              <LinkIcon size={14} className="text-[#C9A84C] flex-shrink-0" />
-              <input
-                type="url"
-                value={paymentLink}
-                onChange={e => setPaymentLink(e.target.value)}
-                placeholder="https://pay.sumup.com/... o Stripe link"
-                className="flex-1 px-3 py-2 bg-gray-100 border border-[#C9A84C]/30 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/60"
-              />
+          <label className={labelCls}>Métodos de pago</label>
+          {payments.map((p, i) => (
+            <div key={i} className="flex gap-2 items-center">
+              <select value={p.method}
+                onChange={e => setPayments(prev => prev.map((x, j) => j === i ? { ...x, method: e.target.value } : x))}
+                className={`flex-1 ${inputCls}`}>
+                {PAYMENT_METHODS.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
+              </select>
+              <input type="number" value={p.amount} min={0} placeholder="€"
+                onChange={e => setPayments(prev => prev.map((x, j) => j === i ? { ...x, amount: e.target.value } : x))}
+                className="w-24 px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 text-right focus:outline-none focus:border-[#C9A84C]/50" />
+              {payments.length > 1 && (
+                <button onClick={() => setPayments(prev => prev.filter((_, j) => j !== i))}
+                  className="text-red-400 hover:text-red-600 text-lg leading-none">×</button>
+              )}
             </div>
-          )}
+          ))}
+          <button onClick={() => setPayments(prev => [...prev, { method: 'cash', amount: '' }])}
+            className="text-[#C9A84C] text-xs hover:underline">+ Añadir otro método</button>
         </div>
 
         {/* Fianza */}

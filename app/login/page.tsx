@@ -59,7 +59,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-10">
-          <img src="/logo.jpg" alt="Black Boats Ibiza" className="h-28 w-auto object-contain" />
+          <img src="/3.png" alt="Black Boats Ibiza" className="h-28 w-auto object-contain" />
         </div>
 
         <form onSubmit={handleLogin} className="bg-[#141414] border border-[#2A2A2A] rounded-2xl p-7 space-y-5">

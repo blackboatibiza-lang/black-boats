@@ -7,19 +7,39 @@ import { createClient } from '@/lib/supabase'
 import { getSession, hasEditPerm } from '@/lib/session'
 import type { BookingStatus } from '@/types'
 
-const STATUS: Record<BookingStatus, { label: string; color: string; dot: string; bg: string }> = {
+const STATUS: Record<string, { label: string; color: string; dot: string; bg: string }> = {
   pending:   { label: 'Pendiente',  color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', dot: 'bg-yellow-400', bg: 'bg-yellow-400/20 border-yellow-400/40' },
   confirmed: { label: 'Confirmada', color: 'text-blue-400 bg-blue-400/10 border-blue-400/20',       dot: 'bg-blue-400',   bg: 'bg-blue-400/20 border-blue-400/40' },
+  reservado: { label: 'Reservado',  color: 'text-blue-400 bg-blue-400/10 border-blue-400/20',       dot: 'bg-blue-400',   bg: 'bg-blue-400/20 border-blue-400/40' },
   active:    { label: 'Activa',     color: 'text-green-400 bg-green-400/10 border-green-400/20',    dot: 'bg-green-400',  bg: 'bg-green-400/20 border-green-400/40' },
   completed: { label: 'Completada', color: 'text-gray-700 bg-gray-400/10 border-gray-400/20',       dot: 'bg-gray-400',   bg: 'bg-gray-400/20 border-gray-400/30' },
+  finalizado:{ label: 'Finalizado', color: 'text-gray-700 bg-gray-400/10 border-gray-400/20',       dot: 'bg-gray-400',   bg: 'bg-gray-400/20 border-gray-400/30' },
   cancelled: { label: 'Cancelada',  color: 'text-red-400 bg-red-400/10 border-red-400/20',          dot: 'bg-red-400',    bg: 'bg-red-400/20 border-red-400/40' },
+  cancelado: { label: 'Cancelado',  color: 'text-red-400 bg-red-400/10 border-red-400/20',          dot: 'bg-red-400',    bg: 'bg-red-400/20 border-red-400/40' },
 }
 
-const PAY: Record<string, { label: string; color: string }> = {
-  pending:  { label: 'Sin pagar', color: 'text-red-400' },
-  partial:  { label: 'Parcial',   color: 'text-yellow-400' },
-  paid:     { label: 'Pagado',    color: 'text-green-400' },
-  refunded: { label: 'Devuelto',  color: 'text-gray-700' },
+function effectiveStatus(b: any): string {
+  if (b.status === 'cancelled' || b.status === 'cancelado') return 'cancelado'
+  if (b.status === 'finalizado' || b.status === 'completed') return 'finalizado'
+  const endDate = b.end_date || b.start_date
+  const endTime = b.end_time || '23:59'
+  if (endDate && new Date(`${endDate}T${endTime}`) < new Date()) return 'finalizado'
+  return 'reservado'
+}
+
+function pendingPayment(b: any): { paid: number; pending: number } | null {
+  const notes: string = b.internal_notes ?? ''
+  const pendLine = notes.split(' | ').find((p: string) => p.startsWith('Falta por pagar:'))
+  const payLine = notes.split(' | ').find((p: string) => /cash|card|transfer|bizum|link/i.test(p) && !p.toLowerCase().startsWith('método fianza'))
+  if (!pendLine && !payLine) return null
+  const total = Number(b.total_price) || 0
+  if (pendLine) {
+    const pending = parseFloat(pendLine.replace('Falta por pagar:', '').replace('€', '').trim()) || 0
+    return { paid: total - pending, pending }
+  }
+  // parse paid amounts from pay line e.g. "cash: 500€ + card: 300€"
+  const paid = (payLine?.match(/[\d.]+(?=€)/g) ?? []).reduce((s: number, n: string) => s + parseFloat(n), 0)
+  return { paid, pending: Math.max(0, total - paid) }
 }
 
 type BoatColor = { bg: string; dot: string; text: string }
@@ -90,7 +110,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
   })
 
   const visibleBookings = bookings.filter(b =>
-    filter === 'all' ? b.status !== 'cancelled' : b.status === filter
+    filter === 'all' ? (b.status !== 'cancelled' && b.status !== 'cancelado') : effectiveStatus(b) === filter
   )
 
   function bookingsForDay(d: Date) {
@@ -194,7 +214,7 @@ function CalendarView({ bookings, filter, boatColors, boats, canEdit }: { bookin
           ) : (
             <div className="divide-y divide-gray-100">
               {selectedBookings.map(b => {
-                const st = STATUS[b.status as BookingStatus]
+                const st = STATUS[effectiveStatus(b)]
                 const c  = boatColors[b.boat_id] ?? BOAT_PALETTE[0]
                 const clientName = b.client ? `${b.client.first_name} ${b.client.last_name}` : 'Sin cliente'
                 const inner = (
@@ -264,8 +284,8 @@ function ListView({ bookings, canEdit, onDelete }: { bookings: any[]; canEdit: b
           </thead>
           <tbody className="divide-y divide-gray-100">
             {bookings.map(b => {
-              const st = STATUS[b.status as BookingStatus]
-              const pay = PAY[b.payment_status as keyof typeof PAY]
+              const st = STATUS[effectiveStatus(b)]
+              const pp = pendingPayment(b)
               const clientName = b.client ? `${b.client.first_name} ${b.client.last_name}` : 'Sin cliente'
               const isMultiDay = b.start_date !== b.end_date
               return (
@@ -311,7 +331,13 @@ function ListView({ bookings, canEdit, onDelete }: { bookings: any[]; canEdit: b
                     <span className="text-gray-900 font-semibold">{Number(b.total_price).toLocaleString('es-ES')}€</span>
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className={`text-xs font-medium ${pay?.color ?? 'text-gray-700'}`}>{pay?.label ?? b.payment_status}</span>
+                    {pp ? (
+                      pp.pending > 0
+                        ? <span className="text-xs font-semibold text-red-500">Falta {pp.pending.toLocaleString('es-ES')}€</span>
+                        : <span className="text-xs font-semibold text-green-600">✓ Pagado</span>
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
+                    )}
                   </td>
                   <td className="px-5 py-3.5">
                     <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${st?.color ?? ''}`}>{st?.label ?? b.status}</span>

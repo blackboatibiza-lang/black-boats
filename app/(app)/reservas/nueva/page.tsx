@@ -24,12 +24,12 @@ const STEPS = [
 ]
 
 const SOURCES = [
-  { value: 'direct',   label: 'Directo' },
-  { value: 'web',      label: 'Web' },
-  { value: 'booking',  label: 'Booking.com' },
-  { value: 'airbnb',   label: 'Airbnb' },
-  { value: 'referral', label: 'Referido' },
-  { value: 'other',    label: 'Otro' },
+  { value: 'directo',        label: 'Directo' },
+  { value: 'broker',         label: 'Broker' },
+  { value: 'redes_sociales', label: 'Redes Sociales' },
+  { value: 'whatsapp',       label: 'WhatsApp' },
+  { value: 'samboats',       label: 'Samboats' },
+  { value: 'clickboats',     label: 'Click&Boats' },
 ]
 
 const TARIFF_INFO: Record<string, { label: string; desc: string; color: string }> = {
@@ -93,6 +93,7 @@ export default function NuevaReservaPage() {
   const [allPricing, setAllPricing] = useState<any[]>([])
   const [staffUsers, setStaffUsers] = useState<any[]>([])
   const [captainId, setCaptainId] = useState<string>('')
+  const [captainFee, setCaptainFee] = useState<string>('')
 
   const [clientSearch, setClientSearch] = useState('')
   const [selectedClient, setSelectedClient] = useState<any>(null)
@@ -120,12 +121,15 @@ export default function NuevaReservaPage() {
   const [departurePort, setDeparturePort] = useState('Club Náutico San Antonio')
   const [routeNotes, setRouteNotes] = useState('')
   const [internalNotes, setInternalNotes] = useState('')
-  const [source, setSource] = useState('direct')
+  const [source, setSource] = useState('directo')
+  const [brokerName, setBrokerName] = useState('')
+  const [brokerCommission, setBrokerCommission] = useState('')
   const [discount, setDiscount] = useState(0)
+  const [customBasePrice, setCustomBasePrice] = useState<string>('')
+  const [editingBasePrice, setEditingBasePrice] = useState(false)
   const [depositAmount, setDepositAmount] = useState(0)
-  const [paymentMethod, setPaymentMethod] = useState<string>('cash')
+  const [payments, setPayments] = useState<{ method: string; amount: string }[]>([{ method: 'cash', amount: '' }])
   const [depositMethod, setDepositMethod] = useState<string>('cash')
-  const [paymentLink, setPaymentLink] = useState('')
   const [depositLink, setDepositLink] = useState('')
   const [selectedExtras, setSelectedExtras] = useState<SelectedExtra[]>([])
 
@@ -200,12 +204,14 @@ export default function NuevaReservaPage() {
       )]
     : []
 
-  // Precio base: de la tabla si hay row, sino de full_day_rate del barco
-  const rawBasePrice = selectedPricingRow
-    ? Number(selectedPricingRow.price)
-    : (selectedBoat ? Number(selectedBoat.full_day_rate ?? 0) : 0)
+  // Precio base: manual si está activo, sino de la tabla/barco
+  const rawBasePrice = customBasePrice !== '' && editingBasePrice
+    ? Number(customBasePrice)
+    : (selectedPricingRow
+      ? Number(selectedPricingRow.price)
+      : (selectedBoat ? Number(selectedBoat.full_day_rate ?? 0) : 0))
 
-  const basePrice = earlyBird ? Math.round(rawBasePrice * 0.9) : rawBasePrice
+  const basePrice = (editingBasePrice && customBasePrice !== '') ? rawBasePrice : (earlyBird ? Math.round(rawBasePrice * 0.9) : rawBasePrice)
   const fuelExtra = selectedPricingRow?.fuel_extra ? Number(selectedPricingRow.fuel_extra) : 0
   const extrasTotal = selectedExtras.reduce((s, e) => s + e.price * e.quantity, 0)
   const totalPrice = Math.max(0, basePrice + fuelExtra + extrasTotal - discount)
@@ -280,8 +286,8 @@ export default function NuevaReservaPage() {
           selectedPricingRow ? `Tarifa: ${TARIFF_INFO[selectedTariff]?.label} · ${SEASON_LABELS[season] ?? season} · ${selectedPricingRow.hours}` : '',
           earlyBird ? 'Descuento madrugadores 10%' : '',
           fuelExtra ? `Fuel extra: +${fuelExtra}€` : '',
-          `Método pago: ${paymentMethod}`,
-          paymentMethod === 'link' && paymentLink ? `Link pago: ${paymentLink}` : '',
+          payments.filter(p => p.method && Number(p.amount) > 0).map(p => `${p.method}: ${p.amount}€`).join(' + ') || `Método pago: ${payments[0]?.method ?? 'cash'}`,
+          (() => { const paid = payments.reduce((s,p) => s + (Number(p.amount)||0), 0); const pend = totalPrice - paid; return pend > 0 ? `Falta por pagar: ${pend}€` : '' })(),
           depositAmount > 0 ? `Método fianza: ${depositMethod}` : '',
           depositMethod === 'link' && depositLink ? `Link fianza: ${depositLink}` : '',
         ].filter(Boolean).join(' | ') || null,
@@ -301,6 +307,28 @@ export default function NuevaReservaPage() {
           }))
         )
         if (ee) console.warn('Extras no guardados:', ee.message)
+      }
+
+      // Auto-create captain expense (non-blocking)
+      if (rentalType === 'with_captain' && captainId.trim() && Number(captainFee) > 0) {
+        supabase.from('expenses').insert({
+          amount: Number(captainFee),
+          concept: captainId.trim(),
+          category: 'Patrón',
+          date: bookingData.start_date,
+          notes: `Pago patrón reserva ${booking.booking_number}`,
+        }).then(({ error: e }) => { if (e) console.warn('Captain expense:', e.message) })
+      }
+
+      // Auto-create broker expense (non-blocking)
+      if (source === 'broker' && brokerName.trim() && Number(brokerCommission) > 0) {
+        supabase.from('expenses').insert({
+          amount: Number(brokerCommission),
+          concept: brokerName.trim(),
+          category: 'Broker',
+          date: bookingData.start_date,
+          notes: `Comisión broker reserva ${booking.booking_number}`,
+        }).then(({ error: e }) => { if (e) console.warn('Broker expense:', e.message) })
       }
 
       // Sync Google Calendar
@@ -481,11 +509,19 @@ export default function NuevaReservaPage() {
             )}
             {/* Selector de capitán — visible cuando se va con capitán */}
             {rentalType === 'with_captain' && (
-              <div>
+              <div className="space-y-2">
                 <p className="text-gray-700 text-xs mb-2">Capitán asignado</p>
                 <input type="text" value={captainId} onChange={e => setCaptainId(e.target.value)}
                   placeholder="Nombre del capitán"
                   className="w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
+                {captainId.trim() && (
+                  <div className="flex items-center gap-2">
+                    <input type="number" value={captainFee} onChange={e => setCaptainFee(e.target.value)}
+                      placeholder="Pago al capitán (€)" min={0} step={0.01}
+                      className="flex-1 px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
+                    <span className="text-gray-500 text-sm">€</span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -548,6 +584,24 @@ export default function NuevaReservaPage() {
                 </select>
               </div>
             </div>
+
+            {source === 'broker' && (
+              <div className="grid grid-cols-2 gap-3 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                <div>
+                  <label className="text-gray-700 text-xs mb-1.5 block">Nombre del broker *</label>
+                  <input value={brokerName} onChange={e => setBrokerName(e.target.value)}
+                    placeholder="Nombre del broker"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
+                </div>
+                <div>
+                  <label className="text-gray-700 text-xs mb-1.5 block">Comisión broker (€) *</label>
+                  <input type="number" value={brokerCommission} onChange={e => setBrokerCommission(e.target.value)}
+                    placeholder="0.00" min="0" step="0.01"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50" />
+                </div>
+                <p className="col-span-2 text-yellow-700 text-xs">La comisión se añadirá automáticamente como gasto en el módulo de Gastos.</p>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -754,9 +808,32 @@ export default function NuevaReservaPage() {
               {/* Desglose precio */}
               <div className="bg-gray-100 rounded-lg p-4 space-y-2">
                 <p className="text-gray-700 text-xs mb-1">DESGLOSE DE PRECIO</p>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-700">Tarifa base{earlyBird ? ' (−10%)' : ''}</span>
-                  <span className="text-gray-900">{formatPrice(basePrice)}</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-700">Tarifa base{!editingBasePrice && earlyBird ? ' (−10%)' : ''}</span>
+                  <div className="flex items-center gap-1.5">
+                    {editingBasePrice ? (
+                      <>
+                        <input
+                          type="number" min={0} step="1"
+                          value={customBasePrice}
+                          onChange={e => setCustomBasePrice(e.target.value)}
+                          className="w-24 px-2 py-1 bg-white border border-[#C9A84C]/60 rounded text-gray-900 text-right text-sm focus:outline-none"
+                          autoFocus
+                        />
+                        <span className="text-gray-700 text-xs">€</span>
+                        <button onClick={() => { setEditingBasePrice(false); setCustomBasePrice('') }}
+                          className="text-gray-400 hover:text-gray-700 text-xs ml-1">✕</button>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-gray-900">{formatPrice(basePrice)}</span>
+                        <button onClick={() => { setEditingBasePrice(true); setCustomBasePrice(String(basePrice)) }}
+                          className="text-gray-400 hover:text-[#C9A84C] transition-colors ml-1" title="Editar precio base">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
                 {fuelExtra > 0 && (
                   <div className="flex justify-between text-sm">
@@ -788,28 +865,63 @@ export default function NuevaReservaPage() {
               <div className="bg-gray-100 rounded-lg p-4 space-y-4">
                 <p className="text-gray-700 text-xs">PAGO Y FIANZA</p>
 
-                {/* Pago total */}
+                {/* Pago total — múltiples métodos */}
                 <div className="space-y-2">
-                  <label className="text-gray-700 text-xs block">Método de pago del total</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { value: 'cash',     label: '💵 Efectivo' },
-                      { value: 'card',     label: '💳 Tarjeta' },
-                      { value: 'transfer', label: '🏦 Transferencia' },
-                      { value: 'bizum',    label: '📱 Bizum' },
-                      { value: 'link',     label: '🔗 Link de pago' },
-                    ].map(m => (
-                      <button key={m.value} onClick={() => setPaymentMethod(m.value)}
-                        className={`py-2.5 px-3 rounded-lg text-sm border transition-all text-left ${paymentMethod === m.value ? 'bg-[#C9A84C]/10 border-[#C9A84C]/50 text-gray-900 font-medium' : 'border-gray-200 text-gray-700 hover:text-gray-900'}`}>
-                        {m.label}
-                      </button>
-                    ))}
-                  </div>
-                  {paymentMethod === 'link' && (
-                    <input type="url" value={paymentLink} onChange={e => setPaymentLink(e.target.value)}
-                      placeholder="https://pay.sumup.com/... o Stripe link"
-                      className="w-full px-3 py-2 bg-white border border-[#C9A84C]/30 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/60" />
-                  )}
+                  <label className="text-gray-700 text-xs block">Métodos de pago</label>
+                  {payments.map((p, i) => (
+                    <div key={i} className="flex gap-2 items-center">
+                      <select value={p.method}
+                        onChange={e => setPayments(prev => prev.map((x, j) => j === i ? { ...x, method: e.target.value } : x))}
+                        className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
+                        <option value="cash">💵 Efectivo</option>
+                        <option value="card">💳 Tarjeta</option>
+                        <option value="transfer">🏦 Transferencia</option>
+                        <option value="bizum">📱 Bizum</option>
+                        <option value="link">🔗 Link de pago</option>
+                      </select>
+                      <input type="number" value={p.amount} min={0} placeholder="€"
+                        onChange={e => setPayments(prev => prev.map((x, j) => j === i ? { ...x, amount: e.target.value } : x))}
+                        className="w-24 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 text-right focus:outline-none focus:border-[#C9A84C]/50" />
+                      {payments.length > 1 && (
+                        <button onClick={() => setPayments(prev => prev.filter((_, j) => j !== i))}
+                          className="text-red-400 hover:text-red-600 text-lg leading-none">×</button>
+                      )}
+                    </div>
+                  ))}
+                  <button onClick={() => setPayments(prev => [...prev, { method: 'cash', amount: '' }])}
+                    className="text-[#C9A84C] text-xs hover:underline">+ Añadir otro método</button>
+
+                  {/* Resumen pagos */}
+                  {(() => {
+                    const paid = payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+                    const pending = totalPrice - paid
+                    return paid > 0 ? (
+                      <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 space-y-1 text-xs">
+                        <div className="flex justify-between text-gray-700">
+                          <span>Pagado</span>
+                          <span className="font-semibold text-green-600">{paid.toLocaleString('es-ES')} €</span>
+                        </div>
+                        {pending > 0 && (
+                          <div className="flex justify-between text-gray-700 border-t border-gray-100 pt-1">
+                            <span>Falta por pagar</span>
+                            <span className="font-bold text-red-500">{pending.toLocaleString('es-ES')} €</span>
+                          </div>
+                        )}
+                        {pending <= 0 && (
+                          <div className="flex justify-between text-gray-700 border-t border-gray-100 pt-1">
+                            <span>Estado pago</span>
+                            <span className="font-bold text-green-600">✓ Pagado completo</span>
+                          </div>
+                        )}
+                        {depositAmount > 0 && (
+                          <div className="flex justify-between text-gray-500 border-t border-gray-100 pt-1">
+                            <span>Fianza pendiente</span>
+                            <span className="font-medium text-gray-500">{depositAmount.toLocaleString('es-ES')} €</span>
+                          </div>
+                        )}
+                      </div>
+                    ) : null
+                  })()}
                 </div>
 
                 {/* Fianza */}

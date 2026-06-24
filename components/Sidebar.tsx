@@ -27,7 +27,7 @@ const navBottom = [
 
 const ROLE_DEFAULTS: Record<string, string[]> = {
   admin:    ['dashboard','flota','reservas','clientes','extras','gastos','facturacion','informes','fichajes','ajustes'],
-  socio:    ['dashboard','reservas','facturacion','informes'],
+  socio:    ['dashboard','flota','reservas','clientes','extras','gastos','facturacion','informes','fichajes','ajustes'],
   empleado: ['dashboard','flota','reservas','clientes','extras','gastos','fichajes'],
 }
 
@@ -63,7 +63,7 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
   const content = (
     <aside className="w-64 flex-shrink-0 flex flex-col bg-[#0A0A0A] h-full border-r border-[#2A2A2A]">
       <div className="px-4 py-4 border-b border-[#2A2A2A] flex items-center justify-between">
-        <img src="/logo.jpg" alt="Black Boats Ibiza" className="h-20 w-auto object-contain" />
+        <img src="/1.png" alt="Black Boats Ibiza" className="h-20 w-auto object-contain" />
         <button onClick={onClose} className="lg:hidden text-gray-600 hover:text-white p-1 transition-colors">
           <X size={20} />
         </button>

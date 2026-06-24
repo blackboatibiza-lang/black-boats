@@ -2,13 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase'
-import { Plus, Trash2, Upload, FileText, X, Receipt } from 'lucide-react'
+import { Plus, Trash2, Upload, FileText, X, Receipt, Pencil } from 'lucide-react'
 import { getSession, hasEditPerm } from '@/lib/session'
 
-const CATEGORIES = ['Combustible', 'Mantenimiento', 'Seguros', 'Amarres', 'Limpieza', 'Repuestos', 'Personal', 'Patrón', 'Broker', 'Marketing', 'Administrativo', 'Otro']
+const CATEGORIES = ['Combustible', 'Mantenimiento', 'Seguros', 'Amarres', 'Limpieza', 'Repuestos', 'Personal', 'Patrón', 'Broker', 'Marketing', 'Administrativo', 'Bebidas', 'Otro']
 
 const inputCls = 'w-full px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#C9A84C]/50'
 const labelCls = 'text-gray-700 text-xs mb-1.5 block'
+
+const emptyForm = () => ({
+  amount: '', boat_id: '', concept: '', category: '', date: new Date().toISOString().slice(0, 10),
+  notes: '', receipt_url: '', assigned_to: '',
+})
 
 export default function GastosPage() {
   const [expenses, setExpenses] = useState<any[]>([])
@@ -16,6 +21,7 @@ export default function GastosPage() {
   const [socios, setSocios]     = useState<any[]>([])
   const [loading, setLoading]   = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [saving, setSaving]     = useState(false)
   const [uploading, setUploading] = useState(false)
   const [filterBoat, setFilterBoat] = useState('')
@@ -24,10 +30,7 @@ export default function GastosPage() {
   const [session] = useState(() => getSession())
   const canEdit = hasEditPerm(session, 'gastos')
 
-  const [form, setForm] = useState({
-    amount: '', boat_id: '', concept: '', category: '', date: new Date().toISOString().slice(0, 10),
-    notes: '', receipt_url: '', assigned_to: '',
-  })
+  const [form, setForm] = useState(emptyForm())
   const set = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }))
 
   useEffect(() => { load() }, [])
@@ -49,7 +52,6 @@ export default function GastosPage() {
 
     const [{ data: exp }, { data: b }, { data: s }] = await Promise.all([expQ, boatsQ, sociosQ])
     const socioList = s ?? []
-    // Enrich expenses with assignee name from socios list
     const enriched = (exp ?? []).map((e: any) => ({
       ...e,
       assignee: socioList.find((u: any) => u.id === e.assigned_to) ?? null,
@@ -73,11 +75,38 @@ export default function GastosPage() {
     setUploading(false)
   }
 
+  function openNew() {
+    setEditingId(null)
+    setForm(emptyForm())
+    setShowForm(true)
+  }
+
+  function openEdit(e: any) {
+    setEditingId(e.id)
+    setForm({
+      amount: String(e.amount ?? ''),
+      boat_id: e.boat_id ?? '',
+      concept: e.concept ?? '',
+      category: e.category ?? '',
+      date: e.date ?? new Date().toISOString().slice(0, 10),
+      notes: e.notes ?? '',
+      receipt_url: e.receipt_url ?? '',
+      assigned_to: e.assigned_to ?? '',
+    })
+    setShowForm(true)
+  }
+
+  function closeForm() {
+    setShowForm(false)
+    setEditingId(null)
+    setForm(emptyForm())
+  }
+
   async function handleSave() {
     if (!form.amount || !form.concept || !form.date) return
     setSaving(true)
     const supabase = createClient()
-    const { error } = await supabase.from('expenses').insert({
+    const payload = {
       amount: Number(form.amount),
       boat_id: form.boat_id || null,
       concept: form.concept,
@@ -86,14 +115,19 @@ export default function GastosPage() {
       notes: form.notes || null,
       receipt_url: form.receipt_url || null,
       assigned_to: form.assigned_to || null,
-    })
+    }
+    let error: any
+    if (editingId) {
+      ;({ error } = await supabase.from('expenses').update(payload).eq('id', editingId))
+    } else {
+      ;({ error } = await supabase.from('expenses').insert(payload))
+    }
     if (error) {
       alert('Error al guardar: ' + error.message)
       setSaving(false)
       return
     }
-    setForm({ amount: '', boat_id: '', concept: '', category: '', date: new Date().toISOString().slice(0, 10), notes: '', receipt_url: '', assigned_to: '' })
-    setShowForm(false)
+    closeForm()
     setSaving(false)
     load()
   }
@@ -126,7 +160,7 @@ export default function GastosPage() {
           <p className="text-gray-700 text-sm mt-0.5">Registro de gastos operativos</p>
         </div>
         {canEdit && (
-          <button onClick={() => setShowForm(v => !v)}
+          <button onClick={openNew}
             className="flex items-center gap-2 px-4 py-2 bg-[#C9A84C] hover:bg-[#E8C97A] text-black text-sm font-semibold rounded-lg transition-colors">
             <Plus size={15} /> Nuevo gasto
           </button>
@@ -136,7 +170,7 @@ export default function GastosPage() {
       {/* Formulario */}
       {showForm && (
         <div className="bg-white border border-[#C9A84C]/30 rounded-xl p-5 space-y-4">
-          <h3 className="text-gray-900 font-semibold text-sm">Registrar gasto</h3>
+          <h3 className="text-gray-900 font-semibold text-sm">{editingId ? 'Editar gasto' : 'Registrar gasto'}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Importe (€) *</label>
@@ -200,10 +234,10 @@ export default function GastosPage() {
             </div>
           </div>
           <div className="flex gap-2 justify-end pt-1">
-            <button onClick={() => setShowForm(false)} className="px-3 py-2 text-gray-700 hover:text-gray-900 text-sm transition-colors">Cancelar</button>
+            <button onClick={closeForm} className="px-3 py-2 text-gray-700 hover:text-gray-900 text-sm transition-colors">Cancelar</button>
             <button onClick={handleSave} disabled={saving || !form.amount || !form.concept}
               className="px-4 py-2 bg-[#C9A84C] hover:bg-[#E8C97A] disabled:opacity-60 text-black text-sm font-semibold rounded-lg transition-colors">
-              {saving ? 'Guardando...' : 'Guardar gasto'}
+              {saving ? 'Guardando...' : editingId ? 'Guardar cambios' : 'Guardar gasto'}
             </button>
           </div>
         </div>
@@ -287,9 +321,14 @@ export default function GastosPage() {
                         </a>
                       )}
                       {canEdit && (
-                        <button onClick={() => handleDelete(e.id)} className="text-gray-700 hover:text-red-400 transition-colors">
-                          <Trash2 size={14} />
-                        </button>
+                        <>
+                          <button onClick={() => openEdit(e)} className="text-gray-700 hover:text-[#C9A84C] transition-colors" title="Editar">
+                            <Pencil size={14} />
+                          </button>
+                          <button onClick={() => handleDelete(e.id)} className="text-gray-700 hover:text-red-400 transition-colors" title="Eliminar">
+                            <Trash2 size={14} />
+                          </button>
+                        </>
                       )}
                     </div>
                   </td>

@@ -27,6 +27,30 @@ function extractMethod(notes: string): string {
   return match ? match[1] : 'transfer'
 }
 
+// Returns the amount actually paid (from registered payment methods), 0 if none registered
+function paidAmount(b: any): number {
+  const notes: string = b.internal_notes ?? ''
+  // New format: "cash: 500€ + card: 300€"
+  const payLine = notes.split(' | ').find((p: string) =>
+    /cash|card|transfer|bizum|link/i.test(p) && !p.toLowerCase().startsWith('método fianza') && !p.toLowerCase().startsWith('link fianza')
+  )
+  if (payLine) {
+    const amounts = payLine.match(/[\d.]+(?=€)/g)
+    if (amounts && amounts.length > 0) {
+      return amounts.reduce((s: number, n: string) => s + parseFloat(n), 0)
+    }
+    // Format "cash: 500€" without decimals
+    const single = payLine.match(/:\s*([\d.]+)/)
+    if (single) return parseFloat(single[1])
+  }
+  // Old format "Método pago: cash" — method exists but no amount recorded → treat as pending
+  return 0
+}
+
+function hasPaymentRegistered(b: any): boolean {
+  return paidAmount(b) > 0
+}
+
 export default function InformesPage() {
   const [year, setYear]           = useState(new Date().getFullYear())
   const [month, setMonth]         = useState(new Date().getMonth()) // 0-indexed
@@ -103,14 +127,18 @@ export default function InformesPage() {
   const monthBookings = bookings.filter(b => b.start_date?.startsWith(monthStr))
   const monthExpenses = expenses.filter(e => e.date?.startsWith(monthStr))
 
-  const totalMonth    = monthBookings.reduce((s, b) => s + Number(b.total_price ?? 0), 0)
+  // Only count income from bookings with a registered payment method
+  const paidMonthBookings    = monthBookings.filter(hasPaymentRegistered)
+  const pendingMonthBookings = monthBookings.filter(b => !hasPaymentRegistered(b))
+  const totalMonth    = paidMonthBookings.reduce((s, b) => s + paidAmount(b), 0)
+  const pendingMonth  = pendingMonthBookings.reduce((s, b) => s + Number(b.total_price ?? 0), 0)
   const totalExpMonth = monthExpenses.reduce((s, e) => s + Number(e.amount ?? 0), 0)
   const netMonth      = totalMonth - totalExpMonth
 
-  // Desglose por método de pago del mes
+  // Desglose por método de pago del mes (only paid bookings)
   const byGroup = Object.entries(METHOD_GROUPS).map(([key, cfg]) => {
-    const bks = monthBookings.filter(b => methodGroup(extractMethod(b.internal_notes ?? '')) === key)
-    return { key, label: cfg.label, color: cfg.color, count: bks.length, total: bks.reduce((s, b) => s + Number(b.total_price ?? 0), 0), bookings: bks }
+    const bks = paidMonthBookings.filter(b => methodGroup(extractMethod(b.internal_notes ?? '')) === key)
+    return { key, label: cfg.label, color: cfg.color, count: bks.length, total: bks.reduce((s, b) => s + paidAmount(b), 0), bookings: bks }
   })
 
   // ── Datos anuales para gráficos ─────────────────────────────────
@@ -118,12 +146,13 @@ export default function InformesPage() {
     const ms = `${year}-${String(i + 1).padStart(2, '0')}`
     const mBk  = bookings.filter(b => b.start_date?.startsWith(ms))
     const mExp = expenses.filter(e => e.date?.startsWith(ms))
-    const ingresos = mBk.reduce((s, b) => s + Number(b.total_price ?? 0), 0)
+    const ingresos = mBk.filter(hasPaymentRegistered).reduce((s, b) => s + paidAmount(b), 0)
     const gastos   = mExp.reduce((s, e) => s + Number(e.amount ?? 0), 0)
     return { mes: MONTHS_ES[i], ingresos, gastos, neto: ingresos - gastos, reservas: mBk.length }
   })
 
-  const totalYear    = bookings.reduce((s, b) => s + Number(b.total_price ?? 0), 0)
+  const totalYear    = bookings.filter(hasPaymentRegistered).reduce((s, b) => s + paidAmount(b), 0)
+  const pendingYear  = bookings.filter(b => !hasPaymentRegistered(b)).reduce((s, b) => s + Number(b.total_price ?? 0), 0)
   const totalExpYear = expenses.reduce((s, e) => s + Number(e.amount ?? 0), 0)
   const netYear      = totalYear - totalExpYear
 
@@ -152,8 +181,19 @@ export default function InformesPage() {
 
       {/* KPIs anuales */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-gray-700 text-xs">Ingresos cobrados año</p>
+              <p className="text-xl font-bold mt-1 text-green-400">{totalYear.toLocaleString('es-ES')}€</p>
+              {pendingYear > 0 && <p className="text-xs text-orange-400 mt-0.5">Pendiente: {pendingYear.toLocaleString('es-ES')}€</p>}
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-green-400/10 flex items-center justify-center">
+              <TrendingUp size={17} className="text-green-400" />
+            </div>
+          </div>
+        </div>
         {[
-          { label: 'Ingresos año',   value: `${totalYear.toLocaleString('es-ES')}€`,    icon: TrendingUp,   color: 'text-green-400',  bg: 'bg-green-400/10' },
           { label: 'Gastos año',     value: `${totalExpYear.toLocaleString('es-ES')}€`,  icon: TrendingDown, color: 'text-red-400',    bg: 'bg-red-400/10' },
           { label: 'Beneficio neto', value: `${netYear.toLocaleString('es-ES')}€`,       icon: TrendingUp,   color: netYear >= 0 ? 'text-[#C9A84C]' : 'text-red-400', bg: 'bg-[#C9A84C]/10' },
           { label: 'Reservas año',   value: String(bookings.length),                     icon: CalendarDays, color: 'text-blue-400',   bg: 'bg-blue-400/10' },
@@ -219,7 +259,7 @@ export default function InformesPage() {
         const boatDivision = boatSocios.map(b => {
           const bkBoat  = bookings.filter((bk: any) => bk.boat_id === b.boat_id)
           const expBoat = expenses.filter((e: any) => e.boat_id === b.boat_id)
-          const income  = bkBoat.reduce((s: number, bk: any) => s + Number(bk.total_price ?? 0), 0)
+          const income  = bkBoat.filter(hasPaymentRegistered).reduce((s: number, bk: any) => s + paidAmount(bk), 0)
           const expTotal = expBoat.reduce((s: number, e: any) => s + Number(e.amount ?? 0), 0)
 
           // Gastos sin asignar → reducen el neto antes de dividir por %
@@ -316,9 +356,10 @@ export default function InformesPage() {
           {/* Resumen del mes */}
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-gray-100 rounded-xl p-4">
-              <p className="text-gray-700 text-xs mb-1">Facturado</p>
+              <p className="text-gray-700 text-xs mb-1">Cobrado</p>
               <p className="text-gray-900 text-xl font-bold">{totalMonth.toLocaleString('es-ES')}€</p>
-              <p className="text-gray-700 text-xs mt-0.5">{monthBookings.length} reservas</p>
+              <p className="text-gray-700 text-xs mt-0.5">{paidMonthBookings.length} reservas</p>
+              {pendingMonth > 0 && <p className="text-orange-400 text-xs mt-0.5">Pendiente: {pendingMonth.toLocaleString('es-ES')}€ ({pendingMonthBookings.length})</p>}
             </div>
             <div className="bg-gray-100 rounded-xl p-4">
               <p className="text-gray-700 text-xs mb-1">Gastos</p>
