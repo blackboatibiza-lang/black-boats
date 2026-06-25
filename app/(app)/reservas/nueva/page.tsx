@@ -361,6 +361,23 @@ export default function NuevaReservaPage() {
         console.warn('Google Calendar sync failed:', calErr)
       }
 
+      // Notify admins of new booking (fire and forget)
+      const clientForNotif = clients.find(c => c.id === clientId)
+      const clientName = clientForNotif
+        ? `${clientForNotif.first_name} ${clientForNotif.last_name}`
+        : (newClientName.trim() || 'Cliente nuevo')
+      fetch('/api/notify/reserva', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          booking_id: booking.id,
+          client_name: clientName,
+          boat_name: selectedBoat?.name ?? '',
+          date: startDate,
+          total_price: totalPrice,
+        }),
+      }).catch(() => {})
+
       router.push(`/reservas/${booking.id}`)
     } catch (e: any) {
       setError(e.message ?? 'Error desconocido al guardar')

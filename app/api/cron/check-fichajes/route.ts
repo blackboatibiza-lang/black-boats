@@ -1,15 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { sendPush } from '@/lib/push'
 
+const supabase = createSupabaseClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
 export async function GET(req: NextRequest) {
-  // Verify cron secret to avoid unauthorized calls
-  const secret = req.headers.get('x-cron-secret')
+  // Vercel cron sends Authorization: Bearer <CRON_SECRET>
+  const authHeader = req.headers.get('authorization')
+  const secret = req.headers.get('x-cron-secret') ?? authHeader?.replace('Bearer ', '')
   if (secret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const supabase = createClient()
+
   const now = new Date()
   const todayStr = now.toISOString().slice(0, 10)
   const currentMinutes = now.getHours() * 60 + now.getMinutes()
