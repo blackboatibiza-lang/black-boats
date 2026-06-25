@@ -21,6 +21,28 @@ function genInvoiceNumber() {
 
 function uid() { return Math.random().toString(36).slice(2, 9) }
 
+function calcPaidAmount(b: any): number {
+  const notes: string = b.internal_notes ?? ''
+  const payLine = notes.split(' | ').find((p: string) =>
+    /cash|card|transfer|bizum|link/i.test(p) && !p.toLowerCase().startsWith('método fianza') && !p.toLowerCase().startsWith('link fianza')
+  )
+  if (payLine) {
+    const amounts = payLine.match(/[\d.]+(?=€)/g)
+    if (amounts?.length) return amounts.reduce((s: number, n: string) => s + parseFloat(n), 0)
+    const single = payLine.match(/:\s*([\d.]+)/)
+    if (single) return parseFloat(single[1])
+  }
+  return 0
+}
+
+function payStatus(b: any): { label: string; color: string; pending: number } {
+  const paid = calcPaidAmount(b)
+  const total = Number(b.total_price ?? 0)
+  if (paid <= 0) return { label: 'Sin pagar', color: 'text-red-400', pending: total }
+  if (paid >= total) return { label: 'Pagado', color: 'text-green-500', pending: 0 }
+  return { label: `Falta ${(total - paid).toLocaleString('es-ES')}€`, color: 'text-yellow-500', pending: total - paid }
+}
+
 // ── INVOICE MODAL ─────────────────────────────────────────────────
 function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void }) {
   // Emisor
@@ -325,10 +347,8 @@ export default function FacturacionPage() {
 
   const totalFacturado = bookings.reduce((s, b) => s + Number(b.total_price ?? 0), 0)
   const totalCobrado   = payments.reduce((s, p) => s + Number(p.amount ?? 0), 0)
-  const pendiente      = bookings.filter(b => b.payment_status === 'pending').length
+  const pendiente      = bookings.filter(b => payStatus(b).pending > 0).length
 
-  const payColor: Record<string, string> = { pending: 'text-red-400', partial: 'text-yellow-400', paid: 'text-green-400', refunded: 'text-gray-700' }
-  const payLabel: Record<string, string> = { pending: 'Sin pagar', partial: 'Parcial', paid: 'Pagado', refunded: 'Devuelto' }
   const methodLabels: Record<string, string> = { card: 'Tarjeta', transfer: 'Transferencia', cash: 'Efectivo', bizum: 'Bizum', link: 'Link de pago' }
 
   if (loading) {
@@ -421,9 +441,7 @@ export default function FacturacionPage() {
                         <span className="text-gray-900 font-semibold">{Number(b.total_price).toLocaleString('es-ES')}€</span>
                       </td>
                       <td className="px-5 py-3.5">
-                        <span className={`text-xs font-medium ${payColor[b.payment_status] ?? 'text-gray-700'}`}>
-                          {payLabel[b.payment_status] ?? b.payment_status}
-                        </span>
+                        {(() => { const s = payStatus(b); return <span className={`text-xs font-medium ${s.color}`}>{s.label}</span> })()}
                       </td>
                       <td className="px-5 py-3.5">
                         <button onClick={() => setSelectedBooking(b)}
