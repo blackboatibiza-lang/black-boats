@@ -37,6 +37,25 @@ const paymentConfig: Record<string, { label: string; color: string }> = {
   refunded: { label: 'Devuelto',  color: 'text-gray-700' },
 }
 
+function calcPayStatus(b: any): { label: string; color: string } {
+  const notes: string = b.internal_notes ?? ''
+  const payLine = notes.split(' | ').find((p: string) =>
+    /cash|card|transfer|bizum|link/i.test(p) &&
+    !p.toLowerCase().startsWith('método fianza') &&
+    !p.toLowerCase().startsWith('link fianza')
+  )
+  let paid = 0
+  if (payLine) {
+    const amounts = payLine.match(/[\d.]+(?=€)/g)
+    if (amounts?.length) paid = amounts.reduce((s: number, n: string) => s + parseFloat(n), 0)
+    else { const m = payLine.match(/:\s*([\d.]+)/); if (m) paid = parseFloat(m[1]) }
+  }
+  const total = Number(b.total_price ?? 0)
+  if (paid <= 0) return paymentConfig[b.payment_status] ?? paymentConfig.pending
+  if (paid >= total) return { label: 'Pagado', color: 'text-green-500' }
+  return { label: `Falta ${(total - paid).toLocaleString('es-ES')}€`, color: 'text-yellow-500' }
+}
+
 export default function ReservaDetailPage() {
   const params = useParams<{ id: string }>()
   const id = params.id
@@ -168,7 +187,7 @@ ${contractUrl}`
   }
 
   const st = statusConfig[effectiveStatus(booking)] ?? statusConfig.pending
-  const pay = paymentConfig[booking.payment_status] ?? paymentConfig.pending
+  const pay = calcPayStatus(booking)
   const clientName = booking.client ? `${booking.client.first_name} ${booking.client.last_name}` : 'Sin cliente'
   const days = Math.max(1, Math.ceil((new Date(booking.end_date).getTime() - new Date(booking.start_date).getTime()) / 86400000) + 1)
 
