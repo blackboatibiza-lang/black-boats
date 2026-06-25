@@ -551,7 +551,7 @@ function EquipoTab() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    const res = await fetch(`/api/fichajes/semana?week_start=${ws}`)
+    const res = await fetch(`/api/fichajes/semana?week_start=${ws}`, { cache: 'no-store' })
     const data = await res.json()
     setEmployees(data.emps ?? [])
     setEntries(data.entries ?? [])
@@ -597,7 +597,7 @@ function EquipoTab() {
     const res = await fetch('/api/fichajes/edit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: emp.id, date, periods: builtPeriods, preConverted: true }),
+      body: JSON.stringify({ user_id: emp.id, date, periods: builtPeriods, preConverted: true, entry_id: editing.entry?.id ?? null }),
     })
     const data = await res.json()
     if (!res.ok) alert('Error al guardar: ' + data.error)
@@ -672,9 +672,14 @@ function EquipoTab() {
                 const ds = toDateStr(d)
                 const entry = getEntry(emp.id, ds)
                 const isToday = ds === todayStr
-                const wm = workedMins(entry)
-                const done = entry && (entry.clock_out || (entry.periods?.length > 0 && entry.periods[entry.periods.length - 1]?.out))
-                const working = entry && isClockedIn(entry)
+                const isPast = ds < todayStr
+                const hasCout = entry?.clock_out || (entry?.periods?.length > 0 && entry.periods[entry.periods.length - 1]?.out)
+                const done = entry && hasCout
+                // Only show "working" (live counter) for today — past entries without salida = incomplete
+                const working = entry && !hasCout && isToday
+                const incomplete = entry && !hasCout && isPast
+                // Only calculate worked mins for completed entries or today's ongoing
+                const wm = (done || working) ? workedMins(entry) : 0
 
                 return (
                   <button
@@ -688,11 +693,12 @@ function EquipoTab() {
                         <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${
                           done ? 'bg-green-100 text-green-700' :
                           working ? 'bg-blue-100 text-blue-700' :
-                          'bg-orange-100 text-orange-700'
+                          'bg-red-100 text-red-600'
                         }`}>
-                          {done ? '✓' : working ? '●' : '?'}
+                          {done ? '✓' : working ? '●' : '!'}
                         </span>
                         {wm > 0 && <span className="text-[9px] text-gray-500 leading-none">{fmtMins(wm)}</span>}
+                        {incomplete && <span className="text-[9px] text-red-400 leading-none">sin salida</span>}
                         <span className="text-[9px] text-gray-400 leading-none font-mono">
                           {fmtTime(entry.clock_in)}
                         </span>

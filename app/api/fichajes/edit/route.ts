@@ -7,11 +7,9 @@ const supabaseAdmin = createClient(
 )
 
 export async function POST(req: NextRequest) {
-  const { user_id, date, periods, preConverted } = await req.json()
+  const { user_id, date, periods, preConverted, entry_id } = await req.json()
   if (!user_id || !date) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
 
-  // If preConverted, periods already contain ISO strings from the browser (correct local timezone)
-  // Otherwise convert HH:MM assuming UTC (legacy)
   const toISO = (time: string) => time ? new Date(`${date}T${time}:00`).toISOString() : null
 
   const builtPeriods = preConverted
@@ -29,12 +27,40 @@ export async function POST(req: NextRequest) {
     periods: builtPeriods.length > 1 ? builtPeriods : null,
   }
 
-  const { data, error } = await supabaseAdmin
-    .from('time_entries')
-    .upsert(payload, { onConflict: 'user_id,date' })
-    .select()
-    .single()
+  let result
+  if (entry_id) {
+    // Update existing entry by ID — avoids upsert creating duplicate rows
+    result = await supabaseAdmin
+      .from('time_entries')
+      .update(payload)
+      .eq('id', entry_id)
+      .select()
+      .single()
+  } else {
+    // Check if entry already exists for this user+date
+    const { data: existing } = await supabaseAdmin
+      .from('time_entries')
+      .select('id')
+      .eq('user_id', user_id)
+      .eq('date', date)
+      .maybeSingle()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ entry: data })
+    if (existing) {
+      result = await supabaseAdmin
+        .from('time_entries')
+        .update(payload)
+        .eq('id', existing.id)
+        .select()
+        .single()
+    } else {
+      result = await supabaseAdmin
+        .from('time_entries')
+        .insert(payload)
+        .select()
+        .single()
+    }
+  }
+
+  if (result.error) return NextResponse.json({ error: result.error.message }, { status: 500 })
+  return NextResponse.json({ entry: result.data })
 }
