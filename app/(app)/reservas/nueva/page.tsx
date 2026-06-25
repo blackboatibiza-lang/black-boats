@@ -365,7 +365,7 @@ export default function NuevaReservaPage() {
       const clientForNotif = clients.find(c => c.id === clientId)
       const clientName = clientForNotif
         ? `${clientForNotif.first_name} ${clientForNotif.last_name}`
-        : (newClientName.trim() || 'Cliente nuevo')
+        : (`${clientForm.first_name} ${clientForm.last_name}`.trim() || 'Cliente nuevo')
       fetch('/api/notify/reserva', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
