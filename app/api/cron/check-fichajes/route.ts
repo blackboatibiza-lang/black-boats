@@ -10,8 +10,8 @@ const supabase = createSupabaseClient(
 export async function GET(req: NextRequest) {
   // Vercel cron sends Authorization: Bearer <CRON_SECRET>
   const authHeader = req.headers.get('authorization')
-  const secret = req.headers.get('x-cron-secret') ?? authHeader?.replace('Bearer ', '')
-  if (secret !== process.env.CRON_SECRET) {
+  const secret = (req.headers.get('x-cron-secret') ?? authHeader?.replace('Bearer ', '') ?? '').trim()
+  if (secret !== (process.env.CRON_SECRET ?? '').trim()) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
