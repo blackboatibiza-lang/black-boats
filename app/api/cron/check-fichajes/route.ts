@@ -104,9 +104,9 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Alert admins if employee missed clock-in (30min after scheduled start, still no entry)
+    // Alert admins if employee missed clock-in (5-15min after scheduled start, still no entry)
     const minsPastStart = currentMinutes - startMins
-    if (minsPastStart >= 30 && minsPastStart <= 45 && !entry?.clock_in) {
+    if (minsPastStart >= 5 && minsPastStart <= 15 && !entry?.clock_in) {
       for (const adminSub of adminSubs ?? []) {
         try {
           await sendPush(adminSub.subscription, {
