@@ -138,7 +138,21 @@ export default function EditarReservaPage() {
       setChildren(booking.children ?? 0)
       setDeparturePort(booking.departure_port ?? 'Club Náutico San Antonio')
       setRouteNotes(booking.route_notes ?? '')
-      setInternalNotes(booking.internal_notes ?? '')
+      // Strip auto-generated segments from notes — keep only user-written free text
+      const allNotes = booking.internal_notes ?? ''
+      const freeText = allNotes.split(' | ').filter((s: string) => {
+        const l = s.toLowerCase()
+        return !(
+          l.startsWith('tarifa:') || l.startsWith('madrugadores') ||
+          l.startsWith('fuel extra') || l.startsWith('falta por pagar') ||
+          l.startsWith('método fianza') || l.startsWith('link fianza') ||
+          l.startsWith('método pago') || l.startsWith('broker:') ||
+          l.startsWith('comisión') ||
+          /^(cash|card|transfer|bizum|link)(\s*\+\s*(cash|card|transfer|bizum|link))*\s*:/.test(l) ||
+          /^(cash|card|transfer|bizum|link): \d/.test(l)
+        )
+      }).join(' | ')
+      setInternalNotes(freeText)
       setSource(booking.source ?? 'direct')
       setBasePrice(Number(booking.base_price ?? 0))
       setCustomBase(Number(booking.base_price ?? 0))
@@ -164,6 +178,13 @@ export default function EditarReservaPage() {
     if (booking?.calendar_event_id) setCalendarEventId(booking.calendar_event_id)
     if (booking?.booking_number) setBookingNumber(booking.booking_number)
     if (booking?.client) setClientName(`${booking.client.first_name} ${booking.client.last_name}`)
+
+    // Load broker expense for this booking date
+    if (booking?.source === 'broker' && booking?.start_date) {
+      const { data: brokerExp } = await supabase
+        .from('expenses').select('concept,amount').eq('category', 'Broker').eq('date', booking.start_date).maybeSingle()
+      if (brokerExp) { setBrokerName(brokerExp.concept ?? ''); setBrokerCommission(String(brokerExp.amount ?? '')) }
+    }
     setBoats(boatsData ?? [])
     setAllPricing(pricingData ?? [])
     setStaffUsers(staffData ?? [])
