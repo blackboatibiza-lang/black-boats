@@ -140,10 +140,14 @@ export default function EditarReservaPage() {
       setRouteNotes(booking.route_notes ?? '')
       // Strip auto-generated segments from notes — keep only user-written free text
       const allNotes = booking.internal_notes ?? ''
+      // Recover duration from notes
+      if (allNotes.includes('Medio día')) setSelectedDuration('half')
+      else if (allNotes.includes('Día completo') || allNotes.includes('Duración: full')) setSelectedDuration('full')
+
       const freeText = allNotes.split(' | ').filter((s: string) => {
         const l = s.toLowerCase()
         return !(
-          l.startsWith('tarifa:') || l.startsWith('madrugadores') ||
+          l.startsWith('tarifa:') || l.startsWith('duración:') || l.startsWith('madrugadores') ||
           l.startsWith('fuel extra') || l.startsWith('falta por pagar') ||
           l.startsWith('método fianza') || l.startsWith('link fianza') ||
           l.startsWith('método pago') || l.startsWith('broker:') ||
@@ -251,12 +255,17 @@ export default function EditarReservaPage() {
     setSaving(true); setError('')
     const supabase = createClient()
     try {
+      const paid = payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+      const pending = totalPrice - paid
+      const autoPayStatus = paid <= 0 ? 'pending' : paid >= totalPrice ? 'paid' : 'partial'
+
       const notes = [
         internalNotes,
-        selectedPricingRow ? `Tarifa: ${TARIFF_INFO[selectedTariff]?.label}` : '',
+        selectedPricingRow ? `Tarifa: ${TARIFF_INFO[selectedTariff]?.label} · ${selectedDuration === 'half' ? 'Medio día' : 'Día completo'}` : `Duración: ${selectedDuration}`,
         earlyBird ? 'Madrugadores −10%' : '',
         fuelExtra ? `Fuel extra: +${fuelExtra}€` : '',
         payments.filter(p => p.method && Number(p.amount) > 0).map(p => `${p.method}: ${p.amount}€`).join(' + ') || `Método pago: ${payments[0]?.method ?? 'cash'}`,
+        pending > 0 && paid > 0 ? `Falta por pagar: ${pending}€` : '',
         depositAmount > 0 ? `Método fianza: ${depositMethod}` : '',
         depositLink ? `Link fianza: ${depositLink}` : '',
       ].filter(Boolean).join(' | ')
@@ -276,7 +285,7 @@ export default function EditarReservaPage() {
         discount,
         total_price: totalPrice,
         deposit_amount: depositAmount,
-        payment_status: paymentStatus,
+        payment_status: autoPayStatus,
         departure_port: departurePort,
         route_notes: routeNotes || null,
         internal_notes: notes || null,
@@ -603,16 +612,31 @@ export default function EditarReservaPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 pt-1">
-          <label className={labelCls + ' mb-0'}>Estado pago</label>
-          <select value={paymentStatus} onChange={e => setPaymentStatus(e.target.value)}
-            className="flex-1 px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-[#C9A84C]/50">
-            <option value="pending">Sin pagar</option>
-            <option value="partial">Parcial</option>
-            <option value="paid">Pagado</option>
-            <option value="refunded">Devuelto</option>
-          </select>
-        </div>
+        {/* Estado de pago calculado automáticamente */}
+        {(() => {
+          const paid = payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+          const pending = totalPrice - paid
+          if (paid <= 0) return null
+          return (
+            <div className="border-t border-gray-200 pt-2 space-y-1 text-xs">
+              <div className="flex justify-between text-gray-700">
+                <span>Pagado</span>
+                <span className="font-semibold text-green-600">{paid.toLocaleString('es-ES')} €</span>
+              </div>
+              {pending > 0 ? (
+                <div className="flex justify-between text-gray-700">
+                  <span>Falta por pagar</span>
+                  <span className="font-semibold text-orange-500">{pending.toLocaleString('es-ES')} €</span>
+                </div>
+              ) : (
+                <div className="flex justify-between text-gray-700">
+                  <span>Estado</span>
+                  <span className="font-semibold text-green-600">✓ Pagado completo</span>
+                </div>
+              )}
+            </div>
+          )
+        })()}
       </div>
 
       {/* ── MÉTODO DE PAGO ── */}
