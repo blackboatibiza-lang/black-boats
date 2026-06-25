@@ -45,12 +45,25 @@ function payStatus(b: any): { label: string; color: string; pending: number } {
 
 // ── INVOICE MODAL ─────────────────────────────────────────────────
 function InvoiceModal({ booking, onClose }: { booking: any; onClose: () => void }) {
-  // Emisor
-  const [emisorNombre, setEmisorNombre] = useState('Black Boats Ibiza S.L.')
-  const [emisorNif,    setEmisorNif]    = useState('B-XXXXXXXX')
-  const [emisorDir,    setEmisorDir]    = useState('Puerto Deportivo San Antonio, Local 5, 07820 Ibiza')
-  const [emisorTel,    setEmisorTel]    = useState('+34 971 000 000')
-  const [emisorEmail,  setEmisorEmail]  = useState('info@blackboatsibiza.com')
+  // Emisor — cargado desde app_settings
+  const [emisorNombre, setEmisorNombre] = useState('')
+  const [emisorNif,    setEmisorNif]    = useState('')
+  const [emisorDir,    setEmisorDir]    = useState('')
+  const [emisorTel,    setEmisorTel]    = useState('')
+  const [emisorEmail,  setEmisorEmail]  = useState('')
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.from('app_settings').select('key,value').then(({ data: rows }) => {
+      if (!rows) return
+      const m: Record<string, string> = Object.fromEntries(rows.map((r: any) => [r.key, r.value]))
+      setEmisorNombre(m.nombre  ?? 'Black Boats Ibiza S.L.')
+      setEmisorNif(m.cif        ?? '')
+      setEmisorDir(m.direccion  ?? '')
+      setEmisorTel(m.telefono   ?? '')
+      setEmisorEmail(m.email    ?? '')
+    })
+  }, [])
   const [emisorIban,   setEmisorIban]   = useState('ES00 0000 0000 0000 0000 0000')
 
   // Factura
