@@ -72,9 +72,9 @@ export async function GET(req: NextRequest) {
     const startMins = sh * 60 + sm
     const endMins   = eh * 60 + em
 
-    // Remind employee 15min before scheduled start if not clocked in
+    // Remind employee at scheduled start time (within 10min window) if not clocked in
     const minsUntilStart = startMins - currentMinutes
-    if (minsUntilStart >= 10 && minsUntilStart <= 20 && !entry?.clock_in && sub) {
+    if (minsUntilStart >= -5 && minsUntilStart <= 5 && !entry?.clock_in && sub) {
       try {
         await sendPush(sub.subscription, {
           title: '⏰ Recuerda fichar entrada',
