@@ -183,11 +183,10 @@ export default function EditarReservaPage() {
     if (booking?.booking_number) setBookingNumber(booking.booking_number)
     if (booking?.client) setClientName(`${booking.client.first_name} ${booking.client.last_name}`)
 
-    // Load broker expense for this booking date
-    if (booking?.source === 'broker' && booking?.start_date) {
-      const { data: brokerExp } = await supabase
-        .from('expenses').select('concept,amount').eq('category', 'Broker').eq('date', booking.start_date).maybeSingle()
-      if (brokerExp) { setBrokerName(brokerExp.concept ?? ''); setBrokerCommission(String(brokerExp.amount ?? '')) }
+    // Load broker from booking columns
+    if (booking?.source === 'broker') {
+      if (booking.broker_name) setBrokerName(booking.broker_name)
+      if (booking.broker_commission) setBrokerCommission(String(booking.broker_commission))
     }
     setBoats(boatsData ?? [])
     setAllPricing(pricingData ?? [])
@@ -290,6 +289,8 @@ export default function EditarReservaPage() {
         route_notes: routeNotes || null,
         internal_notes: notes || null,
         source,
+        broker_name: source === 'broker' && brokerName.trim() ? brokerName.trim() : null,
+        broker_commission: source === 'broker' && Number(brokerCommission) > 0 ? Number(brokerCommission) : null,
         updated_at: new Date().toISOString(),
       }).eq('id', id)
 
@@ -306,16 +307,6 @@ export default function EditarReservaPage() {
         }).then(({ error: e }) => { if (e) console.warn('Captain expense:', e.message) })
       }
 
-      // Auto-create broker expense if new commission entered (non-blocking)
-      if (source === 'broker' && brokerName.trim() && Number(brokerCommission) > 0) {
-        createClient().from('expenses').insert({
-          amount: Number(brokerCommission),
-          concept: brokerName.trim(),
-          category: 'Broker',
-          date: startDate,
-          notes: `Comisión broker reserva editada`,
-        }).then(({ error: e }) => { if (e) console.warn('Broker expense:', e.message) })
-      }
 
       // Sync Google Calendar
       if (calendarEventId) {

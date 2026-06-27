@@ -73,7 +73,7 @@ export default function InformesPage() {
     const to   = `${year}-12-31`
 
     let bkQ = supabase.from('bookings')
-      .select('id,start_date,total_price,status,internal_notes,boat_id,boat:boats(name)')
+      .select('id,start_date,total_price,status,internal_notes,boat_id,source,broker_name,broker_commission,broker_paid,boat:boats(name)')
       .gte('start_date', from).lte('start_date', to)
       .neq('status', 'cancelled')
     if (hasLimit) bkQ = bkQ.in('boat_id', boatIds)
@@ -439,6 +439,63 @@ export default function InformesPage() {
             )
           })()}
         </div>
+
+        {/* Brokers */}
+        {(() => {
+          const brokerBookings = bookings.filter(b => b.source === 'broker' && b.broker_name)
+          if (brokerBookings.length === 0) return null
+          const brokerMap: Record<string, { count: number; commission: number; paid: number; unpaid: number }> = {}
+          for (const b of brokerBookings) {
+            const name = b.broker_name as string
+            if (!brokerMap[name]) brokerMap[name] = { count: 0, commission: 0, paid: 0, unpaid: 0 }
+            brokerMap[name].count++
+            const comm = Number(b.broker_commission ?? 0)
+            brokerMap[name].commission += comm
+            if (b.broker_paid) brokerMap[name].paid += comm
+            else brokerMap[name].unpaid += comm
+          }
+          const brokers = Object.entries(brokerMap).sort((a, b) => b[1].commission - a[1].commission)
+          return (
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-gray-200">
+                <p className="text-gray-900 text-sm font-semibold">Brokers {year}</p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left px-4 py-2 text-gray-700 text-xs">Broker</th>
+                      <th className="text-right px-4 py-2 text-gray-700 text-xs">Reservas</th>
+                      <th className="text-right px-4 py-2 text-gray-700 text-xs">Comisión total</th>
+                      <th className="text-right px-4 py-2 text-gray-700 text-xs">Pagado</th>
+                      <th className="text-right px-4 py-2 text-gray-700 text-xs">Pendiente</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {brokers.map(([name, data]) => (
+                      <tr key={name} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-3 text-gray-900 font-medium">{name}</td>
+                        <td className="px-4 py-3 text-right text-gray-700">{data.count}</td>
+                        <td className="px-4 py-3 text-right text-red-400 font-semibold">{data.commission.toLocaleString('es-ES')}€</td>
+                        <td className="px-4 py-3 text-right text-green-500">{data.paid.toLocaleString('es-ES')}€</td>
+                        <td className="px-4 py-3 text-right text-yellow-500">{data.unpaid.toLocaleString('es-ES')}€</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t border-gray-200 bg-gray-50">
+                      <td className="px-4 py-2.5 text-gray-700 text-xs font-semibold">Total</td>
+                      <td className="px-4 py-2.5 text-right text-gray-900 font-bold">{brokers.reduce((s, [,d]) => s + d.count, 0)}</td>
+                      <td className="px-4 py-2.5 text-right text-red-400 font-bold">{brokers.reduce((s, [,d]) => s + d.commission, 0).toLocaleString('es-ES')}€</td>
+                      <td className="px-4 py-2.5 text-right text-green-500 font-bold">{brokers.reduce((s, [,d]) => s + d.paid, 0).toLocaleString('es-ES')}€</td>
+                      <td className="px-4 py-2.5 text-right text-yellow-500 font-bold">{brokers.reduce((s, [,d]) => s + d.unpaid, 0).toLocaleString('es-ES')}€</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          )
+        })()}
       </div>
     </div>
   )

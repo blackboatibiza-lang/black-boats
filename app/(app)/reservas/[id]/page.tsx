@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import {
   ArrowLeft, Anchor, CalendarDays, Users, CreditCard,
-  CheckCircle, Clock, Phone, Mail, Package, Pencil, Printer, FileText
+  CheckCircle, Clock, Phone, Mail, Package, Pencil, Printer, FileText, Handshake
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -68,6 +68,7 @@ export default function ReservaDetailPage() {
   const [editingPrice, setEditingPrice] = useState(false)
   const [priceForm, setPriceForm] = useState({ base_price: '', discount: '', total_price: '' })
   const [savingPrice, setSavingPrice] = useState(false)
+  const [markingBrokerPaid, setMarkingBrokerPaid] = useState(false)
 
   useEffect(() => { load() }, [id])
 
@@ -107,6 +108,14 @@ export default function ReservaDetailPage() {
     }).eq('id', id)
     setSavingPrice(false)
     setEditingPrice(false)
+    load()
+  }
+
+  async function markBrokerPaid() {
+    setMarkingBrokerPaid(true)
+    const supabase = createClient()
+    await supabase.from('bookings').update({ broker_paid: true, updated_at: new Date().toISOString() }).eq('id', id)
+    setMarkingBrokerPaid(false)
     load()
   }
 
@@ -425,6 +434,43 @@ ${contractUrl}`
               </div>
             )}
           </div>
+
+          {/* Broker */}
+          {booking.source === 'broker' && booking.broker_name && (
+            <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <p className="text-gray-700 text-xs mb-3 flex items-center gap-1.5"><Handshake size={11} /> BROKER</p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">{booking.broker_name}</span>
+                  {booking.broker_paid
+                    ? <span className="text-xs text-green-500 font-semibold">✓ Pagado</span>
+                    : <span className="text-xs text-red-400 font-semibold">Pendiente</span>
+                  }
+                </div>
+                {Number(booking.broker_commission) > 0 && (
+                  <div className="flex justify-between text-xs text-gray-700">
+                    <span>Comisión</span>
+                    <span className="text-red-400 font-medium">−{Number(booking.broker_commission).toLocaleString('es-ES')}€</span>
+                  </div>
+                )}
+                {Number(booking.broker_commission) > 0 && (
+                  <div className="flex justify-between text-xs border-t border-gray-200 pt-2">
+                    <span className="text-gray-700">Ingreso neto</span>
+                    <span className="text-gray-900 font-bold">{(Number(booking.total_price) - Number(booking.broker_commission)).toLocaleString('es-ES')}€</span>
+                  </div>
+                )}
+                {!booking.broker_paid && (
+                  <button
+                    onClick={markBrokerPaid}
+                    disabled={markingBrokerPaid}
+                    className="w-full mt-2 py-2 bg-green-500/10 border border-green-500/30 text-green-600 text-xs font-semibold rounded-lg hover:bg-green-500/20 transition-all disabled:opacity-50"
+                  >
+                    {markingBrokerPaid ? '...' : 'Marcar como pagado al broker'}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Cambiar estado */}
           {nextStatuses[booking.status]?.length > 0 && (

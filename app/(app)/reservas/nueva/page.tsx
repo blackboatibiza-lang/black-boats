@@ -292,6 +292,8 @@ export default function NuevaReservaPage() {
           depositMethod === 'link' && depositLink ? `Link fianza: ${depositLink}` : '',
         ].filter(Boolean).join(' | ') || null,
         source,
+        broker_name: source === 'broker' && brokerName.trim() ? brokerName.trim() : null,
+        broker_commission: source === 'broker' && Number(brokerCommission) > 0 ? Number(brokerCommission) : null,
       }
 
       const { data: booking, error: be } = await supabase
@@ -320,16 +322,6 @@ export default function NuevaReservaPage() {
         }).then(({ error: e }) => { if (e) console.warn('Captain expense:', e.message) })
       }
 
-      // Auto-create broker expense (non-blocking)
-      if (source === 'broker' && brokerName.trim() && Number(brokerCommission) > 0) {
-        supabase.from('expenses').insert({
-          amount: Number(brokerCommission),
-          concept: brokerName.trim(),
-          category: 'Broker',
-          date: bookingData.start_date,
-          notes: `Comisión broker reserva ${booking.booking_number}`,
-        }).then(({ error: e }) => { if (e) console.warn('Broker expense:', e.message) })
-      }
 
       // Sync Google Calendar
       try {
